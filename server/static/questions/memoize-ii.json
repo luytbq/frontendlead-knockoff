@@ -1,0 +1,125 @@
+{
+    "type": "coding",
+    "id": "memoize-ii",
+    "title": "65. Memoize II",
+    "difficulty": [
+        "Hard"
+    ],
+    "link": "memoize-ii",
+    "problemStatement": "\u003cp\u003eEnhance the \u003ccode\u003ememoize\u003c/code\u003e function by implementing a more sophisticated caching mechanism using a Trie data structure. This approach optimizes memory usage by storing each argument of the memoized function as a node within a Trie, rather than concatenating arguments into a single string key.\u003c/p\u003e\n\u003cp\u003eThe updated \u003ccode\u003ememoize\u003c/code\u003e function should work as follows:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eIt accepts a function \u003ccode\u003efunc\u003c/code\u003e and returns a new function that caches the results of \u003ccode\u003efunc\u003c/code\u003e based on its arguments.\u003c/li\u003e\n\u003cli\u003eThe cache is represented by a Trie structure, where each node corresponds to an argument of the memoized function.\u003c/li\u003e\n\u003cli\u003eIf the memoized function is called with a set of arguments that has been previously used, the function retrieves the result from the Trie cache instead of executing \u003ccode\u003efunc\u003c/code\u003e again.\u003c/li\u003e\n\u003cli\u003eIf the set of arguments is new, the memoized function executes \u003ccode\u003efunc\u003c/code\u003e, stores the result in the Trie cache, and returns the result.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThis approach minimizes memory consumption by avoiding the need to store serialized representations of arguments. Instead, the Trie structure efficiently represents the hierarchical relationship between arguments, making it an ideal choice for caching function results.\u003c/p\u003e\n\u003cp\u003eThe implementation includes two helper classes, \u003ccode\u003eTrieNode\u003c/code\u003e and \u003ccode\u003eTrie\u003c/code\u003e, which provide the necessary structure and methods for the Trie cache, such as \u003ccode\u003eset\u003c/code\u003e, \u003ccode\u003ehas\u003c/code\u003e, and \u003ccode\u003eget\u003c/code\u003e, similar to the Map object.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should memoize function results with simple arguments",
+            "test": "it('should memoize function results with simple arguments', () =\u003e {\r\n    const func = (x) =\u003e x * 2;\r\n    const memoizedFunc = memoize(func);\r\n\r\n    expect(memoizedFunc(2)).to.equal(4);\r\n    expect(memoizedFunc(2)).to.equal(4); // Result should come from cache\r\n    expect(memoizedFunc(3)).to.equal(6);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should handle complex and mixed arguments",
+            "test": "it('should handle complex and mixed arguments', () =\u003e {\r\n    const complexFunc = (obj, num, str) =\u003e `${obj.value}-${num}-${str}`;\r\n    const memoizedFunc = memoize(complexFunc);\r\n\r\n    const obj = { value: 'test' };\r\n\r\n    expect(memoizedFunc(obj, 42, 'hello')).to.equal('test-42-hello');\r\n    expect(memoizedFunc(obj, 42, 'hello')).to.equal('test-42-hello'); // Result should come from cache\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should correctly memoize functions called with no arguments",
+            "test": "it('should correctly memoize functions called with no arguments', () =\u003e {\r\n    const noArgFunc = () =\u003e 'no args';\r\n    const memoizedFunc = memoize(noArgFunc);\r\n\r\n    expect(memoizedFunc()).to.equal('no args');\r\n    expect(memoizedFunc()).to.equal('no args'); // Result should come from cache\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should distinguish between undefined and null arguments",
+            "test": "it('should distinguish between undefined and null arguments', () =\u003e {\r\n    const func = (arg) =\u003e arg === undefined ? 'undefined' : 'null';\r\n    const memoizedFunc = memoize(func);\r\n\r\n    expect(memoizedFunc(undefined)).to.equal('undefined');\r\n    expect(memoizedFunc(null)).to.equal('null');\r\n    expect(memoizedFunc(undefined)).to.equal('undefined'); // Result should come from cache\r\n    expect(memoizedFunc(null)).to.equal('null'); // Result should come from cache\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": null
+        },
+        {
+            "constraint": null
+        },
+        {
+            "constraint": null
+        },
+        {
+            "constraint": null
+        },
+        {
+            "constraint": null
+        },
+        {
+            "constraint": null
+        }
+    ],
+    "order": null,
+    "starterJSCode": "class Trie {\r\n  // Write your code here \r\n}\r\n\r\nclass TrieNode {\r\n\t// Write your code here  \r\n}\r\n\r\nfunction memoize(func) {\r\n\t// Write your code here  \r\n}\r\n\r\n// Do not edit below this line\r\nexport default memoize;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function memoize(func) {\r\n  const cache = new Trie(); // Initialize Trie for caching\r\n\r\n  return function (...args) {\r\n    if (cache.has(args)) { // Check if the result is already cached\r\n      return cache.get(args); // Return cached result\r\n    }\r\n\r\n    const result = func.apply(this, args); // Call the original function\r\n    cache.set(args, result); // Cache the result\r\n\r\n    return result; // Return the new result\r\n  };\r\n}\r\n\r\nclass TrieNode {\r\n  constructor(value) {\r\n    this._value = value; // Store the value\r\n    this._nodes = new Map(); // Map to store child nodes\r\n  }\r\n\r\n  // Getters and setters for node value\r\n  getValue() {\r\n    return this._value;\r\n  }\r\n\r\n  setValue(value) {\r\n    this._value = value;\r\n  }\r\n\r\n  // Check if a specific key exists as a child node\r\n  hasKey(nodeKey) {\r\n    return this._nodes.has(nodeKey);\r\n  }\r\n\r\n  // Retrieve a child node by key\r\n  getNode(nodeKey) {\r\n    return this._nodes.get(nodeKey);\r\n  }\r\n\r\n  // Add a new child node\r\n  addNode(nodeKey) {\r\n    const newNode = new TrieNode();\r\n    this._nodes.set(nodeKey, newNode);\r\n    return newNode;\r\n  }\r\n}\r\n\r\nclass Trie {\r\n  constructor() {\r\n    this._rootNode = new TrieNode(); // Root node of the Trie\r\n    this._hasValueForUndefined = false; // Special flag for root value\r\n  }\r\n\r\n  set(args, value) {\r\n    if (args.length === 0) { // Special handling for no arguments\r\n      this._hasValueForUndefined = true;\r\n      this._rootNode.setValue(value);\r\n      return;\r\n    }\r\n\r\n    let currNode = this._rootNode;\r\n    for (const arg of args) { // Traverse or create nodes for each argument\r\n      if (!currNode.hasKey(arg)) {\r\n        currNode = currNode.addNode(arg);\r\n      } else {\r\n        currNode = currNode.getNode(arg);\r\n      }\r\n    }\r\n\r\n    currNode.setValue(value); // Set the result at the leaf node\r\n  }\r\n\r\n  has(args) {\r\n    if (args.length === 0) {\r\n      return this._hasValueForUndefined;\r\n    }\r\n\r\n    let currNode = this._rootNode;\r\n    for (const arg of args) { // Traverse the Trie for each argument\r\n      if (!currNode.hasKey(arg)) {\r\n        return false; // Argument path doesn't exist\r\n      }\r\n      currNode = currNode.getNode(arg);\r\n    }\r\n\r\n    return true; // Complete path exists\r\n  }\r\n\r\n  get(args) {\r\n    if (args.length === 0) {\r\n      return this._rootNode.getValue();\r\n    }\r\n\r\n    let currNode = this._rootNode;\r\n    for (const arg of args) { // Traverse the Trie for each argument\r\n      currNode = currNode.getNode(arg);\r\n    }\r\n\r\n    return currNode.getValue(); // Return the value from the leaf node\r\n  }\r\n}\r\n",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eOptimizing Memoization with Trie Data Structure\u003c/h2\u003e\n\u003cp\u003eThe advanced \u003ccode\u003ememoize\u003c/code\u003e function leverages a Trie data structure to optimize the caching mechanism for function results, based on the function\u0026#8217;s arguments. This approach significantly enhances memory efficiency by structuring each argument as a node within the Trie, avoiding the concatenation of arguments into a single string key.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHow the Memoize Function Works\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003ememoize\u003c/code\u003e function wraps a given function, caching its results in a Trie. When the memoized function is invoked, it checks the Trie for a cached result corresponding to the provided arguments. If a cached result exists, it\u0026#8217;s returned immediately; otherwise, the original function is executed, its result is stored in the Trie, and then returned.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eUnderstanding the Trie Structure\u003c/h2\u003e\n\u003cp\u003eThe Trie is implemented through two classes: \u003ccode\u003eTrieNode\u003c/code\u003e and \u003ccode\u003eTrie\u003c/code\u003e. \u003ccode\u003eTrieNode\u003c/code\u003e represents individual nodes within the Trie, storing values and child nodes. The \u003ccode\u003eTrie\u003c/code\u003e class manages the root node and provides methods to set, check, and retrieve values based on argument sequences.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eKey Features and Benefits\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eEfficient Memory Usage:\u003c/strong\u003e By avoiding string concatenation for keys and utilizing a hierarchical structure, the Trie-based cache minimizes memory footprint.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eFlexible Argument Handling:\u003c/strong\u003e The Trie structure accommodates various argument types and combinations, ensuring accurate caching and retrieval of function results.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eEnhanced Performance:\u003c/strong\u003e Reducing the need for redundant function executions, the Trie-based memoization optimizes performance, particularly for functions with expensive computations or frequent calls.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Applications\u003c/h2\u003e\n\u003cp\u003eFrom computational algorithms to data retrieval functions, the Trie-based \u003ccode\u003ememoize\u003c/code\u003e function can be applied across a wide range of scenarios, delivering performance improvements and efficient resource utilization.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe Trie-based \u003ccode\u003ememoize\u003c/code\u003e function showcases an innovative approach to function memoization in JavaScript, providing developers with a powerful tool to enhance the efficiency and performance of their applications.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "65. Memoize II Frontend Interview Question - FrontendLead",
+        "pageDescription": "Discover how to supercharge your JavaScript functions with advanced memoization using a Trie data structure. Learn the ins and outs of optimizing function calls for speed and efficiency in our comprehensive guide.",
+        "pageURL": "memoize-ii",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Memoize II Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eEnhance the \u003ccode\u003ememoize\u003c/code\u003e function by implementing a more sophisticated caching mechanism using a Trie data structure. This approach optimizes memory usage by storing each argument of the me",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eOptimizing Memoization with Trie Data Structure\u003c/h2\u003e\n\u003cp\u003eThe advanced \u003ccode\u003ememoize\u003c/code\u003e function leverages a Trie data structure to optimize the caching mechanism for functio",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+lly when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

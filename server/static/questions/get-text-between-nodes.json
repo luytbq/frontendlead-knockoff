@@ -1,0 +1,133 @@
+{
+    "type": "coding",
+    "id": "get-text-between-nodes",
+    "title": "81. GetTextBetweenNodes",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "get-text-between-nodes",
+    "problemStatement": "\u003cp\u003eCreate a function \u003ccode\u003egetTextBetweenTwoNodes\u003c/code\u003e that retrieves all the text content found in the DOM between two specified nodes, \u003ccode\u003enode1\u003c/code\u003e and \u003ccode\u003enode2\u003c/code\u003e. The function should traverse the DOM tree, collecting text from text nodes that are located between these two nodes, and return an array of these text snippets.\u003c/p\u003e\n\u003cp\u003eThe function should consider a depth-first search approach to navigate through the DOM elements, ensuring that all text nodes between the two specified nodes are included. It\u0026#8217;s important to handle various edge cases, such as when the nodes are nested at different levels or when there\u0026#8217;s no direct sibling relationship between them.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eFunction Signature:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003efunction getTextBetweenTwoNodes(node1: Node, node2: Node): string[]\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e\u003cstrong\u003eExample Usage:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst node1 = document.getElementById('start');\r\nconst node2 = document.getElementById('end');\r\nconst textsBetween = getTextBetweenTwoNodes(node1, node2);\r\nconsole.log(textsBetween);  // Output: Array of text snippets between node1 and node2\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis utility can be particularly useful for web scraping, automated testing, or any scenario where understanding the text content between two DOM elements is required.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should retrieve text between two nodes",
+            "test": "it('should retrieve text between two nodes', (done) =\u003e {\r\n      document.body.innerHTML = `\r\n          \u003cdiv id=\"start\"\u003eStart\u003c/div\u003e\r\n          \u003cp\u003eSome text \u003cspan\u003ein between\u003c/span\u003e nodes.\u003c/p\u003e\r\n          \u003cdiv id=\"end\"\u003eEnd\u003c/div\u003e\r\n      `;\r\n\r\n      const node1 = document.getElementById('start');\r\n      const node2 = document.getElementById('end');\r\n\r\n      const textsBetween = getTextBetweenTwoNodes(node1, node2);\r\n      console.log(textsBetween);\r\n      try {\r\n          expect(textsBetween).to.deep.equal(['Some text', 'in between', 'nodes.']);\r\n          done();  // Test passed\r\n      } catch (error) {\r\n          done(error);  // Test failed\r\n      }\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should return an empty array if no text is between nodes",
+            "test": "it('should return an empty array if no text is between nodes', () =\u003e {\r\n    // Setup DOM elements for this test case\r\n    document.body.innerHTML = `\r\n      \u003cdiv id=\"start\"\u003eStart\u003c/div\u003e\r\n      \u003cdiv id=\"end\"\u003eEnd\u003c/div\u003e\r\n    `;\r\n    const node1 = document.getElementById('start');\r\n    const node2 = document.getElementById('end');\r\n\r\n    const textsBetween = getTextBetweenTwoNodes(node1, node2);\r\n    console.log(textsBetween);\r\n    expect(textsBetween).to.be.empty;\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should handle nested nodes correctly",
+            "test": "it('should handle nested nodes correctly', (done) =\u003e {\r\n      document.body.innerHTML = `\r\n          \u003cdiv id=\"start\"\u003eStart\r\n              \u003cp\u003eNested text \u003cspan\u003eshould be included\u003c/span\u003e\u003c/p\u003e\r\n          \u003c/div\u003e\r\n          \u003cdiv\u003eSome other text\u003c/div\u003e\r\n          \u003cdiv id=\"end\"\u003eEnd\u003c/div\u003e\r\n      `;\r\n\r\n      const node1 = document.getElementById('start');\r\n      const node2 = document.getElementById('end');\r\n\r\n      // Assuming getTextBetweenTwoNodes is synchronous; calling done() after assertions\r\n      const textsBetween = getTextBetweenTwoNodes(node1, node2);\r\n      console.log(textsBetween);\r\n      try {\r\n          expect(textsBetween).to.deep.equal(['Nested text', 'should be included', 'Some other text']);\r\n          done();  // Test passed\r\n      } catch (error) {\r\n          done(error);  // Test failed\r\n      }\r\n  });\r\n\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The input parameters node1 and node2 must be valid DOM Node objects."
+        },
+        {
+            "constraint": "The function should only consider text content from text nodes (nodeType 3) found in the DOM tree between node1 and node2."
+        },
+        {
+            "constraint": "Text content should be trimmed to remove any leading or trailing whitespace."
+        },
+        {
+            "constraint": "The function should return an array of non-empty text snippets found between the two nodes."
+        },
+        {
+            "constraint": "The traversal should stop as soon as node2 is encountered in the DOM tree, ensuring that text from node2 and beyond is not included."
+        },
+        {
+            "constraint": "The function should handle various DOM structures, including cases where node1 and node2 are not siblings or are nested at different levels in the DOM tree."
+        },
+        {
+            "constraint": "If no text is found between the two nodes, the function should return an empty array."
+        },
+        {
+            "constraint": "The function should not modify the DOM or the input nodes in any way."
+        },
+        {
+            "constraint": "Performance should be considered, especially for DOM trees with a large number of nodes."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function getTextBetweenTwoNodes(node1, node2) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default getTextBetweenTwoNodes;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function getTextBetweenTwoNodes(node1, node2) {\r\n    // Initialize an array to store the text nodes between the two nodes\r\n    const res = [];\r\n    // Define a depth-first search (DFS) function for traversing the DOM tree\r\n    function dfs(node) {\r\n        // If the node is null, return false to indicate traversal should stop\r\n        if (node == null) {\r\n            return false;\r\n        }\r\n        // If we've reached node2, return true to indicate we've found the endpoint\r\n        if (node === node2) {\r\n            return true;\r\n        }\r\n        // If the node is a text node (nodeType 3)\r\n        if (node.nodeType === 3) {\r\n            // Get the trimmed text content\r\n            const text = node.textContent.trim();\r\n            // If the text content is not empty, add it to the result array\r\n            if (text) {\r\n                res.push(text);\r\n            }\r\n        }\r\n        // Recursively iterate over child nodes\r\n        if (node.childNodes) {\r\n            for (let child of node.childNodes) {\r\n                // If the child traversal found node2, return true\r\n                if (dfs(child)) {\r\n                    return true;\r\n                }\r\n            }\r\n        }\r\n        // If node2 is not found in the subtree rooted at this node, return false\r\n        return false;\r\n    }\r\n    // Start traversal from node1\r\n    let currentNode = node1;\r\n    // Continue traversal until node2 is found or there are no more siblings\r\n    while (!dfs(currentNode)) {\r\n        currentNode = currentNode.nextSibling || currentNode.parentNode.nextSibling;\r\n    }\r\n    // Return the collected text nodes\r\n    // Remove the first text node\r\n    return res.splice(1, res.length);\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eEfficiently Extracting Text Between Two DOM Nodes\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eExtracting text content between two specific nodes in the Document Object Model (DOM) is a common requirement in web development, especially in tasks involving DOM manipulation or web scraping. The \u003ccode\u003egetTextBetweenTwoNodes\u003c/code\u003e function provides a streamlined approach to this task, utilizing a depth-first search (DFS) strategy to traverse the DOM tree and collect text content effectively.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHow It Works\u003c/h2\u003e\n\u003cp\u003eThe function starts at the first node and searches through the DOM until it reaches the second node, collecting text from text nodes encountered along the way. This process involves:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eChecking each node\u0026#8217;s type to determine if it\u0026#8217;s a text node.\u003c/li\u003e\n\u003cli\u003eTrimming text content to exclude whitespace-only strings.\u003c/li\u003e\n\u003cli\u003eUsing a depth-first search algorithm to explore child nodes before siblings, ensuring all text between the two nodes is captured.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Applications\u003c/h2\u003e\n\u003cp\u003eThis function can be particularly useful in:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eWeb Scraping:\u003c/strong\u003e Extracting specific text content from web pages for data analysis.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eAutomated Testing:\u003c/strong\u003e Verifying that text appears in the expected parts of a web document.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eContent Scripts:\u003c/strong\u003e Developing browser extensions or scripts that manipulate webpage content.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConsiderations\u003c/h2\u003e\n\u003cp\u003eWhen using \u003ccode\u003egetTextBetweenTwoNodes\u003c/code\u003e, consider the following:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eThe function assumes that the nodes are part of the same document and that the second node appears after the first in the document\u0026#8217;s order.\u003c/li\u003e\n\u003cli\u003eText within child nodes of the start and end nodes is included, which might not always be desired.\u003c/li\u003e\n\u003cli\u003eLarge DOM structures might impact performance due to the depth-first search approach.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "DOM API"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "81. GetTextBetweenNodes - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Learn how to efficiently extract text between two DOM nodes using JavaScript. Perfect for web scraping, automated testing, and DOM manipulation tasks. Enhance your web development skills today.",
+        "pageURL": "get-text-between-nodes",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  GetTextBetweenNodes  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eCreate a function \u003ccode\u003egetTextBetweenTwoNodes\u003c/code\u003e that retrieves all the text content found in the DOM between two specified nodes, \u003ccode\u003enode1\u003c/code\u003e and \u003ccode\u003enode2\u003c/code\u003e. The function shoul",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eEfficiently Extracting Text Between Two DOM Nodes\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eExtracting text content between two specific nodes in the Document Object Model (DOM) is a common requirement in web d",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+         "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

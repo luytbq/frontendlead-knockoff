@@ -1,0 +1,136 @@
+{
+    "type": "coding",
+    "id": "javascript-deep-clone-frontend-interview-question",
+    "title": "13. Deep Clone",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "javascript-deep-clone-frontend-interview-question",
+    "problemStatement": "\u003cp\u003eImplement a function \u003ccode\u003edeepClone\u003c/code\u003e that takes an object as input and returns a deep copy of it. Unlike a shallow copy, which only copies the outermost layer, a deep copy replicates every level of nested objects. This means that changes made to the nested objects in the cloned object do not affect the original object.\u003c/p\u003e\n\u003cp\u003eThis function is crucial in scenarios where you need to manipulate data while preserving the original structure for future use. Deep cloning is a common requirement in frontend development, especially in state management, where immutability is a key concept.\u003c/p\u003e\n\u003cp\u003eConsider the following object as an example:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst source = {\r\n    a: 10,\r\n    b: 20,\r\n    c: {\r\n        d: 30,\r\n        e: ['a', 'b', 1],\r\n        f: {\r\n            g: 1\r\n        }\r\n    }\r\n}\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eYour task is to create a \u003ccode\u003edeepClone\u003c/code\u003e function that accurately duplicates this structure, including all nested objects and arrays. Changes to any level of the cloned object should not impact the original object.\u003c/p\u003e\n\u003cp\u003eHere\u0026#8217;s a basic usage example where changes to the cloned object do not affect the original:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst obj = { role: 'foo' };\r\nconst clonedObj = deepClone(obj);\r\nclonedObj.role = 'bar';\r\nconsole.log(obj.role); // Output: 'foo'\r\nconsole.log(clonedObj.role); // Output: 'bar'\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe challenge involves understanding and applying recursion for objects within objects, ensuring each level is appropriately cloned.\u003c/p\u003e\n\u003cp\u003eThis problem tests your ability to work with references in JavaScript, a fundamental concept in ensuring data integrity and preventing unintended side effects in your applications.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should create a clone of an object with nested objects",
+            "test": "it('should create a clone of an object with nested objects', (done) =\u003e {\r\n    const obj = { a: 1, b: { c: 2 } };\r\n    const clonedObj = deepClone(obj);\r\n    expect(clonedObj).to.deep.equal(obj);\r\n    expect(clonedObj.b).to.not.equal(obj.b);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should handle null values without throwing",
+            "test": "it('should handle null values without throwing', (done) =\u003e {\r\n    const obj = { a: null, b: 'test' };\r\n    const clonedObj = deepClone(obj);\r\n    expect(clonedObj).to.deep.equal(obj);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should not copy by reference, ensuring deep clone",
+            "test": "it('should not copy by reference, ensuring deep clone', (done) =\u003e {\r\n    const obj = { a: { b: { c: 1 } } };\r\n    const clonedObj = deepClone(obj);\r\n    clonedObj.a.b.c = 2;\r\n    expect(obj.a.b.c).to.equal(1);\r\n    expect(clonedObj.a.b.c).to.equal(2);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should return the primitive value if a non-object is passed",
+            "test": "it('should return the primitive value if a non-object is passed', (done) =\u003e {\r\n    const val = 'Hello';\r\n    const clonedVal = deepClone(val);\r\n    expect(clonedVal).to.equal(val);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should clone an empty object",
+            "test": "it('should clone an empty object', (done) =\u003e {\r\n    const obj = {};\r\n    const clonedObj = deepClone(obj);\r\n    expect(clonedObj).to.deep.equal(obj);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Type Checking: The solution must accurately determine the type of each property, ensuring that arrays, objects, and primitive values are treated accordingly."
+        },
+        {
+            "constraint": "Recursive Cloning: For objects and arrays, the solution should implement a recursive strategy to clone each nested item or object deeply."
+        },
+        {
+            "constraint": "Reference Integrity: The clone must not share any references with the original object. Changing a nested object or array within the clone should not affect the original."
+        },
+        {
+            "constraint": "Handling Primitive Values: Primitive values (like numbers, strings, and booleans) should be copied directly without the need for cloning."
+        },
+        {
+            "constraint": "Circular References: The solution should ideally handle circular references without causing infinite loops or stack overflow errors."
+        },
+        {
+            "constraint": "Performance Considerations: While deep cloning can be resource-intensive, the solution should aim to be as efficient as possible, avoiding unnecessary computations."
+        },
+        {
+            "constraint": "Flexibility and Reusability: The cloning function should be designed in a way that it can be reused across different parts of an application with varying object structures."
+        },
+        {
+            "constraint": "Edge Cases: Special cases such as cloning functions, Symbols, Maps, Sets, and other complex types may not be required, but the solution should at least acknowledge these cases, possibly throwing an error or skipping these types."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function deepClone(value) {\r\n  // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default deepClone;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// Define the deepClone function to perform a deep copy of objects\r\nfunction deepClone(value) {\r\n  // Check if the value is not an object or is null, return the value itself (handles primitive data types and null)\r\n  if(typeof value !== 'object' || value == null) {\r\n    return value;\r\n  }\r\n\r\n  // Initialize an empty object to serve as the clone\r\n  let clone = {};\r\n\r\n  // Iterate over each key in the input object\r\n  for(const key in value) {\r\n    // Retrieve the value corresponding to the current key\r\n    const val = value[key];\r\n\r\n    // Check if the value is an object (arrays included)\r\n    if(typeof val == 'object') {\r\n      // Recursively clone the value and assign it to the corresponding key in the clone\r\n      clone[key] = deepClone(val);\r\n    } else {\r\n      // For primitive data types, directly copy the value to the clone\r\n      clone[key] = val;\r\n    }\r\n  }\r\n\r\n  // Return the deep cloned object\r\n  return clone;\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eUnderstanding Deep Cloning in JavaScript\u003c/h1\u003e\n\u003cp\u003eDeep cloning in JavaScript is a process that creates an exact copy of an object, including all nested objects and arrays, ensuring that the clone is completely independent of the original. Unlike shallow cloning, which only copies the top-level properties, deep cloning replicates every level of nested structures. This distinction is crucial in many programming scenarios, particularly when manipulating objects where immutability is key.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eThe Challenge\u003c/h2\u003e\n\u003cp\u003eThe primary challenge in implementing a deep clone function lies in accurately copying every nested object and array. This task becomes complex due to JavaScript\u0026#8217;s handling of objects and arrays as reference types. When you copy such types, you\u0026#8217;re copying the reference, not the actual value. As a result, changes to the nested objects in the clone would affect the original object, violating the principle of deep cloning.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eOur Solution\u003c/h2\u003e\n\u003cp\u003eThe provided \u003ccode\u003edeepClone\u003c/code\u003e function tackles this challenge head-on, employing recursion to ensure every level of nested objects and arrays is copied correctly. Here\u0026#8217;s a step-by-step breakdown of the function:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eBase Case:\u003c/strong\u003e The function first checks if the input value is not an object or is \u003ccode\u003enull\u003c/code\u003e. In these cases, it simply returns the value, as primitive types do not require cloning.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eClone Initialization:\u003c/strong\u003e For objects, the function initializes an empty object to serve as the clone.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eRecursive Cloning:\u003c/strong\u003e It then iterates over each property of the input object. If a property\u0026#8217;s value is an object (this includes arrays), the function calls itself with this value, ensuring a deep clone. Otherwise, it copies the value directly.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThis approach ensures that each level of nested objects is cloned, making the clone truly independent of the original.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eTechnical Considerations\u003c/h2\u003e\n\u003cp\u003eSeveral key considerations went into designing this solution:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eHandling Arrays:\u003c/strong\u003e Though our primary focus is on objects, the same logic applies to arrays, as they are a type of object in JavaScript.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eEfficiency:\u003c/strong\u003e By using recursion, the function elegantly handles deeply nested structures without complex loops or manual stack management.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eLimitations:\u003c/strong\u003e The function is designed for objects and arrays containing primitive values or other objects/arrays. It does not handle functions, Dates, or other complex objects, which might require specialized cloning techniques.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eDeep cloning is a powerful technique in JavaScript, essential for maintaining immutability and preventing unintended side effects. The \u003ccode\u003edeepClone\u003c/code\u003e function provides a robust solution for creating true deep copies of objects and arrays. By understanding and leveraging this function, developers can confidently manipulate complex data structures in their applications.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": null,
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Deep Clone Objects in JavaScript - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Discover how to deep clone objects in JavaScript, ensuring data integrity. Ideal for frontend developers enhancing their skills.",
+        "pageURL": "javascript-deep-clone-frontend-interview-question",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Deep Clone Objects in JavaScript  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eImplement a function \u003ccode\u003edeepClone\u003c/code\u003e that takes an object as input and returns a deep copy of it. Unlike a shallow copy, which only copies the outermost layer, a deep copy replicates every l",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eUnderstanding Deep Cloning in JavaScript\u003c/h1\u003e\n\u003cp\u003eDeep cloning in JavaScript is a process that creates an exact copy of an object, including all nested objects and arrays, ensur",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

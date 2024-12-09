@@ -1,0 +1,143 @@
+{
+    "type": "react",
+    "id": "tabs",
+    "title": "62. Tabs",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "tabs",
+    "problemStatement": "\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" class=\"alignnone size-medium wp-image-380\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-3.18.45-PM-300x261.png\" alt=\"\" width=\"300\" height=\"261\" srcset=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-3.18.45-PM-300x261.png 300w, https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-3.18.45-PM.png 596w\" sizes=\"(max-width: 300px) 100vw, 300px\" /\u003e\u003c/p\u003e\n\u003cp\u003eThe objective is to develop a tabbed UI component that allows users to interactively switch between different tabs. Each tab should display specific content associated with it, and only the content of the active tab should be visible at any time. The component should be styled and functional, providing an intuitive user experience.\u003c/p\u003e\n\u003cp\u003eEach tab\u0026#8217;s visibility is controlled by React state, allowing for dynamic rendering of tab content based on user interaction.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The tabbed interface should be implemented as a React functional component utilizing hooks for state management."
+        },
+        {
+            "constraint": "The component should use styled-components for styling to ensure modularity and scalability of the UI design."
+        },
+        {
+            "constraint": "The tab content should be defined within the component or passed as props, allowing flexibility in content management."
+        },
+        {
+            "constraint": "Each tab should be clickable, with an event handler to switch the displayed content based on the tab selection."
+        },
+        {
+            "constraint": "At any given time, only the content of the active tab should be visible; all other tab contents should be hidden."
+        },
+        {
+            "constraint": "The component should maintain the state of which tab is currently active and render the corresponding tab content dynamically."
+        },
+        {
+            "constraint": "The solution should handle an arbitrary number of tabs, making the component reusable and adaptable to different content structures."
+        },
+        {
+            "constraint": "CSS styling should ensure a clear distinction between active and inactive tabs, enhancing user experience through visual cues."
+        },
+        {
+            "constraint": "The component should gracefully handle empty or missing content for any tab, avoiding runtime errors or broken UI elements."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "// Common React Hooks Are Already Imported\r\n\r\n// Tabs component\r\nconst TabsUI = () =\u003e {\r\n  // Write your code here\r\n};\r\n\r\n// Do not edit below this line\r\nexport default TabsUI;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// CSS styles\r\nconst styles = {\r\n  tabsContainer: {\r\n    width: '100%',\r\n    overflow: 'hidden',\r\n  },\r\n  tabList: {\r\n    width: '100%',\r\n    overflow: 'hidden',\r\n    marginBottom: '20px',\r\n    listStyleType: 'none',\r\n    padding: 0,\r\n  },\r\n  tab: {\r\n    background: '#eee',\r\n    padding: '20px',\r\n    display: 'inline-block',\r\n    cursor: 'pointer',\r\n  },\r\n  tabPanel: {\r\n    width: '100%',\r\n    height: '400px',\r\n    background: '#f9f9f9',\r\n    overflow: 'hidden',\r\n  },\r\n  hidden: {\r\n    display: 'none',\r\n  },\r\n};\r\n\r\n// Tabs component\r\nconst TabsUI = () =\u003e {\r\n  const [activeTab, setActiveTab] = useState(0);\r\n  const tabs = [\r\n    { name: 'Tab 1', content: 'Content of Tab 1' },\r\n    { name: 'Tab 2', content: 'Content of Tab 2' },\r\n    { name: 'Tab 3', content: 'Content of Tab 3' },\r\n  ];\r\n\r\n  const handleTabClick = (index) =\u003e {\r\n    setActiveTab(index);\r\n  };\r\n\r\n  return (\r\n    \u003cdiv style={styles.tabsContainer}\u003e\r\n      \u003cul style={styles.tabList}\u003e\r\n        {tabs.map((tab, index) =\u003e (\r\n          \u003cli\r\n            key={index}\r\n            style={styles.tab}\r\n            onClick={() =\u003e handleTabClick(index)}\r\n          \u003e\r\n            {tab.name}\r\n          \u003c/li\u003e\r\n        ))}\r\n      \u003c/ul\u003e\r\n      \u003cdiv style={styles.tabPanel}\u003e\r\n        {tabs.map((tab, index) =\u003e (\r\n          \u003cdiv\r\n            key={index}\r\n            style={index === activeTab ? {} : styles.hidden}\r\n          \u003e\r\n            {tab.content}\r\n          \u003c/div\u003e\r\n        ))}\r\n      \u003c/div\u003e\r\n    \u003c/div\u003e\r\n  );\r\n};",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eCreating a Tabbed UI Component in React\u003c/h1\u003e\n\u003cp\u003eThis tutorial demonstrates how to build a tabbed user interface component in React. Tabs are an effective way to organize and present content interactively. Our implementation focuses on simplicity and functionality, using basic React principles and inline CSS for styling.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eComponent Structure\u003c/h2\u003e\n\u003cp\u003eThe tabbed UI component comprises two main parts: the tab list and the content panels. The tab list allows users to select which content panel to view, while the content panels display the information associated with each tab.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eState Management\u003c/h2\u003e\n\u003cp\u003eReact\u0026#8217;s useState hook is utilized to keep track of the currently active tab. This state determines which content panel is visible to the user. Clicking a tab updates this state, triggering a re-render to display the selected tab\u0026#8217;s content.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHandling User Interactions\u003c/h2\u003e\n\u003cp\u003eEach tab in the list is clickable, with an onClick event handler attached. This handler updates the component\u0026#8217;s active tab state, thereby controlling the displayed content panel. This interactive mechanism ensures a dynamic user experience.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eStyling and Layout\u003c/h2\u003e\n\u003cp\u003eThe component\u0026#8217;s visual aspects are defined using inline CSS styles, providing a straightforward method to customize its appearance. The tabs are styled to be visually distinct and clickable, while the content panels are formatted to neatly display the content.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eContent Rendering\u003c/h2\u003e\n\u003cp\u003eThe content associated with each tab is rendered conditionally based on the active tab state. Only the content panel corresponding to the active tab is displayed, ensuring a clean and organized presentation of the information.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThis tabbed UI component exemplifies how React\u0026#8217;s declarative nature and state management capabilities can be leveraged to create interactive and user-friendly interfaces. By following this guide, developers can implement similar patterns in their applications, enhancing the overall user experience.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "App Design"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Airbnb"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "React Tabbed Interface Tutorial - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Learn how to create a dynamic Tabbed UI Component in React with this step-by-step tutorial. Discover best practices for state management, user interactions, and styling to enhance your web applications.",
+        "pageURL": "tabs",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement React Tabbed Interface Tutorial  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" class=\"alignnone size-medium wp-image-380\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-3.18.45-PM-300x261.png\" alt=\"\" ",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eCreating a Tabbed UI Component in React\u003c/h1\u003e\n\u003cp\u003eThis tutorial demonstrates how to build a tabbed user interface component in React. Tabs are an effective way to organize and pr",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+ment is an array, its contents are pushed back onto the stack for further inspection. If it\u0026#8217;s not an array, it\u0026#8217;s added to the results array.\u003c/p\u003e\n\u003cp\u003eOne notable detail in this implementation is that non-array elements are added to the front of the results array. This choice ensures that elements maintain their original order once fully flattened, but it also means that each insertion can potentially be O(n), leading to a worst-case complexity of O(n^2) for the entire operation, where n is the total number of elements to be processed.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eComparison and Complexity\u003c/h2\u003e\n\u003cp\u003eBoth methods effectively flatten nested arrays, but their efficiency can vary significantly based on the input data\u0026#8217;s structure. The recursive approach is elegant and easier to understand but can suffer from stack overflow issues with very deep or large arrays. Its complexity is generally O(n) but can be worse depending on the recursion\u0026#8217;s depth and the function call overhead.\u003c/p\u003e\n\u003cp\u003eOn the other hand, the iterative approach avoids potential stack overflow issues and provides a more controlled execution flow. However, due to the unshift operation\u0026#8217;s O(n) complexity in each step, this method can result in quadratic time complexity O(n^2) in the worst case, making it less efficient for large arrays.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003eIn conclusion, the choice between recursive and iterative approaches to array flattening depends on the specific requirements and constraints of your project, including the expected input array size and depth. While the recursive method is concise and elegant, the iterative method provides a robust alternative for handling large and deeply nested arrays without the risk of stack overflow.\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 10,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/UV9Lp-3uwwg?si=sIkEur5qGudwyPgh",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

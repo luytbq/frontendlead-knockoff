@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript Coding Questions</title>
+</head>
+<link rel="stylesheet" href="./static/tabs.css">
+<script src="./static/tabs.js"></script>
+<script src="./static/common.js"></script>
+<link rel="stylesheet" href="./static/styles.css">
+<link rel="stylesheet" href="./static/question.css">
+
+<body class="hidden">
+    <h2><a href="/home.html">Back to home</a></h2>
+    <br>
+    <h3 id="question-title"></h3>
+    <div id="tags"></div>
+    <div class="main-content">
+        <div id="question-statement"></div>
+        <div>
+            <div id="tiny-editor" data-tiny-editor data-formatblock="no" data-bold="no" data-italic="no" data-underline="no"
+                data-fontname="no" data-forecolor="no" data-justifyleft="no" data-justifycenter="no" data-justifyright="no"
+                data-insertorderedlist="no" data-insertunorderedlist="no" data-outdent="no" data-indent="no"
+                data-remove-format="no" data-autofocus="no" rows="30" cols="80">
+            </div>
+            <br>
+            <div>
+                <button id="btn-run" class="btn btn-run" onclick="runCode()">Run Tests</button>
+            </div>
+            <br>
+            <div id="output"> </div>
+        </div>
+    </div>
+
+    <div id="test-cases">
+    </div>
+</body>
+<script src="https://unpkg.com/tiny-editor/dist/bundle.js"></script>
+<script>
+    const url = new URL(window.location.href)
+    const slug = url.searchParams.get('slug');
+
+    function queryQuestionDetail() {
+        fetch("/api/questions?" + url.searchParams.toString())
+            .then(res => res.json())
+            .then(question => {
+                console.log(question);
+                renderQuestion(question);
+            })
+    }
+
+    function renderQuestion(question) {
+        document.getElementById("question-title").innerText = question.title;
+        document.getElementById("question-statement").innerHTML = question.problemStatement;
+
+        document.getElementById("tiny-editor").innerText = question.starterJSCode;
+        renderTestCases(question.testCases);
+        renderQuestionTags(question, document.getElementById("tags"));
+
+        document.body.classList.remove('hidden');
+    }
+
+    function renderTestCases(testCases) {
+        const tab = document.createElement('div');
+        tab.classList.add('tab')
+        document.getElementById("test-cases").appendChild(tab);
+
+        for (let tc of testCases) {
+            const tabContent = document.createElement('div');
+            tabContent.id = "test-case" + tc.id
+            tabContent.classList.add("tabcontent");
+            const pre = document.createElement('pre');
+            tabContent.appendChild(pre);
+            pre.innerText = `//${tc.description} \n\n ${tc.test}`;
+
+            document.getElementById("test-cases").appendChild(tabContent);
+            const tabButton = document.createElement('button');
+            tabButton.classList.add("tablinks");
+            tabButton.id = "test-case-link" + tc.id;
+            tabButton.onclick = (event) => openTab(event, tabContent.id)
+            tabButton.innerText = "Test case " + (tc.id + 1);
+            tab.appendChild(tabButton)
+        }
+    }
+
+    function runCode() {
+        const submission = document.getElementById("tiny-editor").innerText;
+        console.log(submission);
+
+        const body = {submission, slug };
+
+        document.getElementById("btn-run").disabled = true;
+        document.getElementById("output").innerText = '';
+
+        fetch("/api/submit", { method: 'POST', body: JSON.stringify(body)})
+            .then(res => res.json())
+            .then(res => {
+                renderRunOutput(res)
+            })
+    }
+
+    function renderRunOutput(res) {
+        let message = '';
+        document.getElementById("btn-run").disabled = false;
+
+        console.log(res.hasOwnProperty("failed_at_id"))
+        if (res.hasOwnProperty("failed_at_id")) {
+            message += `Test case ${res.failed_at_id + 1} failed.\n\n`
+            document.getElementById("test-case-link" + res.failed_at_id).click();
+        }
+        message += res.message || 'No output';
+        document.getElementById("output").innerText = message;
+    }
+
+    queryQuestionDetail();
+</script>
+
+</html>

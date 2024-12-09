@@ -1,0 +1,169 @@
+{
+    "type": "coding",
+    "id": "math-sqrtroot",
+    "title": "84. Math.sqrtRoot",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "math-sqrtroot",
+    "problemStatement": "\u003cp\u003eCreate a function \u003ccode\u003emySqrt\u003c/code\u003e that computes and returns the square root of a given number \u003ccode\u003ex\u003c/code\u003e. The function should return the integer part of the square root, similar to how the built-in \u003ccode\u003eMath.sqrt\u003c/code\u003e function works, but without using it directly. Your implementation should use a binary search algorithm to efficiently find the square root.\u003c/p\u003e\n\u003cp\u003eAdditionally, your function should handle edge cases such as negative numbers, non-numeric inputs, and \u003ccode\u003eNaN\u003c/code\u003e by returning \u003ccode\u003eNaN\u003c/code\u003e.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eFunction Signature:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003efunction mySqrt(x: number): number\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e\u003cstrong\u003eExample Usage:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econsole.log(mySqrt(4));  // Output: 2\r\nconsole.log(mySqrt(8));  // Output: 2 (since the square root of 8 is approximately 2.82842..., and the function returns the integer part)\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe input \u003ccode\u003ex\u003c/code\u003e is guaranteed to be a non-negative number. The function should aim for an efficient solution, ideally with a time complexity of O(log n).\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should return 0 for input 0",
+            "test": "it('should return 0 for input 0', (done) =\u003e {\r\n    expect(mySqrt(0)).to.equal(0);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should return 1 for input 1",
+            "test": "it('should return 1 for input 1', (done) =\u003e {\r\n    expect(mySqrt(1)).to.equal(1);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should return the integer part of the square root for perfect squares",
+            "test": "it('should return the integer part of the square root for perfect squares', (done) =\u003e {\r\n    expect(mySqrt(4)).to.equal(2); // 2*2 = 4\r\n    expect(mySqrt(9)).to.equal(3); // 3*3 = 9\r\n    expect(mySqrt(16)).to.equal(4); // 4*4 = 16\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should return the integer part of the square root for non-perfect squares",
+            "test": "it('should return the integer part of the square root for non-perfect squares', (done) =\u003e {\r\n    expect(mySqrt(8)).to.equal(2); // sqrt(8) is about 2.828, return 2\r\n    expect(mySqrt(15)).to.equal(3); // sqrt(15) is about 3.872, return 3\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should handle large inputs",
+            "test": "it('should handle large inputs', (done) =\u003e {\r\n    expect(mySqrt(2147395599)).to.equal(46339); // Large input test\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 5,
+            "description": "should return NaN for negative inputs",
+            "test": "it('should return NaN for negative inputs', (done) =\u003e {\r\n    expect(mySqrt(-4)).to.be.NaN; // Negative input test\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Input Range: The function should accept a non-negative integer x. Negative numbers, non-numeric inputs, and NaN should be handled gracefully by returning NaN."
+        },
+        {
+            "constraint": "Return Value: The function should return the integer part of the square root of x. If the square root is not an integer, the function should truncate the decimal part (i.e., perform a floor operation on the square root value)."
+        },
+        {
+            "constraint": "No Built-in Functions: The solution should not use the built-in Math.sqrt function or any similar library functions that directly compute the square root. The aim is to implement the square root calculation, preferably using a binary search algorithm for efficiency."
+        },
+        {
+            "constraint": "Time Complexity: The implementation should aim for a time complexity of O(log n), making binary search an ideal algorithm for this problem."
+        },
+        {
+            "constraint": "Edge Cases: The function must correctly handle edge cases, such as x = 0, where the expected return value is 0, and x = 1, where the expected return value is 1."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function mySqrt(x) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default mySqrt;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "/**\r\n * Computes the integer part of the square root of a given number x using binary search.\r\n * @param {number} x - The number to find the square root of.\r\n * @return {number} - The integer part of the square root of x.\r\n */\r\nfunction mySqrt(x) {\r\n  // Handle edge cases: negative numbers, NaN, or non-numeric input\r\n  if (x \u003c 0 || isNaN(x) || typeof x !== 'number') {\r\n    return NaN;\r\n  }\r\n\r\n  // Special cases for 0 and 1, where the square root is the number itself\r\n  if (x === 0 || x === 1) {\r\n    return x;\r\n  }\r\n\r\n  let start = 0;\r\n  let end = x;\r\n  let ans = 0;\r\n\r\n  // Use binary search to find the square root\r\n  while (start \u003c= end) {\r\n    const mid = Math.floor((start + end) / 2);\r\n    const square = mid * mid;\r\n\r\n    if (square === x) {\r\n      return mid; // Found the exact square root\r\n    } else if (square \u003c x) {\r\n      start = mid + 1;\r\n      ans = mid; // Update ans when mid*mid \u003c x, ans is potentially the floor of the sqrt\r\n    } else {\r\n      end = mid - 1; // Reduce search space when mid*mid \u003e x\r\n    }\r\n  }\r\n\r\n  // Return ans, which is the floor value of the square root\r\n  return ans;\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eEfficient Square Root Calculation Without Built-in Functions\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eCalculating the square root of a number is a common mathematical operation. However, doing so without relying on built-in functions like \u003ccode\u003eMath.sqrt\u003c/code\u003e presents an interesting challenge that requires a deeper understanding of numerical methods. The \u003ccode\u003emySqrt\u003c/code\u003e function demonstrates how to achieve this using a binary search algorithm, which is particularly efficient for this task.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eBinary Search Approach\u003c/h2\u003e\n\u003cp\u003eThe binary search algorithm is a highly efficient way to find the square root of a number, especially when only the integer part of the square root is required. By narrowing down the possible values in a logarithmic fashion, the algorithm quickly converges to the closest integer value of the square root.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHandling Edge Cases\u003c/h2\u003e\n\u003cp\u003eEdge cases, such as negative numbers, non-numeric inputs, and \u003ccode\u003eNaN\u003c/code\u003e, are gracefully handled by returning \u003ccode\u003eNaN\u003c/code\u003e. This ensures that the function behaves predictably across a wide range of inputs.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eAlgorithmic Steps\u003c/h2\u003e\n\u003cp\u003eThe key steps of the \u003ccode\u003emySqrt\u003c/code\u003e function include:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eInitializing variables to represent the start and end of the range within which the square root lies.\u003c/li\u003e\n\u003cli\u003eEmploying a loop to perform the binary search, continuously halving the search range based on whether the square of the midpoint is less than, equal to, or greater than the input number.\u003c/li\u003e\n\u003cli\u003eUpdating an answer variable to hold the best guess for the square root as the search progresses.\u003c/li\u003e\n\u003cli\u003eReturning the answer once the search is complete, which represents the integer part of the square root.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Applications\u003c/h2\u003e\n\u003cp\u003eWhile the \u003ccode\u003emySqrt\u003c/code\u003e function is a mathematical utility, its underlying binary search algorithm has broad applications in computer science, particularly in areas where efficient search methods are critical.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003emySqrt\u003c/code\u003e function illustrates how a fundamental computer science algorithm can be adapted to solve specific mathematical problems effectively, showcasing the versatility and power of algorithmic thinking.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Algorithmic"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "How to Calculate Square Roots in JavaScript - FrontendLead",
+        "pageDescription": "Learn an efficient method to calculate the integer part of square roots in JavaScript using a binary search algorithm. Perfect for developers looking for alternatives to Math.sqrt and those interested in enhancing their algorithmic problem-solving skills.",
+        "pageURL": "math-sqrtroot",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement How to Calculate Square Roots in JavaScript  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eCreate a function \u003ccode\u003emySqrt\u003c/code\u003e that computes and returns the square root of a given number \u003ccode\u003ex\u003c/code\u003e. The function should return the integer part of the square root, similar to how the ",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eEfficient Square Root Calculation Without Built-in Functions\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eCalculating the square root of a number is a common mathematical operation. However, doing so without relyi",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+    "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

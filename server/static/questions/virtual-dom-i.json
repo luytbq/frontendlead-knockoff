@@ -1,0 +1,126 @@
+{
+    "type": "coding",
+    "id": "virtual-dom-i",
+    "title": "33. Virtual DOM I",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "virtual-dom-i",
+    "problemStatement": "\u003cp\u003eExplore the concept of serializing and deserializing a DOM tree using JSON, similar to how React represents elements and their properties. This approach offers an alternative to traditional HTML string serialization, providing a structured and easily manipulable format for representing the DOM structure.\u003c/p\u003e\n\u003cp\u003eConsider the following example of a DOM tree:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\u0026lt;div id=\"root\"\u0026gt;\r\n   \u0026lt;h1\u0026gt;\r\n     this is\r\n   \u0026lt;/h1\u0026gt;\r\n   \u0026lt;p class=\"paragraph\"\u0026gt;\r\n     a\r\n     \u0026lt;button\u0026gt;\r\n       button\r\n     \u0026lt;/button\u0026gt;\r\n     from\r\n     \u0026lt;a href=\"https://frontendlead.com\"\u0026gt;\r\n       \u0026lt;b\u0026gt;frontendlead\u0026lt;/b\u0026gt;\r\n       .com\r\n     \u0026lt;/a\u0026gt;\r\n   \u0026lt;/p\u0026gt;\r\n\u0026lt;/div\u0026gt;\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe object representation of this DOM tree might look like:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e{\r\n  type: 'div',\r\n  props: {\r\n    children: [{\r\n      type: 'h1',\r\n      props: {\r\n        children: ' this is '\r\n      }\r\n    }, {\r\n      type: 'p',\r\n      props: {\r\n        className: 'paragraph',\r\n        children: [' a ', {\r\n          type: 'button',\r\n          props: {\r\n            children: ' button '\r\n          }\r\n        }, ' from ', {\r\n          type: 'a',\r\n          props: {\r\n            href: 'https://frontendlead.com',\r\n            children: [{\r\n              type: 'b',\r\n              props: {\r\n                children: 'frontendlead'\r\n              }\r\n            }, '.com']\r\n          }\r\n        }]\r\n      }\r\n    }]\r\n  }\r\n}\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eYour task is to implement two functions:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003evirtualize():\u003c/strong\u003e Converts a real DOM tree into its JSON representation.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003erender():\u003c/strong\u003e Recreates the real DOM tree from its JSON representation.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eFocus on basic HTML tags and properties, excluding complex functionalities like event handlers and custom components. The ability to handle text nodes, single or multiple children, and camelCased properties in your implementation is essential.\u003c/p\u003e\n\u003cp\u003eThis challenge not only tests your understanding of DOM manipulation and JavaScript object handling but also offers insight into virtual DOM concepts used in frameworks like React.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should virtualize a simple element with text content",
+            "test": "it('should virtualize a simple element with text content', () =\u003e {\r\n    const element = document.createElement('div');\r\n    element.textContent = 'Hello, world!';\r\n    \r\n    const virtualized = VirtualDOM.virtualize(element);\r\n    expect(virtualized).to.deep.equal({\r\n      type: 'div',\r\n      props: {\r\n        children: 'Hello, world!'\r\n      }\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should render a virtualized simple element with text content",
+            "test": "it('should render a virtualized simple element with text content', () =\u003e {\r\n    const virtualNode = {\r\n      type: 'div',\r\n      props: {\r\n        children: 'Hello, virtual world!'\r\n      }\r\n    };\r\n    \r\n    const renderedElement = VirtualDOM.render(virtualNode);\r\n    expect(renderedElement.tagName.toLowerCase()).to.equal('div');\r\n    expect(renderedElement.textContent).to.equal('Hello, virtual world!');\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should render a virtualized nested element structure",
+            "test": "it('should render a virtualized nested element structure', () =\u003e {\r\n    const virtualNode = {\r\n      type: 'div',\r\n      props: {\r\n        children: [{\r\n          type: 'span',\r\n          props: {\r\n            children: 'Nested virtual content'\r\n          }\r\n        }]\r\n      }\r\n    };\r\n    \r\n    const renderedElement = VirtualDOM.render(virtualNode);\r\n    expect(renderedElement.tagName.toLowerCase()).to.equal('div');\r\n    expect(renderedElement.firstChild.tagName.toLowerCase()).to.equal('span');\r\n    expect(renderedElement.firstChild.textContent).to.equal('Nested virtual content');\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should handle elements with multiple attributes",
+            "test": "it('should handle elements with multiple attributes', () =\u003e {\r\n    const element = document.createElement('a');\r\n    element.setAttribute('href', 'https://example.com');\r\n    element.setAttribute('title', 'Example');\r\n    element.textContent = 'Visit Example';\r\n\r\n    const virtualized = VirtualDOM.virtualize(element);\r\n    expect(virtualized).to.deep.equal({\r\n      type: 'a',\r\n      props: {\r\n        href: 'https://example.com',\r\n        title: 'Example',\r\n        children: 'Visit Example'\r\n      }\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should render elements with multiple attributes",
+            "test": "it('should render elements with multiple attributes', () =\u003e {\r\n    const virtualNode = {\r\n      type: 'a',\r\n      props: {\r\n        href: 'https://example.com',\r\n        title: 'Example',\r\n        children: 'Visit Example'\r\n      }\r\n    };\r\n\r\n    const renderedElement = VirtualDOM.render(virtualNode);\r\n    expect(renderedElement.tagName.toLowerCase()).to.equal('a');\r\n    expect(renderedElement.getAttribute('href')).to.equal('https://example.com');\r\n    expect(renderedElement.getAttribute('title')).to.equal('Example');\r\n    expect(renderedElement.textContent).to.equal('Visit Example');\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The DOM tree's depth will not exceed 20 levels to prevent excessive recursion or iteration depth, which could lead to stack overflow or significant performance degradation."
+        },
+        {
+            "constraint": "The implementation should support basic HTML elements (e.g., div, span, p, a) and their common attributes (e.g., id, class, href). More complex elements and attributes can be ignored for simplicity."
+        },
+        {
+            "constraint": "Text nodes should be accurately represented and restored, including handling whitespace and special characters."
+        },
+        {
+            "constraint": "Properties in the virtual DOM object should be camelCased (e.g., className for class attributes) to align with common JavaScript DOM manipulation practices."
+        },
+        {
+            "constraint": "The virtualize function should ignore script tags and event handlers to simplify the problem scope and focus on structural representation."
+        },
+        {
+            "constraint": "The render function should create actual DOM nodes without applying any event listeners or executing embedded scripts."
+        },
+        {
+            "constraint": "Performance: While not the primary focus, the solution should avoid unnecessary DOM operations, particularly in the render function, to prevent reflow and repaint performance issues."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "// Class is used to make running tests easier\r\nclass VirtualDOM {\r\n    static virtualize(element) {\r\n        // Write your code here\r\n    }\r\n\r\n    static render(virtualNode) {\r\n        // Write your code here\r\n    }\r\n}\r\n\r\n// Do not edit below this line\r\nexport default VirtualDOM;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "class VirtualDOM {\r\n    // Converts a real DOM node to a virtual DOM representation\r\n    static virtualize(element) {\r\n        // Initialize the virtual node with the element's tag name and an empty props object\r\n        const obj = {\r\n            type: element.tagName.toLowerCase(), // Get the tag name and convert it to lowercase\r\n            props: {}\r\n        };\r\n\r\n        // Loop through the element's attributes and add them to the props object\r\n        for (const attr of element.attributes) {\r\n            const name = attr.name === 'class' ? 'className' : attr.name; // Convert 'class' to 'className'\r\n            obj.props[name] = attr.value; // Assign attribute values to props\r\n        }\r\n\r\n        // Process the element's child nodes\r\n        const children = Array.from(element.childNodes).map(node =\u003e \r\n            node.nodeType === 3 ? node.textContent.trim() : VirtualDOM.virtualize(node) // Text nodes are trimmed and added directly, elements are virtualized recursively\r\n        ).filter(Boolean); // Remove empty text nodes\r\n\r\n        // If there are children, add them to the props object under 'children' key\r\n        if (children.length) {\r\n            obj.props.children = children.length === 1 ? children[0] : children; // If only one child, add it directly, otherwise add the array of children\r\n        }\r\n\r\n        return obj; // Return the constructed virtual node\r\n    }\r\n\r\n    // Creates a real DOM node from a virtual DOM representation\r\n    static render(virtualNode) {\r\n        // If the virtualNode is a string, it's a text node, so return a text node\r\n        if (typeof virtualNode === 'string') {\r\n            return document.createTextNode(virtualNode);\r\n        }\r\n\r\n        // Create a DOM element using the virtual node's type (tag name)\r\n        const element = document.createElement(virtualNode.type);\r\n\r\n        // Loop through the virtual node's props to set attributes and handle children\r\n        for (const [prop, value] of Object.entries(virtualNode.props)) {\r\n            if (prop === 'children') {\r\n                // If the prop is 'children', recursively render each child and append to the current element\r\n                if (Array.isArray(value)) {\r\n                    value.forEach(child =\u003e element.appendChild(VirtualDOM.render(child)));\r\n                } else {\r\n                    element.appendChild(VirtualDOM.render(value));\r\n                }\r\n            } else if (prop === 'className') {\r\n                // Handle 'className' specially by setting it as a 'class' attribute\r\n                element.setAttribute('class', value);\r\n            } else {\r\n                // For other props, set them as attributes\r\n                element.setAttribute(prop, value);\r\n            }\r\n        }\r\n\r\n        return element; // Return the newly created DOM element\r\n    }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eUnderstanding the VirtualDOM Class\u003c/h1\u003e\n\u003cp\u003eThe \u003ccode\u003eVirtualDOM\u003c/code\u003e class provides a simplified simulation of how virtual DOM works in libraries like React. It includes two primary static methods: \u003ccode\u003evirtualize\u003c/code\u003e and \u003ccode\u003erender\u003c/code\u003e. The \u003ccode\u003evirtualize\u003c/code\u003e method converts a real DOM node into a virtual DOM representation, while the \u003ccode\u003erender\u003c/code\u003e method does the opposite, creating a real DOM node from a virtual DOM object.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eVirtualize Method\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003evirtualize\u003c/code\u003e method starts by creating an object to represent the virtual node. It assigns the node\u0026#8217;s tag name as the \u003ccode\u003etype\u003c/code\u003e and initializes an empty \u003ccode\u003eprops\u003c/code\u003e object. It then iterates over the node\u0026#8217;s attributes, converting them into \u003ccode\u003eprops\u003c/code\u003e, with special handling to convert \u003ccode\u003eclass\u003c/code\u003e to \u003ccode\u003eclassName\u003c/code\u003e to align with JavaScript conventions.\u003c/p\u003e\n\u003cp\u003eChild nodes are processed by recursively calling \u003ccode\u003evirtualize\u003c/code\u003e on them, or by directly including text content for text nodes. These children are then appropriately assigned to the \u003ccode\u003eprops.children\u003c/code\u003e array, considering single or multiple children scenarios.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eRender Method\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003erender\u003c/code\u003e method takes a virtual DOM object and constructs a corresponding real DOM node. If the virtual node is a string, it\u0026#8217;s treated as a text node. Otherwise, a DOM element is created based on the \u003ccode\u003etype\u003c/code\u003e of the virtual node. The method then iterates over the \u003ccode\u003eprops\u003c/code\u003e, applying them to the element. Attributes are set directly, and children are recursively processed by calling \u003ccode\u003erender\u003c/code\u003e on each child.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Implications\u003c/h2\u003e\n\u003cp\u003eThis simplified implementation of a virtual DOM system demonstrates the core concept behind efficient DOM manipulation in modern web development. By decoupling the representation of the DOM from the actual DOM, applications can minimize direct DOM interactions, which are often expensive in terms of performance. Instead, changes are made to the virtual DOM, which then smartly updates the real DOM, leading to improved application efficiency and user experience.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eLimitations and Considerations\u003c/h2\u003e\n\u003cp\u003eIt\u0026#8217;s important to note that this implementation is a basic representation and lacks many features found in full-fledged virtual DOM libraries, such as diffing algorithms for minimal updates, support for components, and handling of event listeners. However, it serves as an educational tool to understand the underlying principles of virtual DOM technology.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "DOM API"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/lE0CE2N3oUg",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Virtual DOM: A Guide to Virtualize and Render Methods - Frontend Interview Question",
+        "pageDescription": "Dive into the basics of the virtual DOM with our guide on implementing virtualize and render methods, streamlining DOM manipulations for enhanced web performance.",
+        "pageURL": "virtual-dom-i",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Virtual DOM A Guide to Virtualize and Render Methods  Frontend Interview Question in Javascript?",
+            "text": "\u003cp\u003eExplore the concept of serializing and deserializing a DOM tree using JSON, similar to how React represents elements and their properties. This approach offers an alternative to traditional HTML st",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eUnderstanding the VirtualDOM Class\u003c/h1\u003e\n\u003cp\u003eThe \u003ccode\u003eVirtualDOM\u003c/code\u003e class provides a simplified simulation of how virtual DOM works in libraries like React. It includes two ",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

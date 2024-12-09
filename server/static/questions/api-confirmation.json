@@ -1,0 +1,154 @@
+{
+    "type": "coding",
+    "id": "api-confirmation",
+    "title": "36. API Confirmation",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "api-confirmation",
+    "problemStatement": "\u003cp\u003eYou are provided with an array of API URLs, where the position of each URL in the array indicates the priority of its respective API. The task involves fetching these APIs concurrently and obtaining the result from the highest-priority API that returns a successful response. Should all the API calls result in failure, it\u0026#8217;s essential to manage the rejection appropriately.\u003c/p\u003e\n\u003cp\u003eConsider the following example of API URLs:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003ccode\u003ehttps://api.example.com/api1\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003ehttps://api.example.com/api2\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003ehttps://api.example.com/api3\u003c/code\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThe objective is to execute these API requests in parallel and secure the result from the API with the highest priority (earliest in the array) that successfully responds. In scenarios where every API call is unsuccessful, the system must adeptly handle the collective failure.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should return the response from the highest-priority API that succeeds",
+            "test": "it('should return the response from the highest-priority API that succeeds', (done) =\u003e {\r\n    // Mocking API responses\r\n    fetchMock.mock('https://api.example.com/api1', 500); // First API fails\r\n    fetchMock.mock('https://api.example.com/api2', { status: 200, body: 'API 2 Success' }); // Second API succeeds\r\n    fetchMock.mock('https://api.example.com/api3', { status: 200, body: 'API 3 Success' }); // Third API succeeds\r\n\r\n    const apiUrls = [\r\n      'https://api.example.com/api1',\r\n      'https://api.example.com/api2',\r\n      'https://api.example.com/api3'\r\n    ];\r\n\r\n    fetchAllApis(apiUrls)\r\n      .then(response =\u003e response.text())\r\n      .then(text =\u003e {\r\n        expect(text).to.equal('API 2 Success'); // Expect the response from the second API as it's the highest priority that succeeds\r\n        done();\r\n      })\r\n      .catch(done); // If there's an error, pass it to done to fail the test\r\n    fetchMock.restore();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should throw an error if all APIs fail",
+            "test": "it('should throw an error if all APIs fail', (done) =\u003e {\r\n    // Mocking API responses to fail\r\n    fetchMock.mock('https://api.example.com/api1', 500);\r\n    fetchMock.mock('https://api.example.com/api2', 500);\r\n    fetchMock.mock('https://api.example.com/api3', 500);\r\n\r\n    const apiUrls = [\r\n      'https://api.example.com/api1',\r\n      'https://api.example.com/api2',\r\n      'https://api.example.com/api3'\r\n    ];\r\n\r\n    fetchAllApis(apiUrls)\r\n      .then(() =\u003e {\r\n        // If it gets to this line, the test should fail because an error should have been thrown\r\n        expect.fail('Expected fetchAllApis to throw an error');\r\n        done();\r\n      })\r\n      .catch(error =\u003e {\r\n        expect(error.message).to.equal('All APIs failed');\r\n        done();\r\n      });\r\n    fetchMock.restore();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The API calls should be made in parallel, not sequentially."
+        },
+        {
+            "constraint": "The result should be from the highest-priority API that succeeds. Priority is determined by the order in the array, with the first element being the highest priority."
+        },
+        {
+            "constraint": "If an API call succeeds, there's no need to wait for the remaining calls to complete; the successful response should be processed immediately."
+        },
+        {
+            "constraint": "In case all API calls fail, an appropriate error handling mechanism should be in place to handle the collective failure."
+        },
+        {
+            "constraint": "The solution should optimize for performance, minimizing the time to get a successful response."
+        },
+        {
+            "constraint": "Assume that the fetch function is available globally and returns a promise that resolves with the response of the API call or rejects if the call fails."
+        },
+        {
+            "constraint": "Each API response should be checked for a successful HTTP status code (e.g., 200-299) to determine if the response is considered successful."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function fetchAllApis(apis) {\r\n  // Write your code her\r\n}\r\n\r\n// Do not edit below this line\r\nexport default fetchAllApis;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function fetchAllApis(apis) {\r\n  // Map each API URL to a fetch request, creating an array of promises\r\n  const promises = apis.map(api =\u003e fetch(api).then(response =\u003e {\r\n    if (!response.ok) {\r\n      throw new Error('API call failed');\r\n    }\r\n    return response;\r\n  }));\r\n\r\n  // Use Promise.allSettled to execute all promises in parallel and wait for all to settle\r\n  return Promise.allSettled(promises)\r\n    .then(results =\u003e {\r\n      // Iterate through the results to find the first successful response\r\n      for (const result of results) {\r\n        if (result.status === 'fulfilled') {\r\n          return result.value; // Return the result of the first successful API call\r\n        }\r\n      }\r\n      // If all API calls fail, throw an error\r\n      throw new Error('All APIs failed');\r\n    });\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eEfficient API Request Handling with Priority\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eManaging multiple API requests efficiently while prioritizing them based on their order in an array is a common challenge in web development. The provided solution demonstrates a method to fetch APIs in parallel and return the response from the highest-priority API that successfully responds.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eParallel Fetching with Error Handling\u003c/h2\u003e\n\u003cp\u003eThe core of the solution involves mapping each API URL to a \u003ccode\u003efetch\u003c/code\u003e request and using \u003ccode\u003ePromise.allSettled\u003c/code\u003e to handle these requests in parallel. This approach ensures that all requests are made simultaneously, optimizing the overall response time.\u003c/p\u003e\n\u003cp\u003eEach \u003ccode\u003efetch\u003c/code\u003e promise is configured to reject if the response is not successful (i.e., if the HTTP status code is not within the 200-299 range), allowing us to identify and disregard failed requests.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eSelecting the Highest-Priority Successful Response\u003c/h2\u003e\n\u003cp\u003eUpon the settlement of all promises, the responses are iterated to find the first fulfilled promise, corresponding to the highest-priority API that returned a successful response. This response is then returned as the result of the function, ensuring that the most critical data is prioritized.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eComprehensive Failure Handling\u003c/h2\u003e\n\u003cp\u003eIn scenarios where all API calls fail, the function throws a descriptive error. This robust error handling mechanism ensures that failures are communicated effectively, allowing for appropriate actions to be taken in response.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThis approach to handling multiple API requests with prioritization and parallel execution offers a balance between efficiency and reliability. By fetching APIs in parallel and focusing on the most critical response, applications can maintain optimal performance and responsiveness even when dealing with multiple data sources.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/jVk5KQvCgQc?si=DudfjRtqvFcxHaMg",
+    "company": [
+        "Google"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "36. API Confirmation - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Elevate your web development skills by learning how to manage multiple API requests efficiently. Discover the art of prioritizing API responses and handling parallel fetching with our expert guide. Ensure your applications are robust and responsive, even under heavy load.SEO Slug: api-request-prioritization-parallel-fetching-javascript",
+        "pageURL": "api-confirmation",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  API Confirmation  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eYou are provided with an array of API URLs, where the position of each URL in the array indicates the priority of its respective API. The task involves fetching these APIs concurrently and obtainin",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eEfficient API Request Handling with Priority\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eManaging multiple API requests efficiently while prioritizing them based on their order in an array is a common challenge i",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+recursion\u0026#8217;s depth and the function call overhead.\u003c/p\u003e\n\u003cp\u003eOn the other hand, the iterative approach avoids potential stack overflow issues and provides a more controlled execution flow. However, due to the unshift operation\u0026#8217;s O(n) complexity in each step, this method can result in quadratic time complexity O(n^2) in the worst case, making it less efficient for large arrays.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003eIn conclusion, the choice between recursive and iterative approaches to array flattening depends on the specific requirements and constraints of your project, including the expected input array size and depth. While the recursive method is concise and elegant, the iterative method provides a robust alternative for handling large and deeply nested arrays without the risk of stack overflow.\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 10,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/UV9Lp-3uwwg?si=sIkEur5qGudwyPgh",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

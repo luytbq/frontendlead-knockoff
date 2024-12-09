@@ -1,0 +1,146 @@
+{
+    "type": "coding",
+    "id": "flatten-nested-objects-with-prefixes-javascript",
+    "title": "54. Flatten III",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "flatten-nested-objects-with-prefixes-javascript",
+    "problemStatement": "\u003ch2\u003eFlatten with Prefix\u003c/h2\u003e\n\u003cp\u003eYou are tasked with creating a function, \u003ccode\u003eflattenWithPrefix\u003c/code\u003e, that flattens a nested object. The challenge lies in ensuring that as the object is flattened, the keys in the resulting object are prefixed with their parent keys, joined by periods (\u0026#8216;.\u0026#8217;). This means that for every level of nesting within the original object, its key is concatenated with its parent key(s), creating a clear hierarchical representation of the original nested structure in the flattened object.\u003c/p\u003e\n\u003cp\u003eThis problem presents a common scenario in data manipulation, where nested structures need to be simplified for easier processing or storage, while still retaining a trace of their original hierarchical organization. Such a function can be particularly useful when dealing with configurations, translations, or any data that is naturally hierarchical but needs to be flattened for practical reasons.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eExample Usage:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003eInput: { a: { b: { c: 1 }, d: 2 } }\r\nOutput: { \"a.b.c\": 1, \"a.d\": 2 }\r\n\r\nInput: { x: { y: 10, z: { w: 20 } } }\r\nOutput: { \"x.y\": 10, \"x.z.w\": 20 }\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eIn these examples, notice how each key in the output object is a string that represents the path to the corresponding value in the input object. The function essentially transforms the nested object into a \u0026#8216;flat\u0026#8217; object where each key-value pair is accessible at the top level, with keys indicating the original nested structure.\u003c/p\u003e\n\u003cp\u003eYour implementation of \u003ccode\u003eflattenWithPrefix\u003c/code\u003e should work for objects of arbitrary depth and complexity, handling all the quirks of object iteration in JavaScript, such as inherited properties. The focus is not just on achieving the task but on writing clean, efficient, and maintainable code that could be integrated into larger codebases.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should flatten a simple nested object with prefixes",
+            "test": "it('should flatten a simple nested object with prefixes', (done) =\u003e {\r\n    const input = { a: { b: { c: 1 }, d: 2 } };\r\n    const expected = { \"a.b.c\": 1, \"a.d\": 2 };\r\n    const result = flattenWithPrefix(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should handle an empty object",
+            "test": "it('should handle an empty object', (done) =\u003e {\r\n    const input = {};\r\n    const expected = {};\r\n    const result = flattenWithPrefix(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should not modify the original object",
+            "test": "it('should not modify the original object', (done) =\u003e {\r\n    const input = { x: { y: 10, z: { w: 20 } } };\r\n    const original = JSON.parse(JSON.stringify(input)); // Deep copy to compare after flattening\r\n    flattenWithPrefix(input);\r\n    expect(input).to.deep.equal(original);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should handle nested objects with array values",
+            "test": "it('should handle nested objects with array values', (done) =\u003e {\r\n    const input = { a: { b: [1, 2, 3] } };\r\n    const expected = { \"a.b\": [1, 2, 3] };\r\n    const result = flattenWithPrefix(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should work with deep nesting",
+            "test": "it('should work with deep nesting', (done) =\u003e {\r\n    const input = { a: { b: { c: { d: { e: 1 } } } } };\r\n    const expected = { \"a.b.c.d.e\": 1 };\r\n    const result = flattenWithPrefix(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The input object may contain nested objects up to an arbitrary depth"
+        },
+        {
+            "constraint": "The keys in the input object will be strings. The values can be of any type, but the function should only process objects further (non-object values should be assigned directly to the resulting flattened keys)."
+        },
+        {
+            "constraint": "The input object can be empty, in which case the function should return an empty object."
+        },
+        {
+            "constraint": "Circular references in the input object are not expected and do not need to be handled by the solution."
+        },
+        {
+            "constraint": "The function should not modify the original input object; it should produce and return a new object."
+        },
+        {
+            "constraint": "Array handling is not specified, so arrays can either be treated as objects and flattened according to their keys or treated as values and not flattened."
+        },
+        {
+            "constraint": "The function should be efficient in terms of space and time, ideally achieving a linear time complexity with respect to the total number of keys and values in the input object."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function flattenWithPrefix(obj, prefix = '') {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default flattenWithPrefix;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// Define the main function to flatten nested objects with prefixes\r\nfunction flattenWithPrefix(obj, prefix = '') {\r\n  // Initialize an empty object to accumulate the results\r\n  let result = {};\r\n\r\n  // Iterate through each key-value pair in the input object\r\n  for (const key in obj) {\r\n    // Construct the new key by appending the current key to the prefix, separated by a period\r\n    const newKey = prefix ? `${prefix}.${key}` : key;\r\n    // Retrieve the value associated with the key\r\n    const value = obj[key];\r\n\r\n    // Check if the value is an object and not an array (to handle objects only)\r\n    if (typeof value === 'object' \u0026\u0026 !Array.isArray(value)) {\r\n      // Recursively call flattenWithPrefix for nested objects with the updated prefix\r\n      Object.assign(result, flattenWithPrefix(value, newKey));\r\n    } else {\r\n      // For non-object values, assign them directly to the result object with the newKey\r\n      result[newKey] = value;\r\n    }\r\n  }\r\n\r\n  // Return the accumulated result object containing the flattened keys and values\r\n  return result;\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe \u003ccode\u003eflattenWithPrefix\u003c/code\u003e function provides an elegant solution to convert a nested object into a flattened structure, where each key represents a unique path to its value, prefixed by its parent keys. This detailed explanation breaks down the function\u0026#8217;s operation, its rationale, and computational efficiency.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eFunction Overview\u003c/h2\u003e\n\u003cp\u003eThe function tackles the challenge of flattening nested objects while preserving the hierarchy through prefixed keys. It accepts two parameters:\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003e\u003ccode\u003eobj\u003c/code\u003e: The target nested object.\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003eprefix\u003c/code\u003e: Accumulates the hierarchical keys, defaulting to an empty string.\u003c/li\u003e\n\u003c/ol\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eFlattening Mechanics\u003c/h2\u003e\n\u003cp\u003eThrough iteration, the function constructs new keys for the flattened object by appending the current key to the prefix, ensuring a unique identifier for each value\u0026#8217;s original nested location.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eRecursive Nesting Handling\u003c/h2\u003e\n\u003cp\u003eFor nested objects, \u003ccode\u003eflattenWithPrefix\u003c/code\u003e recursively invokes itself, accumulating the key path in the prefix and diving deeper into the nesting levels. This recursion is key to navigating complex structures and ensuring all values are correctly flattened.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eEfficiency Analysis\u003c/h2\u003e\n\u003cp\u003eThe function\u0026#8217;s time complexity generally aligns with O(n), where n represents the total key-value pairs across all nesting levels. However, the exact efficiency can vary with the object\u0026#8217;s depth and structure. Space complexity also stands at O(n), factoring in the resultant object and recursion stack overhead.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Application\u003c/h2\u003e\n\u003cp\u003eGiven an input like \u003ccode\u003e{ a: { b: { c: 1 }, d: 2 } }\u003c/code\u003e, the function outputs \u003ccode\u003e{ \"a.b.c\": 1, \"a.d\": 2 }\u003c/code\u003e, demonstrating its capability to flatten and preserve structural hierarchy.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThis solution not only addresses the immediate problem of flattening objects but also enhances understanding of recursion, object manipulation, and JavaScript\u0026#8217;s nuanced handling of complex structures. It serves as a practical tool and a learning cornerstone for advanced JavaScript programming.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Objects"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Robinhood",
+        "Stripe",
+        "Snap"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Nested Objects with Prefixes in JavaScript - FrontendLead",
+        "pageDescription": "Discover how to flatten deeply nested objects in JavaScript, appending parent keys as prefixes for a clear, hierarchical structure. Our guide provides a step-by-step approach to mastering this common data manipulation challenge, enhancing your JavaScript skills.",
+        "pageURL": "flatten-nested-objects-with-prefixes-javascript",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Nested Objects with Prefixes in JavaScript  FrontendLead in Javascript?",
+            "text": "\u003ch2\u003eFlatten with Prefix\u003c/h2\u003e\n\u003cp\u003eYou are tasked with creating a function, \u003ccode\u003eflattenWithPrefix\u003c/code\u003e, that flattens a nested object. The challenge lies in ensuring that as the object is flattened, ",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe \u003ccode\u003eflattenWithPrefix\u003c/code\u003e function provides an elegant solution to convert a nested object into a flattened structure, where each key represents a unique path to its va",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+t": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

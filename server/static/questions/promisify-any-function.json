@@ -1,0 +1,142 @@
+{
+    "type": "coding",
+    "id": "promisify-any-function",
+    "title": "25. Promisify Any Function",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "promisify-any-function",
+    "problemStatement": "\u003csection\u003eYour task is to implement the \u003ccode\u003epromisify\u003c/code\u003e function. This function should:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eAccept a callback-based function as its only argument.\u003c/li\u003e\n\u003cli\u003eReturn a new function that, when called, returns a Promise.\u003c/li\u003e\n\u003cli\u003eEnsure that if the original function calls the callback with an error, the returned Promise is rejected with that error.\u003c/li\u003e\n\u003cli\u003eResolve the returned Promise with the result if the original function completes successfully.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThis transformation will allow developers to invoke legacy callback-based functions in a more modern, cleaner, and more intuitive way, improving code readability and error handling.\u003c/p\u003e\n\u003c/section\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should correctly resolve a promise for a successful callback execution",
+            "test": "it('should correctly resolve a promise for a successful callback execution', (done) =\u003e {\r\n    // Mock callback function that simulates successful asynchronous operation\r\n    const mockAsyncFunction = (callback) =\u003e {\r\n      setTimeout(() =\u003e {\r\n        callback(null, 'Success');\r\n      }, 100);\r\n    };\r\n\r\n    // Promisify the mock function\r\n    const promisifiedFunction = promisify(mockAsyncFunction);\r\n\r\n    // Call the promisified function and check the resolved value\r\n    promisifiedFunction().then(result =\u003e {\r\n      expect(result).to.equal('Success');\r\n      done();\r\n    }).catch(done);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should correctly reject a promise for a failed callback execution",
+            "test": "it('should correctly reject a promise for a failed callback execution', (done) =\u003e {\r\n    // Mock callback function that simulates an error in asynchronous operation\r\n    const mockAsyncFunction = (callback) =\u003e {\r\n      setTimeout(() =\u003e {\r\n        callback(new Error('Failure'));\r\n      }, 100);\r\n    };\r\n\r\n    // Promisify the mock function\r\n    const promisifiedFunction = promisify(mockAsyncFunction);\r\n\r\n    // Call the promisified function and check for rejection\r\n    promisifiedFunction().then(() =\u003e {\r\n      done(new Error('Expected method to reject.'));\r\n    }).catch(error =\u003e {\r\n      expect(error).to.be.an('error');\r\n      expect(error.message).to.equal('Failure');\r\n      done();\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Callback Convention: The original callback function must follow the Node.js callback convention, accepting an error as the first argument and the result as the second argument. The promisify function should only be used with functions adhering to this convention."
+        },
+        {
+            "constraint": "Error Handling: The returned promise should be rejected with the error provided by the callback function if the error argument is not null. This ensures proper error handling in the promise-based workflow."
+        },
+        {
+            "constraint": "Result Resolution: If the callback function calls the callback with a null error, indicating successful execution, the promise should be resolved with the result value provided as the second argument to the callback."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function promisify(callback) {\r\n  // Write your code her\r\n}\r\n\r\n// Do not edit below this line\r\nexport default promisify",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function promisify(callback) {\r\n  // The promisify function takes a callback-based function as input\r\n  return function(...args) {\r\n    // It returns a new function that, when called, returns a Promise\r\n    return new Promise((resolve, reject) =\u003e {\r\n      // This callback handles the asynchronous result of the original function\r\n      function customCallback(error, result) {\r\n        if (error) {\r\n          // If the original function calls the callback with an error, reject the Promise\r\n          reject(error);\r\n        } else {\r\n          // If there's no error, resolve the Promise with the result\r\n          resolve(result);\r\n        }\r\n      }\r\n\r\n      // Invoke the original function with the provided arguments and the custom callback\r\n      // The 'callback.call(this, ...args, customCallback)' ensures that 'this' context is preserved\r\n      // and the customCallback is passed as the last argument to the original function\r\n      callback.call(this, ...args, customCallback);\r\n    });\r\n  }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eIntroduction to Promisification\u003c/h2\u003e\n\u003cp\u003ePromisification is a technique in JavaScript to convert traditional callback-based asynchronous functions into promise-based ones. This approach harnesses the power of Promises, offering a cleaner, more manageable way to handle asynchronous operations and their outcomes.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHow Promisify Works\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003epromisify\u003c/code\u003e function transforms a function that uses the callback pattern into one that returns a Promise. This adaptation allows developers to use modern async/await syntax or Promise chains, improving code readability and error handling.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eImplementing Promisify\u003c/h2\u003e\n\u003cp\u003eThe core of the \u003ccode\u003epromisify\u003c/code\u003e function involves returning a new function that, when executed, returns a Promise. This Promise encapsulates the original function\u0026#8217;s execution, resolving with the function\u0026#8217;s result or rejecting with an error, based on the callback\u0026#8217;s outcome.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Application\u003c/h2\u003e\n\u003cp\u003eConverting callback-based functions to promise-based ones is particularly useful when working with older JavaScript APIs or Node.js modules that do not natively support Promises. This method allows developers to integrate such functions into modern, promise-friendly codebases seamlessly.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eExample Usage\u003c/h2\u003e\n\u003cpre\u003e\u003ccode\u003e// Example of a callback-based functionfunction loadData(callback) {    // Simulate a data loading operation    setTimeout(() =\u0026gt; {        callback(null, 'Data loaded successfully');    }, 1000);}// Using promisify to convert the functionconst loadDataPromise = promisify(loadData);// Utilizing the promisified functionloadDataPromise().then(data =\u0026gt; {    console.log(data);}).catch(error =\u0026gt; {    console.error(error);});        \u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis example demonstrates converting a simulated data loading function into a promise-based one, enabling the use of then/catch for handling the asynchronous result.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThrough promisification, JavaScript developers can bridge the gap between callback-based asynchronous functions and the Promise-centric programming model prevalent in modern JavaScript. This technique enhances code maintainability, readability, and compatibility with modern JavaScript features.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "25. Promisify Any Function - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Unlock the power of asynchronous JavaScript by learning how to convert callback-based functions into promises with promisification. Simplify your code and enhance error handling with our comprehensive guide.",
+        "pageURL": "promisify-any-function",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Promisify Any Function  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003csection\u003eYour task is to implement the \u003ccode\u003epromisify\u003c/code\u003e function. This function should:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eAccept a callback-based function as its only argument.\u003c/li\u003e\n\u003cli\u003eReturn a new function that, w",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eIntroduction to Promisification\u003c/h2\u003e\n\u003cp\u003ePromisification is a technique in JavaScript to convert traditional callback-based asynchronous functions into promise-based ones. This ",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eComparison and Complexity\u003c/h2\u003e\n\u003cp\u003eBoth methods effectively flatten nested arrays, but their efficiency can vary significantly based on the input data\u0026#8217;s structure. The recursive approach is elegant and easier to understand but can suffer from stack overflow issues with very deep or large arrays. Its complexity is generally O(n) but can be worse depending on the recursion\u0026#8217;s depth and the function call overhead.\u003c/p\u003e\n\u003cp\u003eOn the other hand, the iterative approach avoids potential stack overflow issues and provides a more controlled execution flow. However, due to the unshift operation\u0026#8217;s O(n) complexity in each step, this method can result in quadratic time complexity O(n^2) in the worst case, making it less efficient for large arrays.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003eIn conclusion, the choice between recursive and iterative approaches to array flattening depends on the specific requirements and constraints of your project, including the expected input array size and depth. While the recursive method is concise and elegant, the iterative method provides a robust alternative for handling large and deeply nested arrays without the risk of stack overflow.\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 10,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/UV9Lp-3uwwg?si=sIkEur5qGudwyPgh",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

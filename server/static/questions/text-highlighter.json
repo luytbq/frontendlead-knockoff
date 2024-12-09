@@ -1,0 +1,121 @@
+{
+    "type": "coding",
+    "id": "text-highlighter",
+    "title": "28. Text Highlighter",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "text-highlighter",
+    "problemStatement": "\u003cp\u003eGiven an HTML element and a specific word to look for, the task is to write a function that highlights the occurrences of that word within the text content of the element. The function should encapsulate the found word with a \u003ccode\u003espan\u003c/code\u003e element having a specified background color to visually emphasize the highlighted text.\u003c/p\u003e\n\u003cp\u003eConsider the following HTML structure as an input example:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\u0026lt;div id=\"hello\"\u0026gt; I have some text \r\n  \u0026lt;p\u0026gt;Which has some subtext \u0026lt;a href=\"#\"\u0026gt;that has a link\u0026lt;/a\u0026gt;\u0026lt;/p\u0026gt; \r\n  \u0026lt;p\u0026gt;And a sibling\u0026lt;/p\u0026gt; \r\n  Finally some random text\r\n\u0026lt;/div\u0026gt;\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe objective is to highlight a word, for instance, \u0026#8220;Finally\u0026#8221;, within the \u003ccode\u003ediv\u003c/code\u003e element with the id \u003ccode\u003ehello\u003c/code\u003e. The word \u0026#8220;Finally\u0026#8221; should be wrapped in a \u003ccode\u003espan\u003c/code\u003e element with a background color, for example, red, to visually differentiate it from the rest of the text.\u003c/p\u003e\n\u003cp\u003eThis challenge requires manipulating the DOM to dynamically change the HTML content based on the text search criteria. The solution should ensure that only text content is affected without altering the inherent structure of the HTML or affecting nested elements such as \u003ccode\u003e\u0026lt;p\u0026gt;\u003c/code\u003e and \u003ccode\u003e\u0026lt;a\u0026gt;\u003c/code\u003e.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should highlight a single occurrence of the word",
+            "test": "it('should highlight a single occurrence of the word', () =\u003e {\r\n    document.body.innerHTML = `\u003cdiv id=\"test\"\u003eSample text here\u003c/div\u003e`;\r\n    const element = document.getElementById('test');\r\n    highlightText(element, 'Sample', 'yellow');\r\n    expect(element.innerHTML).to.include('\u003cspan style=\"background-color: yellow\"\u003eSample\u003c/span\u003e');\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should highlight multiple occurrences of the word",
+            "test": "it('should highlight multiple occurrences of the word', () =\u003e {\r\n    document.body.innerHTML = `\u003cdiv id=\"test\"\u003eWord here and another Word there.\u003c/div\u003e`;\r\n    const element = document.getElementById('test');\r\n    highlightText(element, 'Word', 'yellow');\r\n    const occurrences = element.innerHTML.match(/\u003cspan style=\"background-color: yellow\"\u003eWord\u003c\\/span\u003e/g) || [];\r\n    expect(occurrences.length).to.equal(2);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should not modify the HTML structure for nested elements",
+            "test": "it('should not modify the HTML structure for nested elements', () =\u003e {\r\n    document.body.innerHTML = `\u003cdiv id=\"test\"\u003eCheck \u003ca href=\"#\"\u003ethis Word\u003c/a\u003e and that Word.\u003c/div\u003e`;\r\n    const element = document.getElementById('test');\r\n    highlightText(element, 'Word', 'yellow');\r\n    expect(element.innerHTML).to.include('\u003ca href=\"#\"\u003ethis \u003cspan style=\"background-color: yellow\"\u003eWord\u003c/span\u003e\u003c/a\u003e');\r\n    expect(element.innerHTML).to.include('and that \u003cspan style=\"background-color: yellow\"\u003eWord\u003c/span\u003e');\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should not highlight part of a word",
+            "test": "it('should not highlight part of a word', () =\u003e {\r\n    document.body.innerHTML = `\u003cdiv id=\"test\"\u003eHighlight but not high or light.\u003c/div\u003e`;\r\n    const element = document.getElementById('test');\r\n    highlightText(element, 'Highlight', 'yellow');\r\n    expect(element.innerHTML).to.include('\u003cspan style=\"background-color: yellow\"\u003eHighlight\u003c/span\u003e but not high or light.');\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The function should only consider text content for highlighting, without altering the HTML structure or attributes of the element and its child elements."
+        },
+        {
+            "constraint": "The search and highlight process should be case-sensitive, matching the exact case of the provided word."
+        },
+        {
+            "constraint": "The function must handle words located within nested elements without breaking the HTML syntax or nesting."
+        },
+        {
+            "constraint": "Highlighting should not affect interactive elements like links, buttons, or inputs within the target element, ensuring that their functionality remains intact."
+        },
+        {
+            "constraint": "The specified background color for highlighting should be applied only to the text content of the found word, without changing other text properties such as font size or style."
+        },
+        {
+            "constraint": "The solution should be efficient in terms of DOM manipulation, minimizing reflows and repaints to maintain performance, especially for elements with a large amount of text or complex structures."
+        },
+        {
+            "constraint": "If the specified word is not found within the element, the function should leave the HTML content unchanged."
+        },
+        {
+            "constraint": "The word to be highlighted should be a whole word, not part of another word. For example, highlighting \"text\" should not affect \"subtext\"."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "// Heads up, template literals are not yet supported.\r\nfunction highlightText(element, wordLookup, backgroundColor) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default highlightText;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function highlightText(element, wordLookup, backgroundColor) {\r\n  // Create a regular expression object from the wordLookup string to identify all occurrences within the element's content.\r\n  // The 'g' flag is used for global search, meaning it will find all matches rather than stopping after the first match.\r\n  const wordRegex = new RegExp(wordLookup, 'g');\r\n\r\n  // Access the innerHTML of the element. This property gets or sets the HTML or XML markup contained within the element.\r\n  // Use the replace method of the string object, which searches a string for a specified value (or a regex pattern) and returns a new string with the value(s) replaced.\r\n  element.innerHTML = element.innerHTML.replace(wordRegex, (word) =\u003e {\r\n    // The callback function provided to replace is executed for each match found.\r\n    // It returns a new string (HTML in this case) that will replace the current match in the final result.\r\n    // Here, each found word is wrapped in a span element with a style attribute that sets the background color to the specified value.\r\n    // This effectively highlights each occurrence of the word within the element.\r\n    return `\u003cspan style=\"background-color: ${backgroundColor}\"\u003e${word}\u003c/span\u003e`;\r\n  });\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe \u003ccode\u003ehighlightText\u003c/code\u003e function is designed to dynamically highlight occurrences of a specified word within an HTML element\u0026#8217;s content. This is achieved by wrapping the target word in a \u003ccode\u003espan\u003c/code\u003e element styled with a background color, thus visually emphasizing the highlighted text.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eFunction Parameters\u003c/h2\u003e\n\u003cp\u003eThe function accepts three parameters:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eelement:\u003c/strong\u003e The target HTML element within which text occurrences will be highlighted.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003ewordLookup:\u003c/strong\u003e The word to be searched for and highlighted within the element\u0026#8217;s content.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003ebackgroundColor:\u003c/strong\u003e The background color applied to the \u003ccode\u003espan\u003c/code\u003e element that wraps the highlighted word, providing visual emphasis.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eInner Workings\u003c/h2\u003e\n\u003cp\u003eThe core of the function operates by accessing the \u003ccode\u003einnerHTML\u003c/code\u003e property of the provided element. This property holds the HTML content as a string, allowing for string manipulation techniques to be applied:\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003eThe function uses the \u003ccode\u003ereplace\u003c/code\u003e method of the string object to search for occurrences of \u003ccode\u003ewordLookup\u003c/code\u003e within the element\u0026#8217;s content.\u003c/li\u003e\n\u003cli\u003eWhen a match is found, it is replaced with a \u003ccode\u003espan\u003c/code\u003e element. This element contains the matched word and is styled with the specified \u003ccode\u003ebackgroundColor\u003c/code\u003e.\u003c/li\u003e\n\u003cli\u003eThe replacement string is constructed dynamically, ensuring that the original word is preserved within the newly created \u003ccode\u003espan\u003c/code\u003e element.\u003c/li\u003e\n\u003c/ol\u003e\n\u003cp\u003eThis approach allows for real-time updating of the element\u0026#8217;s content, instantly reflecting the highlighted words within the webpage.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConsiderations and Limitations\u003c/h2\u003e\n\u003cp\u003eWhile the \u003ccode\u003ehighlightText\u003c/code\u003e function provides a straightforward solution for text highlighting, there are important considerations to bear in mind:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eThe function directly modifies the \u003ccode\u003einnerHTML\u003c/code\u003e, which can potentially disrupt the element\u0026#8217;s event listeners or nested interactive elements.\u003c/li\u003e\n\u003cli\u003eWithout additional logic, the function might not differentiate between whole words and substrings, potentially leading to unintended highlighting within longer words.\u003c/li\u003e\n\u003cli\u003eCare must be taken to escape any special characters in \u003ccode\u003ewordLookup\u003c/code\u003e that could interfere with the regular expression used in the \u003ccode\u003ereplace\u003c/code\u003e method.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003cp\u003eIn conclusion, the \u003ccode\u003ehighlightText\u003c/code\u003e function serves as an effective method for dynamically highlighting text within HTML content. By wrapping target words in \u003ccode\u003espan\u003c/code\u003e elements with a distinct background color, it provides a visual emphasis that can enhance readability or draw attention to specific terms.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "DOM API"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/3Isrio8vIP8",
+    "company": [
+        "Google"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Highlight Text with JavaScript - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Learn how to dynamically highlight text within HTML elements using JavaScript. Enhance user experience on your webpages by visually emphasizing specific words or phrases with custom background colors.",
+        "pageURL": "text-highlighter",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Highlight Text with JavaScript  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eGiven an HTML element and a specific word to look for, the task is to write a function that highlights the occurrences of that word within the text content of the element. The function should encap",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe \u003ccode\u003ehighlightText\u003c/code\u003e function is designed to dynamically highlight occurrences of a specified word within an HTML element\u0026#8217;s content. This is achieved by wrapping",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

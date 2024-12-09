@@ -1,0 +1,97 @@
+{
+    "type": "coding",
+    "id": "event-logger-i",
+    "title": "50. Event Logger I",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "event-logger-i",
+    "problemStatement": "\u003cp\u003eYou are tasked with developing a part of an Event Logger system, specifically focusing on the feature that sends requests and logs events with a configurable delay. The goal is to simulate the behavior of sending requests to a server and logging the events, including the time elapsed since the initialization of the logger. The system should allow for a delay in logging to mimic network latency or processing time, and it should also provide functionality to abort a logging request.\u003c/p\u003e\n\u003cp\u003eThe requirements for this part of the Event Logger system are as follows:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eInitialize a start time that serves as a reference point for calculating the elapsed time for each event logged.\u003c/li\u003e\n\u003cli\u003eProvide a function to set a delay for the logging of events, simulating network latency or processing time.\u003c/li\u003e\n\u003cli\u003eInclude a function to reset the delay to zero, effectively removing any simulated latency.\u003c/li\u003e\n\u003cli\u003eImplement a function to send logging requests. Each request should log the event with the specified delay, and include the elapsed time since the logger\u0026#8217;s initialization.\u003c/li\u003e\n\u003cli\u003eEquip each logging request with the capability to be aborted, in which case the event should be logged immediately with an \u0026#8220;[ABORTED]\u0026#8221; tag.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eExample usage:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e// Initialize the logger\r\n_initializeStartTime();\r\n\r\n// Set a simulated delay of 500ms for logging events\r\n_setFetchResponseDelay(500);\r\n\r\n// Send a logging request\r\nconst logRequest = sendRequest({ event: 'UserLogin', details: 'User logged in successfully' });\r\n\r\n// Optionally, the logging request can be aborted\r\n// logRequest.abort();\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe expected output should include the logged events with their respective elapsed times and indicate whether they were aborted.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should log aborted requests immediately",
+            "test": "it('should log aborted requests immediately', (done) =\u003e {\r\n    let originalConsoleLog = console.log;\r\n    let loggedMessages = [];\r\n    console.log = (message, payload) =\u003e {\r\n      loggedMessages.push({ message, payload });\r\n    };\r\n\r\n    let logger = new EventLogger();\r\n    logger.setFetchResponseDelay(1000); // Set a long delay\r\n\r\n    const request = logger.sendRequest({ event: 'AbortEvent', details: 'Testing abort' });\r\n    request.abort();\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(loggedMessages.some(log =\u003e log.message.includes('[ABORTED]'))).to.be.true;\r\n      console.log = originalConsoleLog; // Reset console.log to its original state\r\n      done();\r\n    }, 150); // Check immediately after aborting\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Sequential Logging: Each request should be logged in the order it was initiated, even with the introduced delay. The logging mechanism must ensure that the sequence is preserved."
+        },
+        {
+            "constraint": "Accuracy of Timestamps: The logged timestamps should accurately reflect the elapsed time since the initialization, accounting for any introduced delays. This requires precise timing calculations."
+        },
+        {
+            "constraint": "Simulated Delay Handling: The system should correctly handle the simulated delay (fetchTimeout) for each request, ensuring that it affects only the logging time and not the order or execution of the requests themselves."
+        },
+        {
+            "constraint": "Abort Functionality: Each request returned by sendRequest should include an abort method that, when called, immediately logs the request as aborted. The implementation must ensure that the abort action is responsive and reflects immediately in the log."
+        },
+        {
+            "constraint": "Error Handling: The system should robustly handle any errors that occur during request initiation or processing. Errors should be logged with an appropriate message, indicating the nature and timing of the error."
+        },
+        {
+            "constraint": "Performance: The logging system should be optimized for performance, minimizing overhead and ensuring that the logging process does not significantly impact the application's overall performance."
+        },
+        {
+            "constraint": "Scalability: The implementation should be scalable, capable of handling a large number of requests without degradation in performance or accuracy."
+        },
+        {
+            "constraint": "Modularity and Reusability: The code should be modular, allowing for easy maintenance and updates. Functions should be designed for reusability within other parts of the application if needed."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "const EventLogger = {\r\n  // Initialize the start time\r\n  initializeStartTime: function() {\r\n    // Your code to initialize start time\r\n  },\r\n\r\n  // Set the fetch response delay\r\n  setFetchResponseDelay: function(timeout = 0) {\r\n    // Your code to set fetch response delay\r\n  },\r\n\r\n  // Reset the fetch response delay\r\n  resetFetchResponseDelay: function() {\r\n    // Your code to reset fetch response delay\r\n  },\r\n\r\n  // Send a request\r\n  sendRequest: function(body) {\r\n    // Your code to send a request and log with delay\r\n  }\r\n};\r\n\r\n// Do not edit below this line\r\nexport default EventLogger;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "class EventLogger {\r\n  constructor() {\r\n    this.startTime = Date.now(); // Record the initialization time of the logger\r\n    this.fetchTimeout = 0; // Initialize the fetch response delay to 0\r\n    this.fetchPromises = []; // Array to keep track of fetch promises for potential abortion\r\n  }\r\n\r\n  // Function to reinitialize the start time\r\n  initializeStartTime() {\r\n    this.startTime = Date.now(); // Update the start time to the current time\r\n  }\r\n\r\n  // Function to set a delay for fetch responses, simulating network latency\r\n  setFetchResponseDelay(timeout = 0) {\r\n    this.fetchTimeout = timeout; // Set the specified timeout as the fetch response delay\r\n  }\r\n\r\n  // Function to reset the fetch response delay to 0\r\n  resetFetchResponseDelay() {\r\n    this.fetchTimeout = 0; // Reset the fetchTimeout to 0\r\n  }\r\n\r\n  // Function to send a request and log the event with a delay\r\n  sendRequest(body) {\r\n    const currentPromiseIndex = this.fetchPromises.length; // Get the index for the current promise\r\n    const logPayload = JSON.stringify(body, null, 2); // Convert the request body to a string for logging\r\n    \r\n    // Create a new promise that resolves after the specified fetchTimeout\r\n    const fetchPromise = new Promise((resolve) =\u003e {\r\n      // Set a timeout for the fetch response delay\r\n      const fetchTimeoutId = setTimeout(() =\u003e {\r\n        console.log(`[${Date.now() - this.startTime}ms]\\n`, logPayload); // Log the payload with the elapsed time\r\n        resolve(); // Resolve the promise\r\n      }, this.fetchTimeout);\r\n\r\n      // Store the timeout ID and payload for potential abortion\r\n      this.fetchPromises[currentPromiseIndex] = { fetchTimeoutId, logPayload };\r\n    });\r\n\r\n    // Add an \"abort\" method to the promise for aborting the request\r\n    fetchPromise.abort = () =\u003e {\r\n      if (this.fetchPromises[currentPromiseIndex]) {\r\n        // Clear the timeout to prevent the fetch promise from resolving\r\n        clearTimeout(this.fetchPromises[currentPromiseIndex].fetchTimeoutId);\r\n        // Log the aborted request with the elapsed time\r\n        console.log(`[${Date.now() - this.startTime}ms][ABORTED]\\n`, this.fetchPromises[currentPromiseIndex].logPayload);\r\n        // Remove the aborted promise from the array to prevent memory leaks\r\n        delete this.fetchPromises[currentPromiseIndex];\r\n      }\r\n    };\r\n\r\n    return fetchPromise; // Return the fetch promise with the added abort method\r\n  }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eEvent Logger I: Asynchronous Request Queue with Delay and Abort Functionality\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eThe Event Logger I is designed to handle asynchronous logging requests with precision, allowing for controlled delays and the ability to abort requests. This functionality is essential in scenarios where logging order and timing are crucial, such as in performance monitoring and debugging processes.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eInitializing the Logger\u003c/h2\u003e\n\u003cp\u003eThe logger\u0026#8217;s start time is initialized using \u003ccode\u003einitializeStartTime\u003c/code\u003e, establishing a reference point for all subsequent logs. This timestamp is crucial for calculating the elapsed time for each logged event, providing clear insights into event timing relative to the application\u0026#8217;s runtime.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eSimulating Network Latency\u003c/h2\u003e\n\u003cp\u003eNetwork conditions can introduce variability in request timing. The \u003ccode\u003esetFetchResponseDelay\u003c/code\u003e function allows developers to simulate such conditions by introducing a configurable delay in the logging process, enhancing the testing and debugging capabilities of the logger.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eSequential Logging with Delays\u003c/h2\u003e\n\u003cp\u003eRequests are logged sequentially to preserve the order of events. The \u003ccode\u003esendRequest\u003c/code\u003e function queues each logging request, ensuring that it\u0026#8217;s executed only after the specified delay. This sequential processing is vital for maintaining the integrity of the event timeline.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eAbort Functionality\u003c/h2\u003e\n\u003cp\u003eIn certain situations, an event may become irrelevant before it\u0026#8217;s logged. The \u003ccode\u003esendRequest\u003c/code\u003e function returns a promise with an attached \u003ccode\u003eabort\u003c/code\u003e method, allowing for the immediate cessation of the logging process. This feature is particularly useful for canceling events that are no longer needed, thereby keeping the logs concise and relevant.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eComprehensive Test Cases\u003c/h2\u003e\n\u003cp\u003eThe provided test cases ensure the logger\u0026#8217;s functionality performs as expected under various conditions. Testing includes verifying sequential logging with delays, the accuracy of elapsed time calculations, and the effectiveness of the abort mechanism.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe Event Logger I is a versatile tool for developers, offering detailed insights into application events with the flexibility to simulate different conditions and control logging in real-time. Its design emphasizes precision, control, and adaptability, making it a valuable asset in application development and maintenance.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Robinhood"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "50. Event Logger I - Robinhood Frontend Interview Question - FrontendLead",
+        "pageDescription": "Dive deep into advanced event logging techniques in JavaScript. Learn how to implement an Event Logger that supports sequential logging with custom delays and abort functionality, perfect for precise monitoring and debugging.",
+        "pageURL": "event-logger-i",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Event Logger I  Robinhood Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eYou are tasked with developing a part of an Event Logger system, specifically focusing on the feature that sends requests and logs events with a configurable delay. The goal is to simulate the beha",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eEvent Logger I: Asynchronous Request Queue with Delay and Abort Functionality\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eThe Event Logger I is designed to handle asynchronous logging requests with precision, all",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

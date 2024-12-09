@@ -1,0 +1,153 @@
+{
+    "type": "coding",
+    "id": "request-animation-frame",
+    "title": "69. Animate Element To The Right",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "request-animation-frame",
+    "problemStatement": "\u003cp\u003eWrite a function that animates an HTML element to move towards the right by a specified distance over a given duration. The function should utilize the \u003ccode\u003erequestAnimationFrame\u003c/code\u003e method to ensure smooth animation.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eExample:\u003c/strong\u003e\u003c/p\u003e\n\u003cp\u003eInput:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003ccode\u003eelementID\u003c/code\u003e: \u0026#8216;hello\u0026#8217;\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003edistance\u003c/code\u003e: 400\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003eduration\u003c/code\u003e: 1000\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eExpected Output:\u003c/p\u003e\n\u003cp\u003eThe element with the ID \u0026#8216;hello\u0026#8217; should gradually move 400 pixels to the right over a duration of 1000 milliseconds.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should move the element to the right by the specified distance",
+            "test": "it('should move the element to the right by the specified distance', (done) =\u003e {\r\n    const mockElement = document.createElement('div');\r\n    mockElement.id = 'testElement';\r\n    document.body.appendChild(mockElement);\r\n\r\n    // Call the animateRight function with the mock element, distance, and duration\r\n    animateRight('testElement', 100, 500);\r\n\r\n    // Wait for the animation to complete\r\n    setTimeout(() =\u003e {\r\n      // Check the final position of the element\r\n      const transformedValue = mockElement.style.transform;\r\n      expect(transformedValue).to.equal('translateX(100px)');\r\n      done();\r\n    }, 600); // Duration + buffer to ensure animation completes\r\n    document.body.innerHTML = '';\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should not throw an error if the element does not exist",
+            "test": "it('should not throw an error if the element does not exist', (done) =\u003e {\r\n    expect(() =\u003e animateRight('nonExistentElement', 100, 500)).to.not.throw();\r\n    done()\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should move the element to the right by the specified distance",
+            "test": "it('should move the element to the right by the specified distance', (done) =\u003e {\r\n    const mockElement = document.createElement('div');\r\n    mockElement.id = 'testElement';\r\n    document.body.appendChild(mockElement);\r\n\r\n    animateRight('testElement', 100, 500);\r\n\r\n    setTimeout(() =\u003e {\r\n      const transformedValue = mockElement.style.transform;\r\n      expect(transformedValue).to.equal('translateX(100px)');\r\n      document.body.removeChild(mockElement); // Clean up\r\n      done();\r\n    }, 600); // Increased buffer time\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Element Existence: The target element must exist in the DOM before the animation function is called. If the element with the specified elementID does not exist, the function should not attempt to animate and may optionally log an error or silently fail."
+        },
+        {
+            "constraint": "Positive Distance: The distance parameter should be a positive integer representing the number of pixels the element should move to the right. If a non-positive distance is provided, the function should either not perform any animation or handle it as an invalid input."
+        },
+        {
+            "constraint": "Non-negative Duration: The duration of the animation must be a non-negative integer, representing the time in milliseconds over which the animation occurs. A duration of 0 may be interpreted as an instant move to the final position, while a negative duration should be considered invalid."
+        },
+        {
+            "constraint": "Single Instance: Multiple calls to the animateRight function targeting the same element should not interfere with each other. If the element is already being animated, a subsequent call might queue, reset, or ignore the new animation request based on the desired behavior."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function animateRight(elementID, distance, duration) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default animateRight",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function animateRight(elementID, distance, duration) {\r\n    // Retrieve the element by its ID\r\n    const element = document.getElementById(elementID);\r\n\r\n    // Check if the element exists; log an error and exit the function if it does not\r\n    if (!element) {\r\n        console.error('Element not found');\r\n        return;\r\n    }\r\n\r\n    // Check the element's current position style; set it to 'relative' if it's not 'absolute', 'relative', or 'fixed'\r\n    // This is necessary to ensure that the transform property applied later has the desired effect\r\n    if (!['absolute', 'relative', 'fixed'].includes(getComputedStyle(element).position)) {\r\n        element.style.position = 'relative';\r\n    }\r\n\r\n    // Declare a variable to store the animation's start time\r\n    let startTime = null;\r\n\r\n    // Define the animation function, which will be called for each frame of the animation\r\n    function animate(timestamp) {\r\n        // Set the start time on the first frame\r\n        if (!startTime) startTime = timestamp;\r\n\r\n        // Calculate the elapsed time since the animation started\r\n        const runtime = timestamp - startTime;\r\n        // Calculate the progress of the animation as a fraction (between 0 and 1)\r\n        const progress = Math.min(runtime / duration, 1);\r\n\r\n        // Update the element's transform property to move it to the right, based on the progress\r\n        element.style.transform = `translateX(${progress * distance}px)`;\r\n\r\n        // Continue the animation until the specified duration has elapsed\r\n        if (runtime \u003c duration) {\r\n            requestAnimationFrame(animate);\r\n        }\r\n    }\r\n\r\n    // Start the animation by requesting the first animation frame\r\n    requestAnimationFrame(animate);\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eOverview\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eanimateRight\u003c/code\u003e function is designed to move an HTML element to the right by a specified distance over a given duration. It leverages the \u003ccode\u003erequestAnimationFrame\u003c/code\u003e method, which allows for smooth, efficient animations by letting the browser determine the optimal timing for frame updates.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eFunction Mechanics\u003c/h2\u003e\n\u003cp\u003eThe function starts by retrieving the target element using its ID. If the element is not found, the function exits without performing any animation, avoiding potential errors.\u003c/p\u003e\n\u003cp\u003eAnimation is achieved through a recursive function that updates the element\u0026#8217;s position at each frame. The \u003ccode\u003erequestAnimationFrame\u003c/code\u003e method is used to call this function repeatedly until the animation is complete.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eCalculating Position\u003c/h2\u003e\n\u003cp\u003eWithin each animation frame, the function calculates the current runtime and uses it to determine the element\u0026#8217;s progress towards its final position. This progress is a ratio of the elapsed time to the total duration of the animation.\u003c/p\u003e\n\u003cp\u003eThe element\u0026#8217;s new position is set by updating its \u003ccode\u003estyle.transform\u003c/code\u003e property, specifically using the \u003ccode\u003etranslateX\u003c/code\u003e function to move it horizontally.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eEnsuring Smooth Completion\u003c/h2\u003e\n\u003cp\u003eThe animation loop continues until the runtime exceeds the specified duration. At this point, the animation stops, and the element remains at its final position.\u003c/p\u003e\n\u003cp\u003eBy using \u003ccode\u003erequestAnimationFrame\u003c/code\u003e, the function ensures that the animation is smooth and synchronized with the browser\u0026#8217;s repaint cycle, providing an optimal user experience.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Usage\u003c/h2\u003e\n\u003cp\u003eThis function can be used to add dynamic, visually appealing effects to web pages, enhancing interactivity and user engagement. It\u0026#8217;s particularly useful for creating sliding menus, side panels, or any element that requires smooth, controlled movement.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/Ko9J4T8MY-M",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "69. Animate Element To The Right - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Learn how to create smooth, visually appealing animations for HTML elements using JavaScript and requestAnimationFrame. Perfect for interactive UIs, storytelling, and data visualization. Elevate your web design today.",
+        "pageURL": "request-animation-frame",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Animate Element To The Right  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function that animates an HTML element to move towards the right by a specified distance over a given duration. The function should utilize the \u003ccode\u003erequestAnimationFrame\u003c/code\u003e method to ",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eOverview\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eanimateRight\u003c/code\u003e function is designed to move an HTML element to the right by a specified distance over a given duration. It leverages the \u003ccode\u003er",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 10,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/UV9Lp-3uwwg?si=sIkEur5qGudwyPgh",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

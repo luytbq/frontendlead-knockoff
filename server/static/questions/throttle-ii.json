@@ -1,0 +1,114 @@
+{
+    "type": "coding",
+    "id": "throttle-ii",
+    "title": "29. Throttle II",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "throttle-ii",
+    "problemStatement": "\u003cp\u003eThis problem extends the concept of throttling function executions, introducing an improved version of the \u003ccode\u003ethrottle()\u003c/code\u003e function. The enhanced \u003ccode\u003ethrottle()\u003c/code\u003e function now accepts an additional third parameter: an options object. This object includes two boolean properties: \u003ccode\u003eleading\u003c/code\u003e and \u003ccode\u003etrailing\u003c/code\u003e. The \u003ccode\u003eleading\u003c/code\u003e property decides if the throttled function should be invoked at the start or after a delay, while the \u003ccode\u003etrailing\u003c/code\u003e property controls whether the function should be called after the delay concludes or right away.\u003c/p\u003e\n\u003cp\u003eThe primary objective is to design a throttling function that can limit the execution rate of a given function. Unlike the basic implementation from the previous problem, this version grants more control over the throttled function\u0026#8217;s behavior, allowing for a more tailored functionality.\u003c/p\u003e\n\u003cp\u003eTo illustrate, consider the following examples which demonstrate how the options object influences the throttling:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eWith \u003ccode\u003e{ leading: true, trailing: false }\u003c/code\u003e, the function will execute immediately on the first call, then ignore all calls during the wait time.\u003c/li\u003e\n\u003cli\u003eWith \u003ccode\u003e{ leading: false, trailing: true }\u003c/code\u003e, the function will ignore the initial call, then execute at the end of the wait time, applying the last arguments passed during the wait.\u003c/li\u003e\n\u003cli\u003eWhen both are true or both are false, the function\u0026#8217;s behavior adjusts accordingly, offering various execution strategies that can be customized as needed.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eTo verify the correctness of your \u003ccode\u003ethrottle()\u003c/code\u003e function, a test function named \u003ccode\u003erun()\u003c/code\u003e is provided. It simulates function calls, capturing their timing, and utilizes \u003ccode\u003esetTimeout()\u003c/code\u003e to manage execution based on the specified delay and options. The outcome is an array of strings that represent the executed function calls and their respective timings.\u003c/p\u003e\n\u003cp\u003eGiven this setup, your task is to implement the improved \u003ccode\u003ethrottle()\u003c/code\u003e function. Ensure that it adheres to the specified behavior, taking into account the leading and trailing options, and that it functions accurately even in the complex browser environment where \u003ccode\u003esetTimeout()\u003c/code\u003e and \u003ccode\u003eclearTimeout()\u003c/code\u003e might not always be precise.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should call the function immediately on the first trigger when leading is true",
+            "test": "it('should call the function immediately on the first trigger when leading is true', (done) =\u003e {\r\n    let callCount = 0;\r\n    const throttled = throttle(() =\u003e callCount++, 100, { leading: true, trailing: false });\r\n\r\n    throttled();\r\n    expect(callCount).to.equal(1); // Function should be called immediately\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(callCount).to.equal(1); // No additional calls after the wait\r\n      done();\r\n    }, 150);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should call the function on the first and last trigger when both leading and trailing are true",
+            "test": "it('should call the function on the first and last trigger when both leading and trailing are true', (done) =\u003e {\r\n    let callCount = 0;\r\n    const throttled = throttle(() =\u003e callCount++, 100, { leading: true, trailing: true });\r\n\r\n    throttled(); // Immediate call\r\n    expect(callCount).to.equal(1);\r\n\r\n    setTimeout(() =\u003e {\r\n      throttled(); // Should schedule a trailing call\r\n    }, 50);\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(callCount).to.equal(2); // Trailing call executed\r\n      done();\r\n    }, 200);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should not call the function at all when both leading and trailing are false",
+            "test": "it('should not call the function at all when both leading and trailing are false', (done) =\u003e {\r\n    let callCount = 0;\r\n    const throttled = throttle(() =\u003e callCount++, 100, { leading: false, trailing: false });\r\n\r\n    throttled(); // No immediate call\r\n    setTimeout(throttled, 50); // No call on trailing edge\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(callCount).to.equal(0); // No function calls should have been made\r\n      done();\r\n    }, 200);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Functions can have any number of arguments."
+        },
+        {
+            "constraint": "The wait parameter defines the minimum time between function executions."
+        },
+        {
+            "constraint": "The options object may have leading and trailing boolean properties, defaulting to true."
+        },
+        {
+            "constraint": "Only one function execution will occur at the start of the wait period if leading is true."
+        },
+        {
+            "constraint": "Only one function execution will occur at the end of the wait period if trailing is true."
+        },
+        {
+            "constraint": "The function must handle rapid successive calls by invoking the function at most once per wait period, according to the specified options."
+        },
+        {
+            "constraint": "The original function's context (this) and arguments must be preserved."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function throttle(func, wait, options = { leading: true, trailing: true }) {\r\n  // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default throttle;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function throttle(func, wait, option = { leading: true, trailing: true }) {\r\n  var { leading, trailing } = option; // Destructure options to get leading and trailing values\r\n  var lastArgs = null; // Holds the arguments of the last function call during throttling\r\n  var timer = null; // Timer to manage the throttling delay\r\n\r\n  const setTimer = () =\u003e { // Helper function to manage the timer and function calls\r\n    if (lastArgs \u0026\u0026 trailing) { // Check if there are any arguments from the last call and if trailing is enabled\r\n      func.apply(this, lastArgs); // Call the function with the last arguments\r\n      lastArgs = null; // Reset lastArgs to prevent repetitive calls\r\n      timer = setTimeout(setTimer, wait); // Set a new timer for trailing execution\r\n    } else {\r\n      timer = null; // Clear the timer if no trailing execution is needed\r\n    }\r\n  };\r\n\r\n  return function (...args) { // Return a new throttled version of the original function\r\n    if (!timer) { // Check if the timer is not already running\r\n      if (leading) { // If leading execution is enabled\r\n        func.apply(this, args); // Execute the function immediately with the current arguments\r\n      }\r\n      timer = setTimeout(setTimer, wait); // Set a timer for the next possible execution\r\n    } else {\r\n      lastArgs = args; // Store the latest arguments for potential trailing execution\r\n    }\r\n  }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eIntroduction to Throttle Function Enhancement\u003c/h2\u003e\n\u003cp\u003eThe throttle function is a powerful tool in optimizing web applications by controlling the rate at which a function is executed. This enhanced version introduces more flexibility through an options object, allowing for more granular control over the function\u0026#8217;s execution at the start and end of a defined wait period.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eUnderstanding the Options Object\u003c/h2\u003e\n\u003cp\u003eThe options object accepts two boolean properties: \u003ccode\u003eleading\u003c/code\u003e and \u003ccode\u003etrailing\u003c/code\u003e. The \u003ccode\u003eleading\u003c/code\u003e property controls whether the function is executed at the start of the wait period, while the \u003ccode\u003etrailing\u003c/code\u003e property determines if the function should be called at the end of the wait period.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eCore Implementation\u003c/h2\u003e\n\u003cp\u003eThe throttle function is designed to accept three parameters: the function to be throttled (\u003ccode\u003efunc\u003c/code\u003e), the wait time in milliseconds (\u003ccode\u003ewait\u003c/code\u003e), and the options object (\u003ccode\u003eoption\u003c/code\u003e). It utilizes closures to maintain state between function calls, leveraging \u003ccode\u003esetTimeout\u003c/code\u003e to manage the execution timing based on the provided options.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003efunction throttle(func, wait, option = { leading: true, trailing: true }) {\r\n  var { leading, trailing } = option;\r\n  var lastArgs = null;\r\n  var timer = null;\r\n  ...\r\n}\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eLeading and Trailing Execution\u003c/h2\u003e\n\u003cp\u003eWhen \u003ccode\u003eleading\u003c/code\u003e is set to true, the function is invoked immediately at the first call within the wait period. If \u003ccode\u003etrailing\u003c/code\u003e is true, the function will be called at the end of the wait period, using the last arguments passed to the function during this time. This behavior ensures that the function is executed in a controlled manner, respecting the defined wait time between calls.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHandling Rapid Successive Calls\u003c/h2\u003e\n\u003cp\u003eIn scenarios where the throttled function is triggered rapidly and successively, the implementation ensures that only the relevant calls are executed based on the \u003ccode\u003eleading\u003c/code\u003e and \u003ccode\u003etrailing\u003c/code\u003e configuration. Intermediate calls are throttled, maintaining performance and preventing unnecessary function executions.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Applications and Considerations\u003c/h2\u003e\n\u003cp\u003eThe enhanced throttle function is particularly useful in scenarios such as handling scroll events, resize events, or any situation where a high-frequency event can trigger function calls. By adjusting the \u003ccode\u003eleading\u003c/code\u003e and \u003ccode\u003etrailing\u003c/code\u003e options, developers can tailor the function\u0026#8217;s behavior to match specific performance and functionality requirements.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe enhanced throttle function offers a robust solution for optimizing function execution rates. By providing control over the execution at the start and end of the wait period, it enables developers to improve the responsiveness and performance of web applications significantly.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook",
+        "Google",
+        "Zillow",
+        "Microsoft",
+        "Snap"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "29. Throttle II - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Explore our in-depth guide on the enhanced throttle function in JavaScript, offering advanced control with leading and trailing options to optimize UI event handling and improve web application performance.",
+        "pageURL": "throttle-ii",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Throttle II  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eThis problem extends the concept of throttling function executions, introducing an improved version of the \u003ccode\u003ethrottle()\u003c/code\u003e function. The enhanced \u003ccode\u003ethrottle()\u003c/code\u003e function now accept",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eIntroduction to Throttle Function Enhancement\u003c/h2\u003e\n\u003cp\u003eThe throttle function is a powerful tool in optimizing web applications by controlling the rate at which a function is exe",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

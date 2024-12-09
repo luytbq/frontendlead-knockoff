@@ -1,0 +1,145 @@
+{
+    "type": "coding",
+    "id": "flatten-nested-objects",
+    "title": "55. Flatten IV",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "flatten-nested-objects",
+    "problemStatement": "\u003cp\u003eWrite a function to flatten a multi-dimensional object into a single-level object. The function should take an object as input and return a new object where all nested objects are flattened, retaining their key-value pairs at the top level. Each key in the output object should be unique, and the corresponding value should reflect the nested structure of the input object. This task involves recursively exploring each property within the object and aggregating all properties at the root level. Consider the following examples to better understand the expected behavior:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eInput:\u003c/strong\u003e \u003ccode\u003e{ a: 1, b: { c: 2, d: 3, e: { f: null } }, g: 4, h: undefined }\u003c/code\u003e\u003cbr /\u003e\n    \u003cstrong\u003eOutput:\u003c/strong\u003e \u003ccode\u003e{ a: 1, c: 2, d: 3, f: null, g: 4, h: undefined }\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eInput:\u003c/strong\u003e \u003ccode\u003e{ a: { b: { c: 1 }, d: { e: 2, f: 3 } } }\u003c/code\u003e\u003cbr /\u003e\n    \u003cstrong\u003eOutput:\u003c/strong\u003e \u003ccode\u003e{ c: 1, e: 2, f: 3 }\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eInput:\u003c/strong\u003e \u003ccode\u003e{ a: { b: { c: { d: { e: 1 } } } } }\u003c/code\u003e\u003cbr /\u003e\n    \u003cstrong\u003eOutput:\u003c/strong\u003e \u003ccode\u003e{ e: 1 }\u003c/code\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThe function must ensure that if a key has a value of \u003ccode\u003enull\u003c/code\u003e or \u003ccode\u003eundefined\u003c/code\u003e, it should still be included in the output object. This challenge tests your ability to manipulate object properties and recursively process nested structures, which is a common task in handling JSON data and configuring component states in frontend development.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should flatten a deeply nested object",
+            "test": "it('should flatten a deeply nested object', (done) =\u003e {\r\n    const input = { a: { b: { c: { d: { e: 1 } } } } };\r\n    const expected = { e: 1 };\r\n    const result = flattenObject(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should include null and undefined values in the output",
+            "test": "it('should include null and undefined values in the output', (done) =\u003e {\r\n    const input = { a: 1, b: { c: null, d: undefined } };\r\n    const expected = { a: 1, c: null, d: undefined };\r\n    const result = flattenObject(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should handle an empty object input",
+            "test": "it('should handle an empty object input', (done) =\u003e {\r\n    const input = {};\r\n    const expected = {};\r\n    const result = flattenObject(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should handle objects with mixed types",
+            "test": "it('should handle objects with mixed types', (done) =\u003e {\r\n    const input = { a: 1, b: { c: 'string', d: true, e: { f: null } }, g: 4 };\r\n    const expected = { a: 1, c: 'string', d: true, f: null, g: 4 };\r\n    const result = flattenObject(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The input object can contain nested objects of any depth."
+        },
+        {
+            "constraint": "Keys at each level of the input object may consist of alphanumeric characters and underscores."
+        },
+        {
+            "constraint": "The input object may contain \u003ccode\u003enull\u003c/code\u003e or \u003ccode\u003eundefined\u003c/code\u003e values, which should be preserved in the output."
+        },
+        {
+            "constraint": "Arrays, if present in the input object, should be considered as values and not flattened."
+        },
+        {
+            "constraint": "The function must not modify the original input object; it should produce and return a new flattened object."
+        },
+        {
+            "constraint": "Values that are not objects (e.g., strings, numbers, booleans) should be copied as-is into the flattened object."
+        },
+        {
+            "constraint": "The function should handle empty objects and return an empty object in such cases."
+        },
+        {
+            "constraint": "There is no specific performance or complexity constraint, but the solution should be reasonably efficient and not cause a stack overflow for deeply nested objects."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function flattenObject(inputObj) {\r\n    // Write your code here\r\n\r\n}\r\n\r\n// Do not edit below this line\r\nexport default flattenObject;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// This function takes an object as input and flattens it so that there are no nested objects.\r\nfunction flattenObject(input) {\r\n  // If the input is not an object or it is null, return the input.\r\n  // This acts as a base case for the recursion, ensuring non-object values are returned as-is.\r\n  if (typeof input !== 'object' || input === null) {\r\n    return input;\r\n  }\r\n  \r\n  // Create an empty object to store the flattened key-value pairs.\r\n  // This will accumulate all properties at the top level as the function progresses.\r\n  let flattened = {};\r\n\r\n  // Loop through all the keys in the input object using a for-in loop.\r\n  // This iterates over each property of the object, including nested objects.\r\n  for (const key in input) {\r\n    // Recursively call the flattenObject function on the value of the current key.\r\n    // This ensures that nested objects are flattened by breaking them down further.\r\n    let result = flattenObject(input[key]);\r\n    \r\n    // If the result of the recursive call is an object, spread its properties into the flattened object.\r\n    // The spread operator (...) is used to copy enumerable properties from the result to the flattened object.\r\n    if (typeof result === 'object' \u0026\u0026 result !== null) {\r\n      flattened = {\r\n        ...flattened,\r\n        ...result\r\n      };\r\n    } \r\n    // If the result is not an object (i.e., a base value like string, number, or null), assign it to the current key in the flattened object.\r\n    // This effectively moves the property to the top level of the flattened object.\r\n    else {\r\n      flattened[key] = result;\r\n    }\r\n  }\r\n\r\n  // Return the flattened object with all properties at the top level.\r\n  return flattened;\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe \u003ccode\u003eflattenObject\u003c/code\u003e function in JavaScript is a powerful utility that transforms an object with nested properties into a single-level object without any nesting. This process, known as flattening, is essential for simplifying data structures for easier processing and manipulation. The function achieves this through a combination of recursion and property spreading, handling various data types and structures gracefully.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eFunction Overview\u003c/h2\u003e\n\u003cp\u003eThe function begins by validating the input. If the provided input is not an object or is \u003ccode\u003enull\u003c/code\u003e, the function returns it immediately. This check is crucial as it prevents unnecessary processing and serves as the base case for recursion, ensuring that non-object types are propagated back up the call stack without modification.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eRecursive Flattening\u003c/h2\u003e\n\u003cp\u003eThe core of the \u003ccode\u003eflattenObject\u003c/code\u003e function lies in its recursive design. For each property in the input object, the function calls itself, passing the property\u0026#8217;s value as the new input. This recursive call breaks down nested objects layer by layer, progressively flattening the structure until only non-object values remain.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eMerging Flattened Properties\u003c/h2\u003e\n\u003cp\u003eAs the function unwinds the recursion stack, it merges the properties of nested objects into a single, flattened object. This merging is achieved using the spread operator (\u003ccode\u003e...\u003c/code\u003e), which efficiently combines the properties of one or more source objects into a target object. If a property\u0026#8217;s value is not an object (e.g., strings, numbers, or \u003ccode\u003enull\u003c/code\u003e), it is directly assigned to the flattened object under its original key.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHandling Edge Cases\u003c/h2\u003e\n\u003cp\u003eThe function is designed to handle various edge cases gracefully. It ensures that \u003ccode\u003enull\u003c/code\u003e and \u003ccode\u003eundefined\u003c/code\u003e values are preserved in the output, and it does not attempt to flatten arrays, treating them as single values. This careful handling of different data types ensures that the function is robust and versatile, capable of processing complex objects reliably.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eIn conclusion, the \u003ccode\u003eflattenObject\u003c/code\u003e function demonstrates a practical application of recursion and object manipulation in JavaScript. By understanding its implementation and behavior, developers can better manage and transform data structures in their applications, making data easier to work with and more accessible.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Objects"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/uOtTZqTtOMI",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Netflix",
+        "LinkedIn",
+        "ClickUp",
+        "TikTok"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Nested Object - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Master the art of flattening nested objects in JavaScript with our comprehensive guide. Learn simplify complex structures into single-level objects.",
+        "pageURL": "flatten-nested-objects",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Nested Object  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional object into a single-level object. The function should take an object as input and return a new object where all nested objects are flattened, retain",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe \u003ccode\u003eflattenObject\u003c/code\u003e function in JavaScript is a powerful utility that transforms an object with nested properties into a single-level object without any nesting. This",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+ulti-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,135 @@
+{
+    "type": "coding",
+    "id": "create-dom",
+    "title": "11. Create DOM",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "create-dom",
+    "problemStatement": "\u003cp\u003eYou are tasked to build a \u003ccode\u003ecreateDom\u003c/code\u003e function, which is designed to dynamically create Document Object Model (DOM) elements or a tree of elements based on a structured definition provided by a root object. This root object might represent a simple text node or a more elaborate construct with nested elements, each potentially endowed with its own attributes and children.\u003c/p\u003e\n\u003cp\u003eThe \u003ccode\u003ecreateDom\u003c/code\u003e function aims to facilitate the programmatic construction of DOM elements for the dynamic generation of web content. It is capable of:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eCreating simple text nodes by enclosing them within a paragraph element when the root is a string.\u003c/li\u003e\n\u003cli\u003eGenerating complex elements as defined by an object, which specifies the type of element (tag name), attributes (like class, id, etc.), and children (which can be additional elements or text).\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e\u003cstrong\u003eExample Usage:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\r\n// Define a complex structure for the DOM\r\nconst root = {\r\n    type: 'div',\r\n    attributes: { class: 'container' },\r\n    children: [\r\n        { type: 'h1', children: ['Title'] },\r\n        { type: 'p', children: ['This is a paragraph.'] }\r\n    ]\r\n};\r\n\r\n// Utilize createDom to construct the DOM based on the defined structure\r\nconst dom = createDom(root);\r\n\r\n// Append the newly created DOM to the document body or another DOM element\r\ndocument.body.appendChild(dom);\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis approach empowers developers to dynamically generate and update web page content programmatically, based on data or user interactions, enhancing the flexibility and interactivity of web applications.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should create a paragraph element for string input",
+            "test": "it('should create a paragraph element for string input', () =\u003e {\r\n    const text = \"Hello, world!\";\r\n    const domElement = createDom(text);\r\n    expect(domElement.tagName).to.equal('P');\r\n    expect(domElement.textContent).to.equal(text);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should create a complex DOM structure for object input",
+            "test": "it('should create a complex DOM structure for object input', () =\u003e {\r\n    const complexRoot = {\r\n      type: 'div',\r\n      attributes: { class: 'container' },\r\n      children: [\r\n          { type: 'h1', children: ['Page Title'] },\r\n          { type: 'p', children: ['This is a paragraph.'] }\r\n      ]\r\n    };\r\n\r\n    const domElement = createDom(complexRoot);\r\n    expect(domElement.tagName).to.equal('DIV');\r\n    expect(domElement.getAttribute('class')).to.equal('container');\r\n    expect(domElement.children.length).to.equal(2);\r\n    expect(domElement.children[0].tagName).to.equal('H1');\r\n    expect(domElement.children[0].textContent).to.equal('Page Title');\r\n    expect(domElement.children[1].tagName).to.equal('P');\r\n    expect(domElement.children[1].textContent).to.equal('This is a paragraph.');\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should handle nested children correctly",
+            "test": "it('should handle nested children correctly', () =\u003e {\r\n    const nestedRoot = {\r\n      type: 'ul',\r\n      children: [\r\n        {\r\n          type: 'li',\r\n          children: ['Item 1']\r\n        },\r\n        {\r\n          type: 'li',\r\n          children: ['Item 2']\r\n        }\r\n      ]\r\n    };\r\n\r\n    const domElement = createDom(nestedRoot);\r\n    expect(domElement.tagName).to.equal('UL');\r\n    expect(domElement.children.length).to.equal(2);\r\n    expect(domElement.children[0].tagName).to.equal('LI');\r\n    expect(domElement.children[0].textContent).to.equal('Item 1');\r\n    expect(domElement.children[1].tagName).to.equal('LI');\r\n    expect(domElement.children[1].textContent).to.equal('Item 2');\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The input root can either be a string representing a text node or an object representing a DOM element. The object must have a type property indicating the tag name, and may optionally have attributes and children properties."
+        },
+        {
+            "constraint": "For text nodes represented as strings, the function should create a paragraph (\u003cp\u003e) element and append the text inside it. This ensures that text inputs are valid DOM elements."
+        },
+        {
+            "constraint": "When creating elements from objects, the function must properly handle and assign attributes from the attributes property to the created element. It should also recursively process and append child elements or text nodes from the children array."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function createDom(root) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default createDom;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function createDom(root) {\r\n  let rootDom;\r\n\r\n  if (typeof root === 'string') {\r\n    // If the root is a string, create a paragraph element and set its text content\r\n    rootDom = document.createElement('p');\r\n    rootDom.textContent = root;\r\n  } else {\r\n    // If the root is an object, create an element based on the specified type\r\n    rootDom = document.createElement(root.type);\r\n\r\n    // Apply attributes to the element if any are specified\r\n    if (root.attributes) {\r\n      Object.keys(root.attributes).forEach(key =\u003e {\r\n        rootDom.setAttribute(key, root.attributes[key]);\r\n      });\r\n    }\r\n\r\n    // Recursively process and append children if any are specified\r\n    if (root.children) {\r\n      root.children.forEach(child =\u003e {\r\n        // The child can be a string or an object, so recursively call createDom\r\n        const childDom = createDom(child);\r\n        rootDom.appendChild(childDom);\r\n      });\r\n    }\r\n  }\r\n\r\n  return rootDom;\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eIntroduction to Dynamic DOM Creation\u003c/h2\u003e\n\u003cp\u003eDynamic DOM manipulation plays a crucial role in modern web development, allowing developers to create interactive and responsive web applications. The \u003ccode\u003ecreateDom\u003c/code\u003e function exemplifies this approach by programmatically constructing DOM elements from JavaScript objects or strings.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eUnderstanding the \u003ccode\u003ecreateDom\u003c/code\u003e Function\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003ecreateDom\u003c/code\u003e function simplifies the process of converting structured data into DOM elements. It accepts either a string, which it encapsulates within a paragraph element, or an object that describes a more complex DOM structure, including element types, attributes, and nested children.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHow It Works\u003c/h2\u003e\n\u003cp\u003eWhen provided with a string, \u003ccode\u003ecreateDom\u003c/code\u003e creates a text node wrapped in a \u003ccode\u003e\u0026lt;p\u0026gt;\u003c/code\u003e tag. This ensures that text elements are properly displayed within the document. For object inputs, the function recursively constructs elements according to the specified structure, applying attributes and appending child elements as needed.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Applications\u003c/h2\u003e\n\u003cp\u003eThis function is particularly useful in scenarios where the content structure is dynamic or data-driven, such as in single-page applications (SPAs) where content needs to be updated without reloading the page. It promotes a cleaner, more organized approach to DOM manipulation, separating content structure from content creation logic.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eExample Usage\u003c/h2\u003e\n\u003cpre\u003e\u003ccode\u003e\r\nconst root = {\r\n  type: 'div',\r\n  attributes: { class: 'content' },\r\n  children: [\r\n    { type: 'h1', children: ['Hello, World!'] },\r\n    { type: 'p', children: ['Welcome to dynamic DOM creation.'] }\r\n  ]\r\n};\r\n\r\nconst domElement = createDom(root);\r\ndocument.body.appendChild(domElement);\r\n    \u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis example demonstrates creating a \u003ccode\u003ediv\u003c/code\u003e element with a heading and a paragraph, showcasing the flexibility and power of the \u003ccode\u003ecreateDom\u003c/code\u003e function in generating complex DOM structures programmatically.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003ecreateDom\u003c/code\u003e function represents a foundational technique in front-end development, enabling efficient and dynamic web content creation. By mastering this approach, developers can build more interactive and adaptable web applications, enhancing the user experience.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "DOM API"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "11. Create DOM - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Learn to dynamically create and manipulate the DOM in your web applications using the createDom function in JavaScript. Enhance interactivity and responsiveness effortlessly.",
+        "pageURL": "create-dom",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Create DOM  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eYou are tasked to build a \u003ccode\u003ecreateDom\u003c/code\u003e function, which is designed to dynamically create Document Object Model (DOM) elements or a tree of elements based on a structured definition provid",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eIntroduction to Dynamic DOM Creation\u003c/h2\u003e\n\u003cp\u003eDynamic DOM manipulation plays a crucial role in modern web development, allowing developers to create interactive and responsive w",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+oft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,156 @@
+{
+    "type": "coding",
+    "id": "stream-subscription-service",
+    "title": "72. Stream",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "stream-subscription-service",
+    "problemStatement": "\u003cp\u003eYou are tasked with building a simple stream subscription system in JavaScript, encapsulated within a Stream class. This class should enable users to subscribe to the stream and receive updates whenever new data is pushed into it, allowing for real-time data processing and manipulation.\u003c/p\u003e\n\u003cp\u003eThe Stream class should be designed with the following functionalities:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eSubscriptions:\u003c/strong\u003e Users can subscribe to the stream by providing a callback function. This function should be invoked with the new data as its argument whenever the stream is updated.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eData Pushing:\u003c/strong\u003e The class should provide a method to push new data into the stream. Upon pushing new data, all subscribed callback functions should be executed with the newly pushed data, enabling subscribers to react to updates in real-time.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eHere\u0026#8217;s a simple usage example demonstrating both subscription and data pushing:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\r\n// Creating a new instance of the Stream class\r\nconst myStream = new Stream();\r\n\r\n// Subscribing to the stream with a callback function\r\nmyStream.subscribe(data =\u003e console.log(`Received data: ${data}`));\r\n\r\n// Pushing new data into the stream, triggering subscribed callbacks\r\nmyStream.push('Hello, world!');\r\n// Output: \"Received data: Hello, world!\"\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis implementation facilitates a versatile mechanism for handling real-time data streams, allowing multiple consumers to process and react to new data as it becomes available. Whether for handling event streams, processing live data feeds, or implementing observer patterns, the Stream class provides a foundational structure for these scenarios.\u003c/p\u003e\n\u003cp\u003eAs you delve into building this stream subscription system, consider the aspects of data flow, subscriber management, and the efficiency of data dissemination among multiple subscribers.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should allow subscribers to receive updates",
+            "test": "it('should allow subscribers to receive updates', (done) =\u003e {\r\n    const stream = new Stream();\r\n    let receivedData = null;\r\n\r\n    stream.subscribe(data =\u003e {\r\n      receivedData = data;\r\n      expect(receivedData).to.equal('Test Data');\r\n      done();\r\n    });\r\n\r\n    stream.push('Test Data');\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should handle multiple subscribers",
+            "test": "it('should handle multiple subscribers', (done) =\u003e {\r\n    const stream = new Stream();\r\n    let receivedData1 = null;\r\n    let receivedData2 = null;\r\n\r\n    stream.subscribe(data =\u003e {\r\n      receivedData1 = data;\r\n    });\r\n\r\n    stream.subscribe(data =\u003e {\r\n      receivedData2 = data;\r\n      expect(receivedData1).to.equal('Multiple Subscribers');\r\n      expect(receivedData2).to.equal('Multiple Subscribers');\r\n      done();\r\n    });\r\n\r\n    stream.push('Multiple Subscribers');\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should not block the main thread",
+            "test": "it('should not block the main thread', (done) =\u003e {\r\n    const stream = new Stream();\r\n    let asyncCheck = false;\r\n\r\n    stream.subscribe(data =\u003e {\r\n      expect(asyncCheck).to.be.true;\r\n      done();\r\n    });\r\n\r\n    setTimeout(() =\u003e {\r\n      asyncCheck = true;\r\n      stream.push('Async Test');\r\n    }, 50);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The stream should only support basic data types for transmission (e.g., strings, numbers, arrays, objects) and not functions or complex objects with methods."
+        },
+        {
+            "constraint": "Each subscriber's callback function should be invoked asynchronously to prevent any blocking of the main execution thread."
+        },
+        {
+            "constraint": "The system does not need to handle errors or rejections from subscriber callbacks. Subscribers are responsible for their own error handling within their callbacks."
+        },
+        {
+            "constraint": "The subscription system does not need to manage subscriber priorities or the order in which callbacks are invoked."
+        },
+        {
+            "constraint": "Subscribers can subscribe to the stream multiple times with different callbacks, but the system does not need to provide functionality for unsubscribing."
+        },
+        {
+            "constraint": "The system should be designed to handle a reasonable number of subscribers without significant performance degradation."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "class Stream {\r\n  // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default Stream;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// The Stream class represents a simple stream subscription system.\r\nclass Stream {\r\n  constructor() {\r\n    // Initialize the subscribers array to hold the callback functions of all subscribers\r\n    this.subscribers = [];\r\n  }\r\n\r\n  // The subscribe method allows a user to add a callback function to the subscribers array.\r\n  // This callback function will be invoked whenever new data is pushed into the stream.\r\n  subscribe(callback) {\r\n    // Add the callback function to the subscribers array\r\n    this.subscribers.push(callback);\r\n  }\r\n\r\n  // The push method is responsible for pushing new data into the stream.\r\n  // It iterates over the subscribers array and invokes each callback function,\r\n  // passing the new data as an argument to each function.\r\n  push(data) {\r\n    // Iterate through the subscribers array and call each callback function with the new data\r\n    this.subscribers.forEach(callback =\u003e callback(data));\r\n  }\r\n}\r\n",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eExplaining the Stream Subscription System\u003c/h1\u003e\n\u003cp\u003eThe Stream Subscription System allows for a dynamic and interactive way to handle data streams in JavaScript. By implementing a basic version of this system, we provide a mechanism for subscribing to data updates and processing them through user-defined callbacks.\u003c/p\u003e\n\u003csection\u003e\n\u003ch2\u003eStream Class Breakdown\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eStream\u003c/code\u003e class is designed to encapsulate the core functionalities required for a subscription-based data flow. It includes methods for subscribing to the stream and pushing new data to the stream.\u003c/p\u003e\n\u003ch3\u003eConstructor\u003c/h3\u003e\n\u003cp\u003eThe constructor initializes the \u003ccode\u003esubscribers\u003c/code\u003e array, which is used to store the callback functions of the subscribers.\u003c/p\u003e\n\u003ch3\u003eSubscribe Method\u003c/h3\u003e\n\u003cp\u003eThe \u003ccode\u003esubscribe\u003c/code\u003e method allows users to register a callback function that the system will call whenever new data is pushed into the stream. This method adds the provided callback to the \u003ccode\u003esubscribers\u003c/code\u003e array.\u003c/p\u003e\n\u003ch3\u003ePush Method\u003c/h3\u003e\n\u003cp\u003eThe \u003ccode\u003epush\u003c/code\u003e method is responsible for introducing new data into the stream and notifying all subscribed callbacks. It iterates over the \u003ccode\u003esubscribers\u003c/code\u003e array and invokes each callback, passing the new data as an argument.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eUsage Example\u003c/h2\u003e\n\u003cp\u003eTo demonstrate the usage of the Stream class, consider the following example:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst stream = new Stream();\r\nstream.subscribe(data =\u0026gt; console.log(`Received data: ${data}`));\r\nstream.push('Hello, World!');\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eIn this example, we first create a new instance of the \u003ccode\u003eStream\u003c/code\u003e class. We then subscribe to the stream with a callback function that logs the received data. Finally, we push a string \u003ccode\u003e'Hello, World!'\u003c/code\u003e to the stream, which triggers the callback and logs the message.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eBenefits and Considerations\u003c/h2\u003e\n\u003cp\u003eThe Stream Subscription System provides a flexible and intuitive way to handle asynchronous data flows. It enables separation of concerns by decoupling data producers from consumers and allows for a dynamic interaction with data streams.\u003c/p\u003e\n\u003cp\u003eHowever, it\u0026#8217;s important to consider the scalability and performance of the system, especially when dealing with a large number of subscribers or high-frequency data updates.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": null,
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Build Stream Subscription Service - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Learn to build a Stream Subscription System in JS. Master data streams and callbacks for dynamic web apps.",
+        "pageURL": "stream-subscription-service",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Build Stream Subscription Service  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eYou are tasked with building a simple stream subscription system in JavaScript, encapsulated within a Stream class. This class should enable users to subscribe to the stream and receive updates whe",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eExplaining the Stream Subscription System\u003c/h1\u003e\n\u003cp\u003eThe Stream Subscription System allows for a dynamic and interactive way to handle data streams in JavaScript. By implementing a basic ve",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+
+        "Array"
+    ],
+    "likes": 10,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/UV9Lp-3uwwg?si=sIkEur5qGudwyPgh",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,156 @@
+{
+    "type": "coding",
+    "id": "reorder-array-with-new-indexes",
+    "title": "78. Reorder Array With New Indexes",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "reorder-array-with-new-indexes",
+    "problemStatement": "\u003cp\u003eGiven an array of items and a corresponding array of new index positions, write a function to reorder the items array according to the new index positions provided. Your function should mutate the original items array to reflect the new order.\u003c/p\u003e\n\u003cp\u003eThis challenge tests your understanding of array manipulation and sorting algorithms. It\u0026#8217;s a common task in frontend development, especially when dealing with dynamic user interfaces where elements might need reordering based on user actions or other criteria.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eExample:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003eInput: items = [\"a\", \"b\", \"c\", \"d\", \"e\"], newOrder = [3, 0, 4, 1, 2]\r\nOutput: items becomes [\"b\", \"d\", \"e\", \"a\", \"c\"]\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe function should take two arguments:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003ccode\u003eitems\u003c/code\u003e: An array of elements that need to be reordered.\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003enewOrder\u003c/code\u003e: An array of integers representing the new index positions for each corresponding element in the \u003ccode\u003eitems\u003c/code\u003e array.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThe goal is to mutate the \u003ccode\u003eitems\u003c/code\u003e array such that each element is moved to its new index as specified by the \u003ccode\u003enewOrder\u003c/code\u003e array. Ensure your solution accounts for the possibility of various data types within the \u003ccode\u003eitems\u003c/code\u003e array and handles edge cases gracefully.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should reorder the array according to the new indexes",
+            "test": "it('should reorder the array according to the new indexes', (done) =\u003e {\r\n    const items = [\"a\", \"b\", \"c\", \"d\", \"e\"];\r\n    const newOrder = [3, 0, 4, 1, 2];\r\n    sort(items, newOrder);\r\n    expect(items).to.deep.equal([\"b\", \"d\", \"e\", \"a\", \"c\"]);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should handle an empty array",
+            "test": "it('should handle an empty array', (done) =\u003e {\r\n    const items = [];\r\n    const newOrder = [];\r\n    sort(items, newOrder);\r\n    expect(items).to.deep.equal([]);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should not modify the array if newOrder is sequential",
+            "test": "it('should not modify the array if newOrder is sequential', (done) =\u003e {\r\n    const items = [1, 2, 3, 4];\r\n    const newOrder = [0, 1, 2, 3];\r\n    sort(items, newOrder);\r\n    expect(items).to.deep.equal([1, 2, 3, 4]);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The items and newOrder arrays will have the same length."
+        },
+        {
+            "constraint": "The newOrder array will contain all integers from 0 to n-1 where n is the length of the items array, ensuring each item is assigned a new index."
+        },
+        {
+            "constraint": "The items array can contain any data type (e.g., integers, strings, objects)."
+        },
+        {
+            "constraint": "The function should mutate the original items array, not return a new array."
+        },
+        {
+            "constraint": "The function must handle empty arrays gracefully."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function sort(items, newOrder) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default sort;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function sort(items, newOrder) {\r\n  // Create pairs of items and their corresponding order values\r\n  const pairs = items.map((item, index) =\u003e (\r\n    { \r\n        item,\r\n        order: newOrder[index]  // Associate each item with its new index from newOrder\r\n    }\r\n  ));\r\n  \r\n  // Sort the pairs based on order values\r\n  pairs.sort((a, b) =\u003e a.order - b.order);  // Sort pairs by the new order\r\n  \r\n  // Extract the sorted items back into the original items array\r\n  for (let i = 0; i \u003c items.length; i++) {\r\n    items[i] = pairs[i].item;  // Assign sorted items to the original array, mutating it\r\n  }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eUnderstanding Array Reordering with New Indexes in JavaScript\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eReordering an array based on a new set of indexes is a common problem in software development, particularly in frontend development where user interactions might require dynamic changes to the UI. This article delves into a JavaScript solution that not only solves the problem but does so efficiently.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eThe Problem\u003c/h2\u003e\n\u003cp\u003eThe challenge is to reorder an array of items according to a new set of index positions provided in a separate array. The original array must be mutated to reflect this new order. This task tests one\u0026#8217;s understanding of array manipulation and sorting in JavaScript.\u003c/p\u003e\n\u003cp\u003eAn example input might be \u003ccode\u003eitems = [\"a\", \"b\", \"c\", \"d\", \"e\"]\u003c/code\u003e and \u003ccode\u003enewOrder = [3, 0, 4, 1, 2]\u003c/code\u003e, which should result in \u003ccode\u003eitems\u003c/code\u003e being reordered to \u003ccode\u003e[\"b\", \"d\", \"e\", \"a\", \"c\"]\u003c/code\u003e.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eThe Solution\u003c/h2\u003e\n\u003cp\u003eTo tackle this problem, the provided solution employs a two-step process:\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003e\u003cstrong\u003ePairing:\u003c/strong\u003e Each item in the original array is paired with its new index by creating objects that hold both the item and the new index. This step is crucial for maintaining a link between each item and its intended position.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eSorting:\u003c/strong\u003e The array of item-index pairs is then sorted based on the new index values. This reorders the pairs in the sequence dictated by the \u003ccode\u003enewOrder\u003c/code\u003e array.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eReassignment:\u003c/strong\u003e Finally, the original array is updated by iterating over the sorted pairs and assigning each item back to the array, thus mutating it to the desired order.\u003c/li\u003e\n\u003c/ol\u003e\n\u003cp\u003eThis approach is efficient and straightforward, ensuring that the original array reflects the new order without the need for creating a separate array.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eCode Breakdown\u003c/h2\u003e\n\u003cpre\u003e\u003ccode\u003efunction sort(items, newOrder) {\r\n  const pairs = items.map((item, index) =\u003e ({ item, order: newOrder[index] }));\r\n  pairs.sort((a, b) =\u003e a.order - b.order);\r\n  for (let i = 0; i \u003c items.length; i++) {\r\n    items[i] = pairs[i].item;\r\n  }\r\n}\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe \u003ccode\u003emap\u003c/code\u003e function is used to create an array of objects where each object contains an \u003ccode\u003eitem\u003c/code\u003e and its corresponding \u003ccode\u003eorder\u003c/code\u003e. The \u003ccode\u003esort\u003c/code\u003e function then orders these objects based on the \u003ccode\u003eorder\u003c/code\u003e value. Finally, the sorted items are reassigned to the original array, completing the reordering process.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eTime and Space Complexity\u003c/h2\u003e\n\u003cp\u003eThe time complexity of this solution is O(n log n) due to the sorting operation, where \u003ccode\u003en\u003c/code\u003e is the number of items in the array. The space complexity is O(n) as it requires storing an additional array of item-index pairs.\u003c/p\u003e\n\u003cp\u003eThis solution is efficient for moderate-sized arrays and demonstrates the power of combining JavaScript array methods to solve complex problems.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "78. Reorder Array With New Indexes - Frontend Interview Question - FrontendLead",
+        "pageDescription": "",
+        "pageURL": "reorder-array-with-new-indexes",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Reorder Array With New Indexes  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eGiven an array of items and a corresponding array of new index positions, write a function to reorder the items array according to the new index positions provided. Your function should mutate the ",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eUnderstanding Array Reordering with New Indexes in JavaScript\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eReordering an array based on a new set of indexes is a common problem in software development, particularl",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+17;s depth and the function call overhead.\u003c/p\u003e\n\u003cp\u003eOn the other hand, the iterative approach avoids potential stack overflow issues and provides a more controlled execution flow. However, due to the unshift operation\u0026#8217;s O(n) complexity in each step, this method can result in quadratic time complexity O(n^2) in the worst case, making it less efficient for large arrays.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003eIn conclusion, the choice between recursive and iterative approaches to array flattening depends on the specific requirements and constraints of your project, including the expected input array size and depth. While the recursive method is concise and elegant, the iterative method provides a robust alternative for handling large and deeply nested arrays without the risk of stack overflow.\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 10,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/UV9Lp-3uwwg?si=sIkEur5qGudwyPgh",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

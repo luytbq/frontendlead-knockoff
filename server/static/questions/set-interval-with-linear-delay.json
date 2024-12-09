@@ -1,0 +1,126 @@
+{
+    "type": "coding",
+    "id": "set-interval-with-linear-delay",
+    "title": "71. Set Interval with Linear Delay",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "set-interval-with-linear-delay",
+    "problemStatement": "\u003cp\u003eThe task at hand involves creating a custom function named \u003ccode\u003emySetInterval(func, delay, period)\u003c/code\u003e that diverges from the traditional \u003ccode\u003ewindow.setInterval\u003c/code\u003e behavior. Instead of executing the provided function \u003ccode\u003efunc\u003c/code\u003e at regular intervals, this function should execute \u003ccode\u003efunc\u003c/code\u003e with increasing delays following a linear pattern. The delay before each subsequent execution is calculated using the formula \u003ccode\u003edelay + period * count\u003c/code\u003e, where \u003ccode\u003ecount\u003c/code\u003e is the number of times the function has been called.\u003c/p\u003e\n\u003cp\u003eTo illustrate, consider the following example:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003elet prev = Date.now();\r\nconst func = () =\u003e {\r\n  const now = Date.now();\r\n  console.log('Time elapsed:', now - prev, 'ms');\r\n  prev = now;\r\n};\r\n\r\nconst id = mySetInterval(func, 100, 200);\r\n\r\n// Output:\r\n// Time elapsed: 100ms\r\n// Time elapsed: 400ms (100 + 200 * 1)\r\n// Time elapsed: 900ms (100 + 200 * 2)\r\n// Time elapsed: 1600ms (100 + 200 * 3)\r\n// ...\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis functionality allows for scheduling tasks with increasing intervals, which can be particularly useful in scenarios where the intensity of task execution needs to decrease over time.\u003c/p\u003e\n\u003cp\u003eAdditionally, a function named \u003ccode\u003emyClearInterval(id)\u003c/code\u003e should be provided to stop the scheduled execution. This function should take an identifier returned by \u003ccode\u003emySetInterval\u003c/code\u003e and cancel the scheduled task.\u003c/p\u003e\n\u003cp\u003eThe challenge lies not only in implementing the increasing delay logic but also in ensuring that the \u003ccode\u003emySetInterval\u003c/code\u003e and \u003ccode\u003emyClearInterval\u003c/code\u003e functions can be used similarly to their native JavaScript counterparts, providing a seamless interface for scheduling and canceling tasks with dynamic intervals.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should clear the interval correctly",
+            "test": "it('should clear the interval correctly', (done) =\u003e {\r\n    let executions = 0;\r\n\r\n    const func = () =\u003e {\r\n      executions++;\r\n    };\r\n\r\n    const id = CustomInterval.mySetInterval(func, 50, 50);\r\n\r\n    setTimeout(() =\u003e {\r\n      CustomInterval.myClearInterval(id);\r\n\r\n      // Wait a bit longer to ensure no more executions\r\n      setTimeout(() =\u003e {\r\n        expect(executions).to.equal(1); // Only the first execution should happen\r\n        done();\r\n      }, 200);\r\n    }, 60); // Clear the interval shortly after the first execution\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should execute the function immediately for delay = 0",
+            "test": "it('should execute the function immediately for delay = 0', (done) =\u003e {\r\n    let executed = false;\r\n    const func = () =\u003e executed = true;\r\n\r\n    CustomInterval.mySetInterval(func, 0, 100);\r\n    setTimeout(() =\u003e {\r\n      expect(executed).to.be.true;\r\n      done();\r\n    }, 10); // Check after a small delay to allow the immediate execution\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should stop further executions after myClearInterval is called",
+            "test": "it('should stop further executions after myClearInterval is called', (done) =\u003e {\r\n    let executions = 0;\r\n    const func = () =\u003e executions++;\r\n\r\n    const id = CustomInterval.mySetInterval(func, 100, 100);\r\n    setTimeout(() =\u003e {\r\n      CustomInterval.myClearInterval(id); // Clear interval after the first execution\r\n      setTimeout(() =\u003e {\r\n        expect(executions).to.equal(1); // Only the first execution should have happened\r\n        done();\r\n      }, 350); // Additional delay to confirm no more executions\r\n    }, 150);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should allow multiple intervals to run concurrently without interference",
+            "test": "it('should allow multiple intervals to run concurrently without interference', (done) =\u003e {\r\n    let counter1 = 0, counter2 = 0;\r\n    const func1 = () =\u003e counter1++;\r\n    const func2 = () =\u003e counter2++;\r\n\r\n    CustomInterval.mySetInterval(func1, 100, 200);\r\n    CustomInterval.mySetInterval(func2, 150, 300);\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(counter1).to.be.at.least(1);\r\n      expect(counter2).to.be.at.least(1);\r\n      done();\r\n    }, 500); // Check after a delay long enough for both intervals to have executed at least once\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should not execute the function at all if myClearInterval is called before the first execution",
+            "test": "it('should not execute the function at all if myClearInterval is called before the first execution', (done) =\u003e {\r\n    let executions = 0;\r\n    const func = () =\u003e executions++;\r\n\r\n    const id = CustomInterval.mySetInterval(func, 100, 100);\r\n    CustomInterval.myClearInterval(id); // Clear interval immediately\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(executions).to.equal(0); // The function should not have executed at all\r\n      done();\r\n    }, 200); // Check after a delay long enough for the first execution if it were not cleared\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The `mySetInterval` function must accept three parameters: `func` (the function to execute), `delay` (initial delay in milliseconds), and `period` (additional delay added to each subsequent call in milliseconds)."
+        },
+        {
+            "constraint": "The initial call to `func` should occur after `delay` milliseconds. Subsequent calls should have an increasing delay, calculated as `delay + period * count`, where `count` is the number of times `func` has been executed."
+        },
+        {
+            "constraint": "The `myClearInterval` function should accept a single parameter: an identifier returned by `mySetInterval`, and it should stop the scheduled task associated with that identifier."
+        },
+        {
+            "constraint": "The solution should not rely on the built-in `window.setInterval` function, as the goal is to implement a custom interval logic."
+        },
+        {
+            "constraint": "The solution should handle potential edge cases, such as very large values for `delay` and `period`, ensuring the functionality remains consistent and does not cause overflow or excessive resource usage."
+        },
+        {
+            "constraint": "The implementation should ensure that the `func` function is not executed if `myClearInterval` is called before the next scheduled execution."
+        },
+        {
+            "constraint": "The implementation should be robust enough to handle multiple instances of `mySetInterval` being called with different functions, delays, and periods without interference between the timers."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "class CustomInterval {\r\n  static mySetInterval(func, delay, period) {\r\n    // Write your code here\r\n  }\r\n\r\n  static myClearInterval(id) {\r\n    // Write your code here\r\n  }\r\n}\r\n\r\n// Do not edit below this line\r\nexport default CustomInterval;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "class CustomInterval {\r\n  static timerIDs = new Map();\r\n  static counter = 0;\r\n\r\n  static mySetInterval(func, delay, period) {\r\n    // Unique identifier for each interval set\r\n    const id = ++this.counter;\r\n\r\n    const executeFunction = (count) =\u003e {\r\n      func();\r\n      // Schedule the next execution with an increased delay\r\n      this.timerIDs.set(id, setTimeout(() =\u003e executeFunction(count + 1), delay + period * count));\r\n    };\r\n\r\n    // Start the first execution of the function with count 0\r\n    this.timerIDs.set(id, setTimeout(() =\u003e executeFunction(1), delay));\r\n\r\n    // Return the unique identifier for this interval\r\n    return id;\r\n  }\r\n\r\n  static myClearInterval(id) {\r\n    // Clear the timeout using the stored ID and remove it from the map\r\n    if (this.timerIDs.has(id)) {\r\n      clearTimeout(this.timerIDs.get(id));\r\n      this.timerIDs.delete(id);\r\n    }\r\n  }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eImplementing a Custom Interval with Linearly Increasing Delays\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eIn this solution, we delve into the implementation of a custom interval functionality, \u003ccode\u003emySetInterval\u003c/code\u003e, which unlike the traditional \u003ccode\u003esetInterval\u003c/code\u003e, increases the delay between consecutive function calls linearly. This is achieved by adding a fixed amount, defined by the \u003ccode\u003eperiod\u003c/code\u003e parameter, to the delay after each call.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eUnderstanding the Core Logic\u003c/h2\u003e\n\u003cp\u003eThe custom interval is built around a recursive timeout pattern. Initially, the function is called after a delay specified by the \u003ccode\u003edelay\u003c/code\u003e parameter. For subsequent calls, the delay is incremented by \u003ccode\u003eperiod * count\u003c/code\u003e, where \u003ccode\u003ecount\u003c/code\u003e represents the number of times the function has been called. This pattern allows for a linear increase in the delay, providing a controlled acceleration of the interval timing.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eKey Implementation Details\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eCustomInterval\u003c/code\u003e class encapsulates the functionality, providing two static methods: \u003ccode\u003emySetInterval\u003c/code\u003e and \u003ccode\u003emyClearInterval\u003c/code\u003e. The former sets up the interval with increasing delays, while the latter clears a specified interval, ensuring that no further calls are made. A crucial part of this implementation is the use of a map to store active timers, allowing efficient management and clearance of intervals.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eStep-by-Step Execution\u003c/h2\u003e\n\u003cp\u003eThe execution begins with the \u003ccode\u003emySetInterval\u003c/code\u003e method, which initializes a counter and defines a helper function. This helper function uses \u003ccode\u003esetTimeout\u003c/code\u003e to schedule the provided function\u0026#8217;s execution and recursively schedules its next execution with an increased delay. The \u003ccode\u003esetTimeout\u003c/code\u003e call\u0026#8217;s ID is stored, enabling the \u003ccode\u003emyClearInterval\u003c/code\u003e method to clear the interval when required.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Applications and Benefits\u003c/h2\u003e\n\u003cp\u003eThis custom interval mechanism can be particularly useful in scenarios where the need for executing a task decreases over time. For example, in a web application, certain animations or data fetching operations might need to slow down their frequency, reducing the load on the system and enhancing performance.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eCustomInterval\u003c/code\u003e class offers a flexible and efficient solution for managing intervals with linearly increasing delays, showcasing a novel approach to time-based function execution in JavaScript.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "DOM API"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Create SetInterval() with Linear Delay - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Discover how to create a custom setInterval function in JavaScript that increases the delay between calls linearly, providing a controlled acceleration for repetitive tasks. Dive into our comprehensive guide for innovative timer management solutions.",
+        "pageURL": "set-interval-with-linear-delay",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Create SetInterval with Linear Delay  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eThe task at hand involves creating a custom function named \u003ccode\u003emySetInterval(func, delay, period)\u003c/code\u003e that diverges from the traditional \u003ccode\u003ewindow.setInterval\u003c/code\u003e behavior. Instead of ex",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eImplementing a Custom Interval with Linearly Increasing Delays\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eIn this solution, we delve into the implementation of a custom interval functionality, \u003ccode\u003emySetInterva",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

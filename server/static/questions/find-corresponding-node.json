@@ -1,0 +1,122 @@
+{
+    "type": "coding",
+    "id": "find-corresponding-node",
+    "title": "10. Find Corresponding Node",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "find-corresponding-node",
+    "problemStatement": "\u003cp\u003eGiven two identical-structure DOM trees with differing text content, and a specified node in the first tree, your task is to implement a function to identify and return the corresponding node from the second tree. This problem tests your understanding of tree traversal and comparison techniques, making it essential for those interested in data structures and algorithms.\u003c/p\u003e\n\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" class=\"alignnone size-medium wp-image-68\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-06-at-4.29.55-PM-300x213.png\" alt=\"\" width=\"300\" height=\"213\" srcset=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-06-at-4.29.55-PM-300x213.png 300w, https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-06-at-4.29.55-PM.png 540w\" sizes=\"(max-width: 300px) 100vw, 300px\" /\u003e\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should correctly identify the corresponding node in simple trees",
+            "test": "it('should correctly identify the corresponding node in simple trees', (done) =\u003e {\r\n    const tree1 = { value: 'A', children: [{ value: 'B', children: [] }] };\r\n    const tree2 = { value: '1', children: [{ value: '2', children: [] }] };\r\n    const node1 = tree1.children[0]; // Node B\r\n    const expected = tree2.children[0]; // Corresponding node should be '2'\r\n    \r\n    const result = correspondingNode(tree1, tree2, node1);\r\n    expect(result).to.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should return null when the node does not exist in tree1",
+            "test": "it('should return null when the node does not exist in tree1', (done) =\u003e {\r\n    const tree1 = { value: 'A', children: [] };\r\n    const tree2 = { value: '1', children: [] };\r\n    const node1 = { value: 'B', children: [] }; // Non-existent node\r\n    \r\n    const result = correspondingNode(tree1, tree2, node1);\r\n    expect(result).to.be.null;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should handle trees with multiple levels of nesting",
+            "test": "it('should handle trees with multiple levels of nesting', (done) =\u003e {\r\n    const tree1 = {\r\n      value: 'A',\r\n      children: [\r\n        {\r\n          value: 'B',\r\n          children: [\r\n            { value: 'C', children: [] }\r\n          ]\r\n        }\r\n      ]\r\n    };\r\n    const tree2 = {\r\n      value: '1',\r\n      children: [\r\n        {\r\n          value: '2',\r\n          children: [\r\n            { value: '3', children: [] }\r\n          ]\r\n        }\r\n      ]\r\n    };\r\n    const node1 = tree1.children[0].children[0]; // Node C\r\n    const expected = tree2.children[0].children[0]; // Corresponding node should be '3'\r\n    \r\n    const result = correspondingNode(tree1, tree2, node1);\r\n    expect(result).to.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should work when the target node is the root of tree1",
+            "test": "it('should work when the target node is the root of tree1', (done) =\u003e {\r\n    const tree1 = { value: 'A', children: [] };\r\n    const tree2 = { value: '1', children: [] };\r\n    const node1 = tree1; // Root node A\r\n    \r\n    const result = correspondingNode(tree1, tree2, node1);\r\n    expect(result).to.equal(tree2); // Corresponding node should be the root of tree2\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should handle trees with deep nesting and multiple children",
+            "test": "it('should handle trees with deep nesting and multiple children', (done) =\u003e {\r\n    const tree1 = {\r\n      value: 'A',\r\n      children: [\r\n        { value: 'B', children: [] },\r\n        {\r\n          value: 'C',\r\n          children: [\r\n            { value: 'D', children: [] },\r\n            { value: 'E', children: [] }\r\n          ]\r\n        }\r\n      ]\r\n    };\r\n    const tree2 = {\r\n      value: '1',\r\n      children: [\r\n        { value: '2', children: [] },\r\n        {\r\n          value: '3',\r\n          children: [\r\n            { value: '4', children: [] },\r\n            { value: '5', children: [] }\r\n          ]\r\n        }\r\n      ]\r\n    };\r\n    const node1 = tree1.children[1].children[1]; // Node E\r\n    const expected = tree2.children[1].children[1]; // Corresponding node should be '5'\r\n    \r\n    const result = correspondingNode(tree1, tree2, node1);\r\n    expect(result).to.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 5,
+            "description": "should correctly identify the corresponding node in simple DOM trees",
+            "test": "it('should correctly identify the corresponding node in simple DOM trees', () =\u003e {\r\n    // Utility function to create a simple DOM tree structure\r\n    function createTree(rootValue, childValues) {\r\n      const root = document.createElement('div');\r\n      const textNode = document.createTextNode(rootValue);\r\n      root.appendChild(textNode); // Append the text node to ensure it doesn't interfere with child elements\r\n      childValues.forEach(value =\u003e {\r\n        const child = document.createElement('div');\r\n        child.textContent = value;\r\n        root.appendChild(child);\r\n      });\r\n      return root;\r\n    }\r\n\r\n    const tree1 = createTree('A', ['B', 'C']);\r\n    const tree2 = createTree('1', ['2', '3']);\r\n    const node1 = tree1.children[0]; // Corrected to access the first element child (Node B)\r\n\r\n    const result = correspondingNode(tree1, tree2, node1);\r\n    const expected = tree2.children[0]; // Corrected to ensure we're comparing element children (Node '2')\r\n\r\n    expect(result).to.equal(expected);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Each tree node can have multiple children."
+        },
+        {
+            "constraint": "The structure of both trees is identical."
+        },
+        {
+            "constraint": "Nodes contain text content which may vary between the two trees."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function correspondingNode(tree1, tree2, targetNode) {\r\n  // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default correspondingNode;\r\n",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// Iterative Solution\r\nconst correspondingNode = (tree1, tree2, targetNode) =\u003e {\r\n  // Create two stacks to store nodes from each tree\r\n  const stack1 = [tree1];\r\n  const stack2 = [tree2];\r\n\r\n  // Keep looping while there are still nodes in stack1\r\n  while(stack1.length) {\r\n    // Pop the top node from both stacks\r\n    let curr1 = stack1.pop();\r\n    let curr2 = stack2.pop();\r\n\r\n    // If the current node from tree1 is the target node, return the corresponding node from tree2\r\n    if(curr1 === targetNode) {\r\n      return curr2;\r\n    }\r\n\r\n    // Push the children of the current nodes to their respective stacks\r\n    stack1.push(...curr1.children)\r\n    stack2.push(...curr2.children);\r\n  }\r\n  return null;\r\n}\r\n\r\n// Recursive solution\r\nconst correspondingNode = (tree1, tree2, targetNode) =\u003e {\r\n  if(tree1 === targetNode) {\r\n    return tree2;\r\n  }\r\n\r\n  for(var i = 0; i \u003c tree1.children.length; i++) {\r\n    const result = findCorrespondingNode(tree1.children[i], tree2.children[i], targetNode);\r\n    if(result) {\r\n      return result;\r\n    }\r\n  }\r\n  return null;\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003eWhen working with tree structures, especially in web development where DOM trees are prevalent, it\u0026#8217;s common to encounter scenarios requiring the identification of corresponding nodes across two structurally identical trees. This challenge can arise in various contexts, such as cloning elements, synchronizing data, or even testing frameworks. We will delve into two distinct approaches to address this problem: an iterative method utilizing stacks and a recursive strategy.\u003c/p\u003e\n\u003csection\u003e\n\u003ch2\u003eIterative Approach Using Stacks\u003c/h2\u003e\n\u003cp\u003eThe iterative solution leverages the stack data structure to traverse both trees simultaneously. This method initializes two stacks, each holding the root node of the corresponding tree. The process continues iteratively, where at each step, the top nodes from both stacks are popped and compared. If the popped node from the first tree matches the target node, its counterpart from the second tree is returned as the corresponding node.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\r\nfunction correspondingNode(tree1, tree2, node1) {\r\n    const stack1 = [tree1];\r\n    const stack2 = [tree2];\r\n\r\n    while(stack1.length) {\r\n        let curr1 = stack1.pop();\r\n        let curr2 = stack2.pop();\r\n\r\n        if(curr1 === node1) {\r\n            return curr2;\r\n        }\r\n\r\n        stack1.push(...curr1.children)\r\n        stack2.push(...curr2.children);\r\n    }\r\n}\r\n        \u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis method is particularly effective for large trees or when the node is located deep within the tree, as it avoids the potential stack overflow issues that can arise with recursion. However, it can be more verbose and less intuitive than the recursive approach.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eRecursive Approach\u003c/h2\u003e\n\u003cp\u003eThe recursive solution offers a more concise and readable method by calling the function within itself to traverse down the trees. When the target node is found in the first tree, the corresponding node from the second tree, sharing the same traversal path, is returned.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\r\nconst correspondingNode = (tree1, tree2, node1) =\u0026gt; {\r\n    if(tree1 === node1) {\r\n        return tree2;\r\n    }\r\n\r\n    for(let i = 0; i \u0026lt; tree1.children.length; i++) {\r\n        const result = correspondingNode(tree1.children[i], tree2.children[i], node1);\r\n        if(result) {\r\n            return result;\r\n        }\r\n    }\r\n}\r\n        \u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eWhile elegant and easier to understand, the recursive approach may not be as efficient for very deep trees due to the limitations of call stack size in JavaScript environments, potentially leading to stack overflow errors.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eComparative Analysis\u003c/h2\u003e\n\u003cp\u003eChoosing between the iterative and recursive approaches depends on the specific requirements and constraints of your application. The iterative method, with its explicit stack management, offers a more robust solution for deep trees or when the maximum call stack size might be a concern. On the other hand, the recursive approach provides cleaner and more readable code, suitable for trees of moderate depth and scenarios where readability and maintainability are priorities.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eIn summary, both methods serve their purpose in finding corresponding nodes in identical tree structures. The iterative approach shines in terms of efficiency and reliability for large or deep trees, while the recursive method offers simplicity and elegance, particularly for less complex scenarios. As with many programming challenges, understanding the problem context and constraints will guide you in choosing the most appropriate solution.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/ElHeF2zY570",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "10. Find Corresponding Node - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Explore in-depth the iterative and recursive solutions to identify corresponding nodes in identical tree structures, including code examples, benefits, and use cases.",
+        "pageURL": "find-corresponding-node",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Find Corresponding Node  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eGiven two identical-structure DOM trees with differing text content, and a specified node in the first tree, your task is to implement a function to identify and return the corresponding node from ",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003eWhen working with tree structures, especially in web development where DOM trees are prevalent, it\u0026#8217;s common to encounter scenarios requiring the identification of corresponding nodes ac",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

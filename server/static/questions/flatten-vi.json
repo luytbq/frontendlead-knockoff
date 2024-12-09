@@ -1,0 +1,150 @@
+{
+    "type": "coding",
+    "id": "flatten-vi",
+    "title": "57. Flatten VI",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "flatten-vi",
+    "problemStatement": "\u003cp\u003eGiven a nested JSON structure, the task is to create two utility functions and one primary function to efficiently process and flatten the structure asynchronously. The functions to be implemented are:\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003e\u003cstrong\u003egetBatch:\u003c/strong\u003e This function asynchronously retrieves an item from the input array based on a specified index. It returns a Promise that resolves to the item, facilitating asynchronous item processing. This is particularly useful for handling large datasets without impeding the execution flow.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003egetValueList:\u003c/strong\u003e An asynchronous function that utilizes \u003ccode\u003egetBatch\u003c/code\u003e to fetch items within a specified range (fromIndex to toIndex). It aims to flatten these items into a single-level array of values while preserving the original order found in the nested structure.\u003c/li\u003e\n\u003c/ol\u003e\n\u003cp\u003eThe primary challenge lies in the efficient management of asynchronous operations coupled with the maintenance of the correct order of values in the flattened structure.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eExample Use Case:\u003c/strong\u003e Consider the following input structure, which represents a simplified hierarchical data model akin to a file system or a comment thread, where each item can contain children:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e[\r\n  {\r\n    \"value\": \"value0\",\r\n    \"children\": []\r\n  },\r\n  {\r\n    \"value\": \"value1\",\r\n    \"children\": [\r\n      {\r\n        \"value\": \"value2\",\r\n        \"children\": [\r\n          {\r\n            \"value\": \"value3\",\r\n            \"children\": []\r\n          }\r\n        ]\r\n      },\r\n      {\r\n        \"value\": \"value4\",\r\n        \"children\": []\r\n      }\r\n    ]\r\n  },\r\n  {\r\n    \"value\": \"value5\",\r\n    \"children\": []\r\n  },\r\n  {\r\n    \"value\": \"value6\",\r\n    \"children\": []\r\n  }\r\n]\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe objective is to flatten this structure into a single-level array of values [\u003ccode\u003e\"value0\", \"value1\", \"value2\", \"value3\", \"value4\", \"value5\", \"value6\"\u003c/code\u003e], using asynchronous functions to fetch and process the data efficiently.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should correctly flatten a range of items",
+            "test": "it('should correctly flatten a range of items', (done) =\u003e {\r\n    const mockInput = [\r\n      { \"value\": \"value0\", \"children\": [] },\r\n      { \"value\": \"value1\", \"children\": [{ \"value\": \"value2\", \"children\": [{ \"value\": \"value3\", \"children\": [] }] }] },\r\n      { \"value\": \"value4\", \"children\": [] },\r\n      { \"value\": \"value5\", \"children\": [] }\r\n    ];\r\n\r\n    const fromIndex = 0;\r\n    const toIndex = 3;\r\n    const expected = [\r\n      { value: 'value0' },\r\n      { value: 'value1' },\r\n      { value: 'value2' },\r\n      { value: 'value3' },\r\n      { value: 'value4' },\r\n      { value: 'value5' }\r\n    ];\r\n\r\n    getValueList(mockInput, fromIndex, toIndex).then(result =\u003e {\r\n      expect(result).to.deep.equal(expected);\r\n      done();\r\n    }).catch(done);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should handle an out-of-bounds range by returning available items",
+            "test": "it('should handle an out-of-bounds range by returning available items', (done) =\u003e {\r\n    const mockInput = [\r\n      // Smaller mock input for out-of-bounds test\r\n      { \"value\": \"value0\", \"children\": [] },\r\n      { \"value\": \"value1\", \"children\": [] }\r\n    ];\r\n\r\n    const fromIndex = 0;\r\n    const toIndex = 5; // Deliberately out-of-bounds\r\n    const expectedLength = 2; // Only two items in mock input\r\n\r\n    getValueList(mockInput, fromIndex, toIndex).then(result =\u003e {\r\n      expect(result.length).to.equal(expectedLength);\r\n      done();\r\n    }).catch(done);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should return an empty array for invalid range",
+            "test": "it('should return an empty array for invalid range', (done) =\u003e {\r\n    const mockInput = [\r\n      // Any mock input suitable for testing invalid range\r\n      { \"value\": \"value0\", \"children\": [] }\r\n    ];\r\n\r\n    const fromIndex = 2; // Invalid start index\r\n    const toIndex = 1; // Invalid end index\r\n    const expected = [];\r\n\r\n    getValueList(mockInput, fromIndex, toIndex).then(result =\u003e {\r\n      expect(result).to.deep.equal(expected);\r\n      done();\r\n    }).catch(done);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should handle ranges that include nested children",
+            "test": "it('should handle ranges that include nested children', (done) =\u003e {\r\n    const mockInput = [\r\n      { \"value\": \"value0\", \"children\": [] },\r\n      { \"value\": \"value1\", \"children\": [{ \"value\": \"value2\", \"children\": [{ \"value\": \"value3\", \"children\": [] }] }] }\r\n    ];\r\n\r\n    const fromIndex = 1;\r\n    const toIndex = 1; // Range includes an item with nested children\r\n    const expected = [\r\n      { value: 'value1' },\r\n      { value: 'value2' },\r\n      { value: 'value3' }\r\n    ];\r\n\r\n    getValueList(mockInput, fromIndex, toIndex).then(result =\u003e {\r\n      expect(result).to.deep.equal(expected);\r\n      done();\r\n    }).catch(done);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should handle empty input array gracefully",
+            "test": "it('should handle empty input array gracefully', (done) =\u003e {\r\n    const mockInput = []; // Empty input array\r\n\r\n    const fromIndex = 0;\r\n    const toIndex = 3;\r\n    const expected = []; // Expected result for an empty input is also an empty array\r\n\r\n    getValueList(mockInput, fromIndex, toIndex).then(result =\u003e {\r\n      expect(result).to.deep.equal(expected);\r\n      done();\r\n    }).catch(done);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 5,
+            "description": "should correctly process single item input",
+            "test": "it('should correctly process single item input', (done) =\u003e {\r\n    const mockInput = [\r\n      { \"value\": \"value0\", \"children\": [] }\r\n    ]; // Input array with a single item\r\n\r\n    const fromIndex = 0;\r\n    const toIndex = 0; // Range that includes only the single item\r\n    const expected = [{ value: 'value0' }]; // Expected result includes the single item\r\n\r\n    getValueList(mockInput, fromIndex, toIndex).then(result =\u003e {\r\n      expect(result).to.deep.equal(expected);\r\n      done();\r\n    }).catch(done);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 6,
+            "description": "should process items with deeply nested children",
+            "test": "it('should process items with deeply nested children', (done) =\u003e {\r\n    const mockInput = [\r\n      { \r\n        \"value\": \"value0\", \r\n        \"children\": [\r\n          { \r\n            \"value\": \"value1\", \r\n            \"children\": [\r\n              { \r\n                \"value\": \"value2\", \r\n                \"children\": [] \r\n              }\r\n            ] \r\n          }\r\n        ] \r\n      }\r\n    ]; // Input with deeply nested children\r\n\r\n    const fromIndex = 0;\r\n    const toIndex = 0; // Range that includes the top-level item with nested children\r\n    const expected = [\r\n      { value: 'value0' },\r\n      { value: 'value1' },\r\n      { value: 'value2' }\r\n    ]; // Expected flattened result\r\n\r\n    getValueList(mockInput, fromIndex, toIndex).then(result =\u003e {\r\n      expect(result).to.deep.equal(expected);\r\n      done();\r\n    }).catch(done);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 7,
+            "description": "should return concatenated results for contiguous ranges",
+            "test": "it('should return concatenated results for contiguous ranges', (done) =\u003e {\r\n    const mockInput = [\r\n      { \"value\": \"value0\", \"children\": [] },\r\n      { \"value\": \"value1\", \"children\": [] },\r\n      { \"value\": \"value2\", \"children\": [] }\r\n    ]; // Input array for testing contiguous ranges\r\n\r\n    const fromIndex1 = 0;\r\n    const toIndex1 = 1; // First range\r\n    const fromIndex2 = 2;\r\n    const toIndex2 = 2; // Second range, contiguous with the first\r\n\r\n    Promise.all([\r\n      getValueList(mockInput, fromIndex1, toIndex1),\r\n      getValueList(mockInput, fromIndex2, toIndex2)\r\n    ]).then(results =\u003e {\r\n      const concatenatedResults = [].concat(...results);\r\n      const expected = [\r\n        { value: 'value0' },\r\n        { value: 'value1' },\r\n        { value: 'value2' }\r\n      ]; // Expected concatenated results\r\n\r\n      expect(concatenatedResults).to.deep.equal(expected);\r\n      done();\r\n    }).catch(done);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The input JSON structure can have an arbitrary number of nesting levels, but practical performance considerations should be kept in mind."
+        },
+        {
+            "constraint": "Each item in the JSON structure has a \u003ccode\u003evalue\u003c/code\u003e field and a \u003ccode\u003echildren\u003c/code\u003e field, which is an array that may contain more items."
+        },
+        {
+            "constraint": "The \u003ccode\u003egetBatch\u003c/code\u003e function should handle out-of-bounds errors gracefully and reject the promise with an appropriate error message."
+        },
+        {
+            "constraint": "The \u003ccode\u003egetValueList\u003c/code\u003e function should be able to handle ranges that exceed the bounds of the input array by either truncating the range or handling it in a way that ensures program stability."
+        },
+        {
+            "constraint": "The solution should prioritize efficiency in terms of asynchronous operations, minimizing the wait time for I/O operations."
+        },
+        {
+            "constraint": "The final flattened list should be a one-dimensional array of values extracted from the \u003ccode\u003evalue\u003c/code\u003e fields of the items in the input JSON structure, maintaining their original hierarchical order."
+        },
+        {
+            "constraint": "Direct modification of the input structure is not allowed; the function must return a new array."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "// Input JSON structure for demonstration purposes\r\nconst input = [\r\n  {\r\n    \"value\": \"value0\",\r\n    \"children\": []\r\n  },\r\n  {\r\n    \"value\": \"value1\",\r\n    \"children\": [\r\n      {\r\n        \"value\": \"value2\",\r\n        \"children\": [\r\n          {\r\n            \"value\": \"value3\",\r\n            \"children\": []\r\n          }\r\n        ]\r\n      },\r\n      {\r\n        \"value\": \"value4\",\r\n        \"children\": []\r\n      }\r\n    ]\r\n  },\r\n  {\r\n    \"value\": \"value5\",\r\n    \"children\": []\r\n  }, {\r\n    \"value\": \"value6\",\r\n    \"children\": []\r\n  }\r\n];\r\n\r\n\r\nasync function getValueList(fromIndex, toIndex) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default getValueList;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// Flatten a nested JSON structure into a single-level array of values\r\nfunction flattenRecursive(input, flattened = []) {\r\n  input.forEach(item =\u003e {\r\n    // Create an object with the 'value' property and push it to the flattened array\r\n    const result = { value: item.value };\r\n    flattened.push(result);\r\n\r\n    // If the item has children, recursively flatten them and append to the flattened array\r\n    if (item.children) {\r\n      flattenRecursive(item.children, flattened);\r\n    }\r\n  });\r\n\r\n  return flattened; // Return the final flattened array\r\n}\r\n\r\n// Asynchronously retrieve an item from the 'input' array based on the given index\r\nconst getBatch = (index, input) =\u003e {\r\n  return new Promise((resolve, reject) =\u003e {\r\n    // Simulate asynchronous operation with setTimeout\r\n    setTimeout(() =\u003e {\r\n      if (index \u003e= 0 \u0026\u0026 index \u003c input.length) {\r\n        resolve(input[index]);\r\n      } else {\r\n        reject(new Error(\"Index out of bounds\"));\r\n      }\r\n    }, 100); // Set a short delay to simulate async fetch\r\n  });\r\n};\r\n\r\n// Asynchronously fetch a range of items from 'input' and flatten them\r\nasync function getValueList(input, fromIndex, toIndex) {\r\n  const promises = [];\r\n\r\n  // Create a promise for each index in the range and add it to the 'promises' array\r\n  for (let i = fromIndex; i \u003c= toIndex \u0026\u0026 i \u003c input.length; i++) {\r\n    promises.push(getBatch(i, input));\r\n  }\r\n\r\n  // Wait for all promises to resolve, then flatten the results\r\n  const results = await Promise.all(promises);\r\n  const flattened = [];\r\n\r\n  results.forEach(result =\u003e {\r\n    flattened.push(...flattenRecursive([result])); // Flatten each result and merge into 'flattened'\r\n  });\r\n\r\n  return flattened; // Return the final flattened array\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eEfficient Data Flattening with Asynchronous Batching in JavaScript\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eIn this article, we explore an efficient solution for flattening a nested JSON structure using asynchronous batching in JavaScript. This method is particularly useful for processing large datasets without blocking the execution flow, making it ideal for web and backend applications.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eUnderstanding the Problem\u003c/h2\u003e\n\u003cp\u003eThe challenge involves a nested JSON structure where each item may contain children, forming a hierarchical data model. The goal is to flatten this structure into a single-level array of values while preserving the order, using asynchronous functions for efficient data retrieval.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eKey Functions Overview\u003c/h2\u003e\n\u003cp\u003eThe solution comprises three main functions: \u003ccode\u003eflattenRecursive\u003c/code\u003e, \u003ccode\u003egetBatch\u003c/code\u003e, and \u003ccode\u003egetValueList\u003c/code\u003e. Here\u0026#8217;s a brief overview of each:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eflattenRecursive:\u003c/strong\u003e A recursive function that traverses the nested structure, accumulating values in a flattened array.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003egetBatch:\u003c/strong\u003e An asynchronous function that fetches an item from the input array based on a given index, using a promise to handle asynchronous operations.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003egetValueList:\u003c/strong\u003e This function utilizes \u003ccode\u003egetBatch\u003c/code\u003e to asynchronously retrieve a range of items and flatten them using \u003ccode\u003eflattenRecursive\u003c/code\u003e.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eFlattening Nested Structures\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eflattenRecursive\u003c/code\u003e function is the cornerstone of our solution, designed to efficiently process each item and its children, if any. It iterates over the input, constructs an object with the item\u0026#8217;s value, and recursively flattens any children, ensuring all values are captured in the correct order.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eAsynchronous Batching with \u003ccode\u003egetBatch\u003c/code\u003e\u003c/h2\u003e\n\u003cp\u003eTo handle large datasets efficiently, \u003ccode\u003egetBatch\u003c/code\u003e asynchronously retrieves items based on their indices. It returns a promise that resolves with the item, allowing for non-blocking operations and improving performance, especially in scenarios requiring network requests or I/O operations.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eAssembling the Solution with \u003ccode\u003egetValueList\u003c/code\u003e\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003egetValueList\u003c/code\u003e function is where the asynchronous magic happens. It creates a promise for each item in the specified range, waits for all to resolve using \u003ccode\u003ePromise.all\u003c/code\u003e, and then flattens the results. This approach ensures that data retrieval is efficient and that the flattened structure maintains the correct order of values.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eError Handling and Robustness\u003c/h2\u003e\n\u003cp\u003eComprehensive error handling in both \u003ccode\u003egetBatch\u003c/code\u003e and \u003ccode\u003egetValueList\u003c/code\u003e enhances the solution\u0026#8217;s robustness. It gracefully manages out-of-bounds errors and rejected promises, ensuring the program\u0026#8217;s stability even in edge cases.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Applications and Benefits\u003c/h2\u003e\n\u003cp\u003eThis solution is highly applicable in real-world scenarios where efficient data processing is crucial. Its non-blocking nature makes it suitable for web applications that deal with large datasets, backend services where data processing efficiency is paramount, and any scenario where hierarchical data needs to be flattened and processed asynchronously.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe \u0026#8220;Async Flatten with Batching\u0026#8221; solution demonstrates the powerful combination of recursion and asynchronous JavaScript to solve complex data processing tasks. It highlights the importance of understanding asynchronous paradigms in JavaScript and provides a robust template for similar challenges.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Atlassian"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "57. Flatten VI - Async Data Flattening - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Dive into our in-depth guide on asynchronous data flattening in JavaScript. Learn how to efficiently process nested JSON structures with async batching, enhancing performance in web and backend applications.",
+        "pageURL": "flatten-vi",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Flatten VI  Async Data Flattening  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eGiven a nested JSON structure, the task is to create two utility functions and one primary function to efficiently process and flatten the structure asynchronously. The functions to be implemented ",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eEfficient Data Flattening with Asynchronous Batching in JavaScript\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eIn this article, we explore an efficient solution for flattening a nested JSON structure using asynch",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

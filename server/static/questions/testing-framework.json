@@ -1,0 +1,180 @@
+{
+    "type": "coding",
+    "id": "testing-framework",
+    "title": "27. Testing Framework",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "testing-framework",
+    "problemStatement": "\u003cp\u003eImplement a simple testing framework for frontend code that allows you to define test suites and test cases, and provides assertion methods for validating expected outcomes. Write the necessary functions and classes to achieve this.\u003c/p\u003e\n\u003cp\u003eThe framework should enable the definition of a \u003ccode\u003edescribe\u003c/code\u003e function for test suites, an \u003ccode\u003eit\u003c/code\u003e function for test cases within those suites, and an \u003ccode\u003eexpect\u003c/code\u003e function for making assertions within those test cases. The framework should support the following functionalities:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eGrouping related test cases using the \u003ccode\u003edescribe\u003c/code\u003e function.\u003c/li\u003e\n\u003cli\u003eDefining individual test cases with the \u003ccode\u003eit\u003c/code\u003e function that describes the specific test.\u003c/li\u003e\n\u003cli\u003eMaking assertions within test cases using the \u003ccode\u003eexpect\u003c/code\u003e function and assertion methods like \u003ccode\u003etoExist\u003c/code\u003e, \u003ccode\u003etoBe\u003c/code\u003e, and \u003ccode\u003etoBeType\u003c/code\u003e.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eFor example:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003edescribe('Hello world', () =\u0026gt; {\r\n  it('input exists', () =\u0026gt; {\r\n    let input = null;\r\n    expect(input).toExist();\r\n  });\r\n});\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis should produce an output like:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003ebeginning test suite Hello world\r\nbeginning test case input exists\r\nfailed running test suite Hello world on test case input exists with error message expected value to exist but got null\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eAnother example:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003edescribe('Hello world', () =\u0026gt; {\r\n  it('input is as expected', () =\u0026gt; {\r\n    let input = 'foo';\r\n    let expected = 'fooo';\r\n    expect(input).toBe(expected);\r\n  });\r\n});\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eShould result in:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003ebeginning test suite Hello world\r\nbeginning test case input is as expected\r\nfailed running test suite Hello world on test case input is as expected with error message expected \"foo\" to be \"fooo\"\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eAnd:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003edescribe('Hello world', () =\u0026gt; {\r\n  it('input is as expected', () =\u0026gt; {\r\n    let input = 'foo';\r\n    let expected = 'string';\r\n    expect(input).toBeType(expected);\r\n  });\r\n});\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eWould output:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003ebeginning test suite Hello world\r\nbeginning test case input is as expected\r\nfailed running test suite Hello world on test case input is as expected with error message expected \"foo\" to be of type \"string\" but got \"object\"\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis framework aims to provide a lightweight and straightforward way for developers to write and organize tests, ensuring the reliability and correctness of their frontend code.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should verify that describe and it blocks log the appropriate messages",
+            "test": "it('should verify that describe and it blocks log the appropriate messages', (done) =\u003e {\r\n    let logs = [];\r\n    const originalConsoleLog = console.log;\r\n    console.log = (message) =\u003e logs.push(message);\r\n\r\n    TestingFramework.describe('Sample Suite', () =\u003e {\r\n      TestingFramework.it('Sample Test', () =\u003e {\r\n        TestingFramework.expect(true).toBe(true);\r\n      });\r\n    });\r\n\r\n    expect(logs).to.include('beginning test suite Sample Suite');\r\n    expect(logs).to.include('beginning test case Sample Test');\r\n    expect(logs).to.include('successfully completed test case Sample Test');\r\n    expect(logs).to.include('successfully completed test suite Sample Suite');\r\n\r\n    console.log = originalConsoleLog;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should handle failed expectations and log errors",
+            "test": "it('should handle failed expectations and log errors', (done) =\u003e {\r\n    let errors = [];\r\n    const originalConsoleError = console.error;\r\n    console.error = (message) =\u003e errors.push(message);\r\n\r\n    TestingFramework.describe('Failing Suite', () =\u003e {\r\n      TestingFramework.it('Failing Test', () =\u003e {\r\n        TestingFramework.expect(true).toBe(false);\r\n      });\r\n    });\r\n\r\n    expect(errors.length).to.be.greaterThan(0);\r\n    expect(errors[0]).to.include('failed running test suite Failing Suite');\r\n\r\n    console.error = originalConsoleError;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should validate existence with toExist assertion",
+            "test": "it('should validate existence with toExist assertion', (done) =\u003e {\r\n    const result = () =\u003e TestingFramework.expect(null).toExist();\r\n\r\n    expect(result).to.throw();\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should compare values with toBe assertion",
+            "test": "it('should compare values with toBe assertion', (done) =\u003e {\r\n    const result = () =\u003e TestingFramework.expect('hello').toBe('world');\r\n\r\n    expect(result).to.throw();\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should check types with toBeType assertion",
+            "test": "it('should check types with toBeType assertion', (done) =\u003e {\r\n    const result = () =\u003e TestingFramework.expect('hello').toBeType('number');\r\n\r\n    expect(result).to.throw();\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 5,
+            "description": "should pass when expected value exists",
+            "test": "it('should pass when expected value exists', (done) =\u003e {\r\n    const result = () =\u003e TestingFramework.expect('I exist').toExist();\r\n\r\n    expect(result).to.not.throw();\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 6,
+            "description": "should pass when actual and expected values match",
+            "test": "it('should pass when actual and expected values match', (done) =\u003e {\r\n    const result = () =\u003e TestingFramework.expect(42).toBe(42);\r\n\r\n    expect(result).to.not.throw();\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 7,
+            "description": "should pass when the value type matches the expected type",
+            "test": "it('should pass when the value type matches the expected type', (done) =\u003e {\r\n    const result = () =\u003e TestingFramework.expect([]).toBeType('object'); // Arrays are of type 'object' in JavaScript\r\n\r\n    expect(result).to.not.throw();\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 8,
+            "description": "should correctly handle nested describe blocks",
+            "test": "it('should correctly handle nested describe blocks', (done) =\u003e {\r\n    let logs = [];\r\n    const originalConsoleLog = console.log;\r\n    console.log = (message) =\u003e logs.push(message);\r\n\r\n    TestingFramework.describe('Outer Suite', () =\u003e {\r\n      TestingFramework.it('Outer Test', () =\u003e {\r\n        TestingFramework.expect(true).toBe(true);\r\n      });\r\n\r\n      TestingFramework.describe('Inner Suite', () =\u003e {\r\n        TestingFramework.it('Inner Test', () =\u003e {\r\n          TestingFramework.expect(true).toBe(true);\r\n        });\r\n      });\r\n    });\r\n\r\n    expect(logs).to.include('beginning test suite Outer Suite');\r\n    expect(logs).to.include('beginning test case Outer Test');\r\n    expect(logs).to.include('successfully completed test case Outer Test');\r\n    expect(logs).to.include('beginning test suite Inner Suite');\r\n    expect(logs).to.include('beginning test case Inner Test');\r\n    expect(logs).to.include('successfully completed test case Inner Test');\r\n    expect(logs).to.include('successfully completed test suite Inner Suite');\r\n    expect(logs).to.include('successfully completed test suite Outer Suite');\r\n\r\n    console.log = originalConsoleLog;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 9,
+            "description": "Inner Test",
+            "test": "it('should correctly handle nested describe blocks', (done) =\u003e {\r\n    let logs = [];\r\n    const originalConsoleLog = console.log;\r\n    console.log = (message) =\u003e logs.push(message);\r\n\r\n    TestingFramework.describe('Outer Suite', () =\u003e {\r\n      TestingFramework.it('Outer Test', () =\u003e {\r\n        TestingFramework.expect(true).toBe(true);\r\n      });\r\n\r\n      TestingFramework.describe('Inner Suite', () =\u003e {\r\n        TestingFramework.it('Inner Test', () =\u003e {\r\n          TestingFramework.expect(true).toBe(true);\r\n        });\r\n      });\r\n    });\r\n\r\n    expect(logs).to.include('beginning test suite Outer Suite');\r\n    expect(logs).to.include('beginning test case Outer Test');\r\n    expect(logs).to.include('successfully completed test case Outer Test');\r\n    expect(logs).to.include('beginning test suite Inner Suite');\r\n    expect(logs).to.include('beginning test case Inner Test');\r\n    expect(logs).to.include('successfully completed test case Inner Test');\r\n    expect(logs).to.include('successfully completed test suite Inner Suite');\r\n    expect(logs).to.include('successfully completed test suite Outer Suite');\r\n\r\n    console.log = originalConsoleLog;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 10,
+            "description": "should handle asynchronous operations within tests",
+            "test": "it('should handle asynchronous operations within tests', (done) =\u003e {\r\n    TestingFramework.describe('Async Suite', () =\u003e {\r\n      TestingFramework.it('Async Test', (doneInner) =\u003e {\r\n        setTimeout(() =\u003e {\r\n          TestingFramework.expect(true).toBe(true);\r\n          doneInner();\r\n        }, 100);\r\n      });\r\n    });\r\n\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The testing framework must support nesting of describe blocks, allowing for hierarchical structuring of test suites."
+        },
+        {
+            "constraint": "The it function should only be used within a describe block and not standalone."
+        },
+        {
+            "constraint": "The expect function can only be called within an it block."
+        },
+        {
+            "constraint": "Each describe block can contain multiple it blocks, but it blocks cannot be nested within each other."
+        },
+        {
+            "constraint": "Assertion methods (toExist, toBe, toBeType) should throw errors with descriptive messages when the assertion fails."
+        },
+        {
+            "constraint": "The framework should log the beginning and end of each test suite and test case, as well as the result of each test case (pass/fail)."
+        },
+        {
+            "constraint": "Test cases (defined with it) should be independent of each other to avoid side effects and ensure reliable test results."
+        },
+        {
+            "constraint": "The testing framework is not required to handle asynchronous code."
+        },
+        {
+            "constraint": "The framework should not rely on any external libraries or frameworks; it should be implementable with plain JavaScript."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "class TestingFramework {\r\n  static describe(description, callback) {\r\n    // Write your code here for the test suite\r\n  }\r\n\r\n  static it(description, callback) {\r\n    // Write your code here for the test case\r\n  }\r\n\r\n  static expect(actual) {\r\n    // Write your code here for the expectation\r\n  }\r\n}\r\n\r\n// Do not edit below this line\r\nexport default TestingFramework;\r\n",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "class TestingFramework {\r\n  // Static method to define a test suite\r\n  static describe(description, callback) {\r\n    console.log(`beginning test suite ${description}`); // Logs the start of a test suite\r\n\r\n    try {\r\n      callback(); // Executes the callback function containing the test cases\r\n      console.log(`successfully completed test suite ${description}`); // Logs on successful completion of the test suite\r\n    } catch (error) {\r\n      // If an error is thrown within a test case, catch it and log the error details\r\n      const { testCaseName, errorMessage } = error;\r\n      console.error(`failed running test suite ${description} on test case ${testCaseName} with error message ${errorMessage}`);\r\n    }\r\n  }\r\n\r\n  // Static method to define a test case\r\n  static it(description, callback) {\r\n    console.log(`beginning test case ${description}`); // Logs the start of a test case\r\n\r\n    try {\r\n      callback(); // Executes the callback function containing the assertions\r\n      console.log(`successfully completed test case ${description}`); // Logs on successful completion of the test case\r\n    } catch (errorMessage) {\r\n      // If an assertion fails, throw an error object with details for the describe method to catch\r\n      throw { testCaseName: description, errorMessage };\r\n    }\r\n  }\r\n\r\n  // Static method for expectations\r\n  static expect(actual) {\r\n    return new Expectation(actual); // Returns a new Expectation instance initialized with the actual value\r\n  }\r\n}\r\n\r\nclass Expectation {\r\n  constructor(actual) {\r\n    this.actual = actual; // Stores the actual value for comparison\r\n  }\r\n\r\n  // Method to assert existence (not null or undefined)\r\n  toExist() {\r\n    if (this.actual == null) { // Checks if the actual value is null or undefined\r\n      throw `expected value to exist but got ${JSON.stringify(this.actual)}`; // Throws an error if the value does not exist\r\n    }\r\n  }\r\n\r\n  // Method to assert equality\r\n  toBe(expected) {\r\n    if (this.actual !== expected) { // Strictly compares the actual value with the expected value\r\n      throw `expected ${JSON.stringify(this.actual)} to be ${JSON.stringify(expected)}`; // Throws an error if the values are not equal\r\n    }\r\n  }\r\n\r\n  // Method to assert type\r\n  toBeType(type) {\r\n    if (typeof this.actual !== type) { // Compares the type of the actual value with the expected type\r\n      throw `expected ${JSON.stringify(this.actual)} to be of type ${type} but got ${typeof this.actual}`; // Throws an error if the types do not match\r\n    }\r\n  }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe provided solution outlines a simple yet versatile testing framework tailored for frontend development, encapsulating the essential components of defining test suites, test cases, and assertions. Let\u0026#8217;s delve into the explanation of how this framework operates and the rationale behind its design.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eUnderstanding the Framework Components\u003c/h2\u003e\n\u003ch3\u003eThe \u003ccode\u003eTestingFramework\u003c/code\u003e Class\u003c/h3\u003e\n\u003cp\u003eThe \u003ccode\u003eTestingFramework\u003c/code\u003e class serves as the backbone of our testing framework, offering static methods \u003ccode\u003edescribe\u003c/code\u003e, \u003ccode\u003eit\u003c/code\u003e, and \u003ccode\u003eexpect\u003c/code\u003e to define test suites, test cases, and expectations, respectively.\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003e\u003ccode\u003edescribe\u003c/code\u003e Method:\u003c/strong\u003e This method is used to declare a test suite, a collection of related test cases. It takes two arguments: a string describing the test suite and a callback function that encompasses the test cases (\u003ccode\u003eit\u003c/code\u003e blocks). The \u003ccode\u003edescribe\u003c/code\u003e method logs the start of the test suite, executes the callback containing the test cases, and handles any errors thrown by failing test cases, logging detailed error messages for easier debugging.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003e\u003ccode\u003eit\u003c/code\u003e Method:\u003c/strong\u003e Utilized within a \u003ccode\u003edescribe\u003c/code\u003e block, the \u003ccode\u003eit\u003c/code\u003e method specifies an individual test case. Similar to \u003ccode\u003edescribe\u003c/code\u003e, it accepts a descriptive string and a callback function containing assertions. It logs the commencement and completion of the test case, and throws detailed errors upon assertion failures for higher-level error handling by the enclosing \u003ccode\u003edescribe\u003c/code\u003e block.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003e\u003ccode\u003eexpect\u003c/code\u003e Method:\u003c/strong\u003e This method initiates the assertion process by accepting an actual value to be tested against expectations. It returns an instance of the \u003ccode\u003eExpectation\u003c/code\u003e class, equipped with various assertion methods.\u003c/li\u003e\n\u003c/ul\u003e\n\u003ch3\u003eThe \u003ccode\u003eExpectation\u003c/code\u003e Class\u003c/h3\u003e\n\u003cp\u003eThe \u003ccode\u003eExpectation\u003c/code\u003e class provides a suite of assertion methods to validate the outcomes of the test cases.\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003e\u003ccode\u003etoExist\u003c/code\u003e Method:\u003c/strong\u003e Asserts that a value is not \u003ccode\u003enull\u003c/code\u003e or \u003ccode\u003eundefined\u003c/code\u003e, throwing an error with a descriptive message if the assertion fails.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003e\u003ccode\u003etoBe\u003c/code\u003e Method:\u003c/strong\u003e Ensures that the actual value strictly equals the expected value, using the strict equality operator (\u003ccode\u003e===\u003c/code\u003e). An error is thrown if the values do not match.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003e\u003ccode\u003etoBeType\u003c/code\u003e Method:\u003c/strong\u003e Checks the type of the actual value against the expected type, throwing an error if the types differ.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eDesign Considerations\u003c/h2\u003e\n\u003ch3\u003eModularity and Readability\u003c/h3\u003e\n\u003cp\u003eThe framework\u0026#8217;s class-based structure enhances modularity and readability, allowing for a clean separation of concerns. The \u003ccode\u003eTestingFramework\u003c/code\u003e class abstracts the logic for test suite and test case management, while the \u003ccode\u003eExpectation\u003c/code\u003e class focuses solely on assertions. This separation simplifies maintenance and future extensions, such as adding new assertion methods.\u003c/p\u003e\n\u003ch3\u003eError Handling\u003c/h3\u003e\n\u003cp\u003eError handling is a critical aspect of the framework. By throwing errors with descriptive messages upon assertion failures, the framework provides clear feedback that aids in debugging. The structured error propagation ensures that test suites continue running even if individual test cases fail, offering a comprehensive overview of the test results.\u003c/p\u003e\n\u003ch3\u003eExtensibility\u003c/h3\u003e\n\u003cp\u003eThe framework is designed with extensibility in mind. New assertion methods can be easily added to the \u003ccode\u003eExpectation\u003c/code\u003e class to accommodate different testing needs. Moreover, the framework can be enhanced to support asynchronous testing, setup/teardown procedures, and integration with other tools and libraries.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThis simple testing framework exemplifies the core principles of test-driven development (TDD) and offers a foundation upon which more sophisticated testing functionalities can be built. By understanding and applying this framework, developers can ensure the reliability and correctness of their frontend code, ultimately leading to more robust and maintainable web applications.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "App Design"
+    ],
+    "likes": 1,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Build a 27. Testing Framework - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Master frontend interview questions with our guide to building a simple JavaScript testing framework. Learn to create test suites, cases, and assertions to enhance your coding skills and ace your interviews.",
+        "pageURL": "testing-framework",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Build a  Testing Framework  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eImplement a simple testing framework for frontend code that allows you to define test suites and test cases, and provides assertion methods for validating expected outcomes. Write the necessary fun",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe provided solution outlines a simple yet versatile testing framework tailored for frontend development, encapsulating the essential components of defining test suites, test c",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

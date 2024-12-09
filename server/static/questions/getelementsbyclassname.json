@@ -1,0 +1,147 @@
+{
+    "type": "coding",
+    "id": "getelementsbyclassname",
+    "title": "60. getElementsByClassName",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "getelementsbyclassname",
+    "problemStatement": "\u003cp\u003eImplement a function \u003ccode\u003egetElementsByClassName\u003c/code\u003e that mimics the behavior of the native DOM method \u003ccode\u003edocument.getElementsByClassName\u003c/code\u003e. The function should search through a DOM tree starting from a specified root element and collect all elements that have the specified class name.\u003c/p\u003e\n\u003cp\u003eThe function \u003ccode\u003egetElementsByClassName(className, root)\u003c/code\u003e takes two parameters: \u003ccode\u003eclassName\u003c/code\u003e, which is the name of the class to search for, and \u003ccode\u003eroot\u003c/code\u003e, which is the root element of the DOM subtree in which to begin the search. If the root element is not provided, the search should not proceed.\u003c/p\u003e\n\u003cp\u003eThe function should return an array of DOM elements that match the specified class name. If no elements are found, the function should return an empty array. The search should include the root element and should be performed depth-first, ensuring that all descendants of the root are considered.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eExample:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\r\n// Assuming an HTML structure like:\r\n// \u0026lt;div class=\"container\"\u0026gt;\r\n//   \u0026lt;div class=\"item active\"\u0026gt;\u0026lt;/div\u0026gt;\r\n//   \u0026lt;div class=\"item\"\u0026gt;\u0026lt;/div\u0026gt;\r\n//   \u0026lt;div class=\"list\"\u0026gt;\r\n//     \u0026lt;div class=\"item active\"\u0026gt;\u0026lt;/div\u0026gt;\r\n//   \u0026lt;/div\u0026gt;\r\n// \u0026lt;/div\u0026gt;\r\n\r\nconst rootElement = document.querySelector('.container');\r\nconst itemsWithActiveClass = getElementsByClassName('active', rootElement);\r\n\r\n// itemsWithActiveClass should contain the two '.item.active' divs\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis task requires traversing the DOM tree and applying conditional logic to select elements based on their class name, which is a common requirement in many frontend development tasks. Implementing this function will deepen your understanding of DOM manipulation and element selection.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should find all elements with a given class name",
+            "test": "it('should find all elements with a given class name', (done) =\u003e {\r\n    // Create elements in memory\r\n    const root = document.createElement('div');\r\n    root.className = 'test';\r\n    const child1 = document.createElement('div');\r\n    child1.className = 'test';\r\n    const child2 = document.createElement('div');\r\n    child2.className = 'test';\r\n    const grandchild = document.createElement('div');\r\n    grandchild.className = 'test';\r\n    \r\n    // Construct the DOM structure\r\n    child2.appendChild(grandchild);\r\n    root.appendChild(child1);\r\n    root.appendChild(child2);\r\n\r\n    const elements = getElementsByClassName('test', root);\r\n    chai.expect(elements.length).to.equal(4);\r\n    done(); // Signal test completion\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should return an empty array if no elements match",
+            "test": "it('should return an empty array if no elements match', (done) =\u003e {\r\n    // Create a single element in memory\r\n    const root = document.createElement('div');\r\n    root.className = 'test';\r\n\r\n    const elements = getElementsByClassName('nonexistent', root);\r\n    chai.expect(elements).to.be.an('array').that.is.empty;\r\n    done(); // Signal test completion\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should return null if root is not provided",
+            "test": "it('should return null if root is not provided', (done) =\u003e {\r\n    const elements = getElementsByClassName('test', null);\r\n    chai.expect(elements).to.be.null;\r\n    done(); // Signal test completion\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should include the root if it matches the class name",
+            "test": "it('should include the root if it matches the class name', (done) =\u003e {\r\n    // Create a single element in memory\r\n    const root = document.createElement('div');\r\n    root.className = 'test';\r\n\r\n    const elements = getElementsByClassName('test', root);\r\n    chai.expect(elements.length).to.equal(1);\r\n    chai.expect(elements[0]).to.equal(root);\r\n    done(); // Signal test completion\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The search should start from the provided `root` element and include all its descendants. The `root` itself should be considered in the search."
+        },
+        {
+            "constraint": "Only elements that exactly match the specified `className` should be included in the results. Partial matches should not be considered."
+        },
+        {
+            "constraint": "If no `root` element is provided or if the `root` does not have any children, the function should return `null`."
+        },
+        {
+            "constraint": "The function should perform a depth-first search to ensure all elements are considered."
+        },
+        {
+            "constraint": "The returned elements should be in the order they are found during the traversal."
+        },
+        {
+            "constraint": "Assume that class names are not repeated on a single element, i.e., each class name is unique per element."
+        },
+        {
+            "constraint": "The function should handle a large number of nested elements without exceeding the call stack size limit."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function getElementsByClassName(className, root) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default getElementsByClassName;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function getElementsByClassName(className, root) {\r\n  // Check if the root element is provided; if not, return null\r\n  if (!root) return null;\r\n\r\n  // Check if the root has no children; if so, check if root's className matches the target className\r\n  if (!root.children.length) {\r\n    return root.className == className ? [root] : [];\r\n  }\r\n\r\n  // Initialize an empty array to collect matching elements\r\n  const results = [];\r\n\r\n  // Use a stack for depth-first search, starting with the root element\r\n  const stack = [root];\r\n\r\n  // Continue traversing until the stack is empty\r\n  while (stack.length) {\r\n    // Pop the last element from the stack to process it\r\n    const current = stack.pop();\r\n\r\n    // If the current element's className matches the target, add it to the results array\r\n    if (current.className === className) {\r\n      results.push(current);\r\n    }\r\n\r\n    // Add all children of the current element to the stack to check them in subsequent iterations\r\n    stack.push(...current.children);\r\n  }\r\n\r\n  // Return the array of elements that matched the target className\r\n  return results;\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe function \u003ccode\u003egetElementsByClassName\u003c/code\u003e is designed to replicate the functionality of the native DOM method by the same name. It searches through a DOM tree from a specified root element and gathers all elements with a given class name.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHow the Function Works\u003c/h2\u003e\n\u003cp\u003eThe function starts by checking if a root element is provided. Without a root, there\u0026#8217;s nowhere to begin the search, so the function returns \u003ccode\u003enull\u003c/code\u003e. It also checks if the root has any children; if not, and the root\u0026#8217;s class matches the target class name, the root is returned in an array. Otherwise, an empty array is returned, indicating no matches were found.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eTraversing the DOM Tree\u003c/h2\u003e\n\u003cp\u003eFor roots with children, the function employs a stack to facilitate a depth-first search (DFS) of the DOM tree. This method ensures that each branch of the tree is explored to its fullest before moving on to the next branch, making it efficient for this type of search.\u003c/p\u003e\n\u003cp\u003eAs each element is popped from the stack, the function checks if its class name matches the target. If it does, the element is added to the results array. Regardless, all the element\u0026#8217;s children are then added to the stack, ensuring that the entire subtree is eventually examined.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eResults Compilation\u003c/h2\u003e\n\u003cp\u003eOnce the stack is emptied, indicating that the whole tree (or subtree) has been traversed, the function returns the results array. This array contains all elements, including the root (if it matched), that have the target class name.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThis custom \u003ccode\u003egetElementsByClassName\u003c/code\u003e function is a valuable tool for situations where you might need to search parts of the DOM not covered by the native method or when working in non-browser environments that simulate the DOM. Understanding its implementation also provides deeper insights into DOM traversal and manipulation techniques.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "DOM API"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "How to build 60. getElementsByClassName from scratch - Frontend Interview",
+        "pageDescription": "Explore how to create a custom getElementsByClassName function in JavaScript, mastering DOM traversal techniques and enhancing your frontend development skills.",
+        "pageURL": "getelementsbyclassname",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement How to build  getElementsByClassName from scratch  Frontend Interview in Javascript?",
+            "text": "\u003cp\u003eImplement a function \u003ccode\u003egetElementsByClassName\u003c/code\u003e that mimics the behavior of the native DOM method \u003ccode\u003edocument.getElementsByClassName\u003c/code\u003e. The function should search through a DOM tre",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe function \u003ccode\u003egetElementsByClassName\u003c/code\u003e is designed to replicate the functionality of the native DOM method by the same name. It searches through a DOM tree from a spec",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

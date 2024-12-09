@@ -1,0 +1,116 @@
+{
+    "type": "coding",
+    "id": "javascript-observables-reactive-programming-guide",
+    "title": "70. RxJS Observable",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "javascript-observables-reactive-programming-guide",
+    "problemStatement": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eImplementing a Basic Observable Class in JavaScript\u003c/h1\u003e\n\u003cp\u003eIn modern application development, especially in asynchronous event-driven architectures, Observables play a pivotal role. They allow subscribing to a stream of values and receiving notifications for new values, errors, and completion events. This functionality is essential for managing asynchronous data flows and handling events in a decoupled manner.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eObjective\u003c/h2\u003e\n\u003cp\u003eYour task is to implement a basic \u003ccode\u003eObservable\u003c/code\u003e class in JavaScript. This class should enable the subscription to a stream of values, supporting multiple subscribers and handling errors and completion events effectively.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eRequirements\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003eThe class must support multiple subscribers.\u003c/li\u003e\n\u003cli\u003eIt should handle errors and completion events, delivering these notifications exactly once.\u003c/li\u003e\n\u003cli\u003eSubsequent \u003ccode\u003enext\u003c/code\u003e, \u003ccode\u003eerror\u003c/code\u003e, or \u003ccode\u003ecomplete\u003c/code\u003e calls after an error/complete event should be ignored.\u003c/li\u003e\n\u003cli\u003eThe \u003ccode\u003esubscribe\u003c/code\u003e function should accept either an object with \u003ccode\u003enext\u003c/code\u003e, \u003ccode\u003eerror\u003c/code\u003e, and \u003ccode\u003ecomplete\u003c/code\u003e methods or a function treated as the \u003ccode\u003enext\u003c/code\u003e method.\u003c/li\u003e\n\u003cli\u003eThe \u003ccode\u003esubscribe\u003c/code\u003e function returns a Subscription object, allowing unsubscribing from the Observable.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eExample Usage\u003c/h2\u003e\n\u003cp\u003eConsider the following observer object, indicating its purpose through \u003ccode\u003enext\u003c/code\u003e, \u003ccode\u003eerror\u003c/code\u003e, and \u003ccode\u003ecomplete\u003c/code\u003e callbacks:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst observer = {\r\n  next: (value) =\u003e { console.log('Received a value:', value); },\r\n  error: (error) =\u003e { console.log('Encountered an error:', error); },\r\n  complete: () =\u003e { console.log('No more values to receive.'); }\r\n};\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis Observer can be associated with an Observable, which dispatches values, errors, or completion signals to the attached Observer:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst observable = new Observable((subscriber) =\u003e {\r\n  subscriber.next(1);\r\n  subscriber.next(2);\r\n  setTimeout(() =\u003e {\r\n    subscriber.next(3);\r\n    subscriber.next(4);\r\n    subscriber.complete();\r\n  }, 100);\r\n});\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eAttaching the observer to the observable and handling the subscription allows for receiving values and notifications as defined:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst subscription = observable.subscribe(observer);\r\n// Logs:\r\n// Received a value: 1\r\n// Received a value: 2\r\n// (after delay) Received a value: 3\r\n// Received a value: 4\r\n// No more values to receive.\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eFollow-Up Problems\u003c/h2\u003e\n\u003cp\u003eThis Observable and Observer implementation introduces a variety of intriguing follow-up problems and patterns to explore, further expanding on reactive programming concepts.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should emit values to subscribers",
+            "test": "it('should emit values to subscribers', (done) =\u003e {\r\n    const expectedValues = [1, 2, 3];\r\n    let receivedValues = [];\r\n\r\n    const observable = new Observable(observer =\u003e {\r\n      expectedValues.forEach(value =\u003e observer.next(value));\r\n      observer.complete();\r\n    });\r\n\r\n    observable.subscribe({\r\n      next: value =\u003e receivedValues.push(value),\r\n      complete: () =\u003e {\r\n        expect(receivedValues).to.deep.equal(expectedValues);\r\n        done();\r\n      }\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should handle errors",
+            "test": "it('should handle errors', (done) =\u003e {\r\n    const errorMessage = 'Test error';\r\n    \r\n    const observable = new Observable(observer =\u003e {\r\n      observer.error(new Error(errorMessage));\r\n    });\r\n\r\n    observable.subscribe({\r\n      next: () =\u003e {}, // No need for a spy, just an empty function\r\n      error: error =\u003e {\r\n        expect(error.message).to.equal(errorMessage);\r\n        done();\r\n      },\r\n      complete: () =\u003e {} // No need for a spy, just an empty function\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should complete observable sequences",
+            "test": "it('should complete observable sequences', (done) =\u003e {\r\n    let isCompleteCalled = false;\r\n\r\n    const observable = new Observable(observer =\u003e {\r\n      observer.complete();\r\n    });\r\n\r\n    observable.subscribe({\r\n      complete: () =\u003e {\r\n        isCompleteCalled = true;\r\n        done(); // Complete the test when complete is called\r\n      }\r\n    });\r\n\r\n    // No need to check after, as the done() in complete callback will suffice.\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "**Support for Multiple Subscribers**: The Observable should be able to handle multiple subscribers, each with their own set of `next`, `error`, and `complete` callbacks."
+        },
+        {
+            "constraint": "**Single Delivery of Error and Completion**: The Observable must ensure that `error` and `complete` notifications are delivered at most once to each subscriber. After an Observable emits an `error` or `complete` notification, it should not emit any further notifications."
+        },
+        {
+            "constraint": "**No Further Notifications After Unsubscription**: Once a subscriber has unsubscribed, it should not receive any further notifications, regardless of whether the Observable emits more values or notifications."
+        },
+        {
+            "constraint": "**Optional Callbacks**: Not all subscribers will necessarily provide `next`, `error`, and `complete` callbacks. The implementation should account for this by treating any function passed as a subscriber as the `next` callback and gracefully handling the absence of `error` and `complete` methods."
+        },
+        {
+            "constraint": "**Immediate Subscription Side Effects**: The subscription logic executed within the Observable's constructor or setup function may have side effects (e.g., emitting values immediately upon subscription). The implementation should ensure these side effects are properly handled."
+        },
+        {
+            "constraint": "**Resource Cleanup**: The Observable should provide a mechanism for resource cleanup upon unsubscription, especially for Observables that encapsulate resources like web sockets, intervals, or other subscriptions."
+        },
+        {
+            "constraint": "**Error Handling**: The Observable should have a robust error handling mechanism, allowing errors to be caught and processed via the `error` callback of subscribers."
+        },
+        {
+            "constraint": "**Completion Signal**: Observables must have a way to signal completion to subscribers, after which no more values will be emitted."
+        },
+        {
+            "constraint": "**Immutable Subscription Objects**: The subscription object returned by the `subscribe` method should be immutable, ensuring that subscribers cannot directly modify the state of the subscription."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "class Observable {\r\n   // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default Observable;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "class Observable {\r\n  constructor(subscriberFunction) {\r\n    this.subscriberFunction = subscriberFunction;\r\n    this.subscribers = [];\r\n  }\r\n\r\n  subscribe(observer) {\r\n    const safeObserver = this.wrapObserver(observer);\r\n    this.subscribers.push(safeObserver);\r\n    \r\n    // Immediately execute subscriber function with the wrapped observer\r\n    this.subscriberFunction(safeObserver);\r\n\r\n    // Return an object with an unsubscribe method\r\n    return {\r\n      unsubscribe: () =\u003e {\r\n        const index = this.subscribers.indexOf(safeObserver);\r\n        if (index !== -1) {\r\n          this.subscribers.splice(index, 1);\r\n          safeObserver.isUnsubscribed = true;\r\n        }\r\n      }\r\n    };\r\n  }\r\n\r\n  wrapObserver(observer) {\r\n    const defaultObserver = {\r\n      next: () =\u003e {},\r\n      error: () =\u003e {},\r\n      complete: () =\u003e {}\r\n    };\r\n\r\n    let isFunction = typeof observer === 'function';\r\n    let safeObserver = isFunction ? { ...defaultObserver, next: observer } : { ...defaultObserver, ...observer };\r\n    safeObserver.isUnsubscribed = false;\r\n\r\n    return safeObserver;\r\n  }\r\n\r\n  // Helper method for emitting values to all subscribers\r\n  emit(value) {\r\n    this.subscribers.forEach(subscriber =\u003e {\r\n      if (!subscriber.isUnsubscribed) {\r\n        subscriber.next(value);\r\n      }\r\n    });\r\n  }\r\n\r\n  // Helper method for signaling an error to all subscribers\r\n  error(err) {\r\n    this.subscribers.forEach(subscriber =\u003e {\r\n      if (!subscriber.isUnsubscribed) {\r\n        subscriber.error(err);\r\n        subscriber.isUnsubscribed = true; // Stop sending values after an error\r\n      }\r\n    });\r\n    this.subscribers = []; // Clear subscribers after an error\r\n  }\r\n\r\n  // Helper method for signaling completion to all subscribers\r\n  complete() {\r\n    this.subscribers.forEach(subscriber =\u003e {\r\n      if (!subscriber.isUnsubscribed) {\r\n        subscriber.complete();\r\n        subscriber.isUnsubscribed = true; // Mark as complete\r\n      }\r\n    });\r\n    this.subscribers = []; // Clear subscribers after completion\r\n  }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eUnderstanding the Observable Class in JavaScript\u003c/h1\u003e\n\u003cp\u003eThis guide provides a comprehensive overview of a basic Observable implementation in JavaScript, designed to introduce developers to the core concepts of reactive programming and how to work with asynchronous data streams.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eCore Implementation\u003c/h2\u003e\n\u003cp\u003eThe Observable class allows the creation of objects that emit a sequence of values over time to subscribed observers. Observers can react to these values, errors, or a completion signal, enabling a reactive programming model.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003eclass Observable {\r\n  constructor(subscriberFunction) {\r\n    this.subscriberFunction = subscriberFunction;\r\n    this.subscribers = [];\r\n  }\r\n  subscribe(observer) { ... }\r\n  emit(value) { ... }\r\n  error(err) { ... }\r\n  complete() { ... }\r\n}\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe constructor accepts a subscriber function that defines how the observable behaves. The \u003ccode\u003esubscribe\u003c/code\u003e method allows observers to subscribe, and the observable can \u003ccode\u003eemit\u003c/code\u003e values, \u003ccode\u003eerror\u003c/code\u003e events, or a \u003ccode\u003ecomplete\u003c/code\u003e signal.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eEnhancements and Operators\u003c/h2\u003e\n\u003cp\u003eExtending the Observable with operators like \u003ccode\u003emap\u003c/code\u003e and \u003ccode\u003efilter\u003c/code\u003e allows for transforming or filtering the data stream, respectively. These operators return new Observables, enabling a chain of transformations.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Applications\u003c/h2\u003e\n\u003cp\u003eObservables are versatile and can be used for handling a variety of asynchronous programming scenarios, including:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eWebSockets for real-time data streams.\u003c/li\u003e\n\u003cli\u003eHTTP Requests, offering more control than traditional promises.\u003c/li\u003e\n\u003cli\u003eState management within applications, facilitating a reactive data flow.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe Observable class forms the backbone of reactive programming in JavaScript, offering a powerful model for dealing with asynchronous data. By understanding and implementing Observables, developers can write cleaner, more maintainable code that efficiently handles dynamic data streams.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "70. RxJS Observable - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Dive into JavaScript Observables for reactive programming. Learn to handle asynchronous data streams with our guide.",
+        "pageURL": "javascript-observables-reactive-programming-guide",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  RxJS Observable  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eImplementing a Basic Observable Class in JavaScript\u003c/h1\u003e\n\u003cp\u003eIn modern application development, especially in asynchronous event-driven architectures, Observables play a pivotal",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eUnderstanding the Observable Class in JavaScript\u003c/h1\u003e\n\u003cp\u003eThis guide provides a comprehensive overview of a basic Observable implementation in JavaScript, designed to introduce ",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

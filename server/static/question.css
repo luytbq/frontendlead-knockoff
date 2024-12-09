@@ -1,0 +1,21 @@
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+#tiny-editor {
+    min-height: 450px;
+    font-family: monospace;
+    font-size: 1rem;
+}
+
+#test-cases {
+    min-height: 100px;
+}
+
+@media (min-width: 640px) {
+    .main-content {
+        grid-template-columns: 1fr 1fr;
+    }
+}

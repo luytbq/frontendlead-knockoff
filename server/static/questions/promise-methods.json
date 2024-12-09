@@ -1,0 +1,133 @@
+{
+    "type": "coding",
+    "id": "promise-methods",
+    "title": "66. Promise Methods",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "promise-methods",
+    "problemStatement": "\u003cp\u003eExtend the Promise object in JavaScript by implementing custom methods that mimic the functionality of existing Promise methods. Specifically, you are required to create the following methods:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003ccode\u003ePromise.myRace\u003c/code\u003e: This method should mimic the behavior of \u003ccode\u003ePromise.race\u003c/code\u003e, returning a promise that resolves or rejects as soon as one of the promises in the input array does, reflecting that promise\u0026#8217;s outcome.\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003ePromise.myAny\u003c/code\u003e: Similar to \u003ccode\u003ePromise.any\u003c/code\u003e, this method should return a promise that resolves as soon as any one of the input promises resolves, with the value of the resolved promise. If all input promises are rejected, it should reject with an aggregate error.\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003ePromise.myAll\u003c/code\u003e: This method should emulate \u003ccode\u003ePromise.all\u003c/code\u003e, returning a promise that resolves when all of the input promises have resolved, with an array of the results, or rejects as soon as one of the input promises rejects.\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003ePromise.myAllSettled\u003c/code\u003e: Inspired by \u003ccode\u003ePromise.allSettled\u003c/code\u003e, this method should return a promise that resolves after all input promises have settled (resolved or rejected), with an array of objects that each describe the outcome of each promise.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eFor example, using \u003ccode\u003ePromise.myRace\u003c/code\u003e, you can race multiple promises against each other and act upon the first to settle, whether it resolves or rejects:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003ePromise.myRace([Promise.resolve('First'), Promise.reject('Second'), Promise.resolve('Third')])\r\n  .then(value =\u0026gt; console.log(value))\r\n  .catch(error =\u0026gt; console.error(error));\r\n// Expected output: \"First\"\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eImplementing these methods will give you deeper insights into the workings of promises in JavaScript, enhancing your understanding of asynchronous programming patterns.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should resolve with the value of the first resolved promise",
+            "test": "it('should resolve with the value of the first resolved promise', (done) =\u003e {\r\n    const promises = [new Promise(resolve =\u003e setTimeout(() =\u003e resolve(1), 300)),\r\n                      new Promise(resolve =\u003e setTimeout(() =\u003e resolve(2), 200)),\r\n                      new Promise(resolve =\u003e setTimeout(() =\u003e resolve(3), 100))];\r\n\r\n    CustomPromiseMethods.myRace(promises).then(value =\u003e {\r\n      expect(value).to.equal(3);\r\n      done();\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should reject with the reason of the first rejected promise",
+            "test": "it('should reject with the reason of the first rejected promise', (done) =\u003e {\r\n    const promises = [new Promise((_, reject) =\u003e setTimeout(() =\u003e reject(new Error('error')), 100)),\r\n                      new Promise(resolve =\u003e setTimeout(() =\u003e resolve(2), 200))];\r\n\r\n    CustomPromiseMethods.myRace(promises).catch(error =\u003e {\r\n      expect(error.message).to.equal('error');\r\n      done();\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should resolve with the value of the first resolved promise",
+            "test": "it('should resolve with the value of the first resolved promise', (done) =\u003e {\r\n    const promises = [Promise.reject(new Error('error1')),\r\n                      Promise.resolve(2),\r\n                      Promise.resolve(3)];\r\n\r\n    CustomPromiseMethods.myAny(promises).then(value =\u003e {\r\n      expect(value).to.equal(2);\r\n      done();\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should reject if all promises are rejected",
+            "test": "it('should reject if all promises are rejected', (done) =\u003e {\r\n    const promises = [Promise.reject(new Error('error1')),\r\n                      Promise.reject(new Error('error2'))];\r\n\r\n    CustomPromiseMethods.myAny(promises).catch(_ =\u003e {\r\n      done();\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should resolve with an array of values if all promises resolve",
+            "test": "it('should resolve with an array of values if all promises resolve', (done) =\u003e {\r\n    const promises = [Promise.resolve(1), Promise.resolve(2)];\r\n\r\n    CustomPromiseMethods.myAll(promises).then(values =\u003e {\r\n      expect(values).to.deep.equal([1, 2]);\r\n      done();\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 5,
+            "description": "should reject if any promise is rejected",
+            "test": "it('should reject if any promise is rejected', (done) =\u003e {\r\n    const promises = [Promise.resolve(1), Promise.reject(new Error('error'))];\r\n\r\n    CustomPromiseMethods.myAll(promises).catch(error =\u003e {\r\n      expect(error.message).to.equal('error');\r\n      done();\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Input must be an array of Promises for all methods (myRace, myAny, myAll, myAllSettled)."
+        },
+        {
+            "constraint": "Each method returns a new Promise."
+        },
+        {
+            "constraint": "Promise.myRace: Resolves or rejects with the outcome of the first settled Promise."
+        },
+        {
+            "constraint": "Promise.myAny: Resolves with the first resolved Promise; rejects with \"all promises rejected\" if all Promises reject."
+        },
+        {
+            "constraint": "Promise.myAll: Resolves with an array of resolved values if all Promises resolve; rejects with the first rejection reason if any Promise rejects."
+        },
+        {
+            "constraint": "Promise.myAllSettled: Resolves with an array of objects detailing the outcomes of all Promises, regardless of their resolution or rejection."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "class CustomPromiseMethods {\r\n  static myRace(promises) {\r\n    // Implement the custom 'myRace' method\r\n  }\r\n\r\n  static myAny(promises) {\r\n    // Implement the custom 'myAny' method\r\n  }\r\n\r\n  static myAll(promises) {\r\n    // Implement the custom 'myAll' method\r\n  }\r\n\r\n  static myAllSettled(promises) {\r\n    // Implement the custom 'myAllSettled' method\r\n  }\r\n}\r\n\r\n// Do not edit below this line\r\nexport default CustomPromiseMethods;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "class CustomPromiseMethods {\r\n  // Custom implementation of Promise.race\r\n  static myRace(promises) {\r\n    return new Promise((resolve, reject) =\u003e {\r\n      // Loop through each promise in the input array\r\n      promises.forEach(promise =\u003e {\r\n        // Attach then and catch handlers to resolve or reject the outer promise\r\n        // as soon as one of the input promises settles\r\n        promise.then(resolve).catch(reject);\r\n      });\r\n    });\r\n  }\r\n\r\n  // Custom implementation of Promise.any\r\n  static myAny(promises) {\r\n    return new Promise((resolve, reject) =\u003e {\r\n      let rejectedPromises = 0;\r\n      promises.forEach(promise =\u003e {\r\n        promise.then(resolve).catch(_ =\u003e {\r\n          rejectedPromises++;\r\n          // If all promises are rejected, reject the outer promise\r\n          if (rejectedPromises === promises.length) {\r\n            reject('all promises rejected');\r\n          }\r\n        });\r\n      });\r\n    });\r\n  }\r\n\r\n  // Custom implementation of Promise.all\r\n  static myAll(promises) {\r\n    return new Promise((resolve, reject) =\u003e {\r\n      let resolvedCount = 0;\r\n      let resolvedValues = new Array(promises.length);\r\n      promises.forEach((promise, index) =\u003e {\r\n        promise.then(value =\u003e {\r\n          resolvedValues[index] = value;\r\n          resolvedCount++;\r\n          // If all promises are resolved, resolve the outer promise with an array of values\r\n          if (resolvedCount === promises.length) {\r\n            resolve(resolvedValues);\r\n          }\r\n        }).catch(reject); // If any promise is rejected, reject the outer promise\r\n      });\r\n    });\r\n  }\r\n\r\n  // Custom implementation of Promise.allSettled\r\n  static myAllSettled(promises) {\r\n    return new Promise(resolve =\u003e {\r\n      let settledCount = 0;\r\n      let settledResults = new Array(promises.length);\r\n      promises.forEach((promise, index) =\u003e {\r\n        promise.then(value =\u003e {\r\n          settledResults[index] = { status: 'fulfilled', value };\r\n        }).catch(reason =\u003e {\r\n          settledResults[index] = { status: 'rejected', reason };\r\n        }).finally(() =\u003e {\r\n          settledCount++;\r\n          // If all promises have settled, resolve the outer promise with an array of results\r\n          if (settledCount === promises.length) {\r\n            resolve(settledResults);\r\n          }\r\n        });\r\n      });\r\n    });\r\n  }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003eThe provided solution introduces custom implementations for four methods akin to the native Promise methods: \u003ccode\u003emyRace\u003c/code\u003e, \u003ccode\u003emyAny\u003c/code\u003e, \u003ccode\u003emyAll\u003c/code\u003e, and \u003ccode\u003emyAllSettled\u003c/code\u003e. These methods are designed to offer nuanced control over groups of asynchronous operations, demonstrating the versatility and power of promises in JavaScript.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePromise.myRace\u003c/h2\u003e\n\u003cp\u003eThis method emulates \u003ccode\u003ePromise.race\u003c/code\u003e by returning a promise that settles as soon as the first promise in the provided array settles. It demonstrates the concept of racing promises against each other, where the fastest outcome (resolve or reject) determines the result.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePromise.myAny\u003c/h2\u003e\n\u003cp\u003eSimilar to \u003ccode\u003ePromise.any\u003c/code\u003e, \u003ccode\u003emyAny\u003c/code\u003e returns a promise that resolves with the value of the first successfully resolved promise from the input array. If all the input promises are rejected, \u003ccode\u003emyAny\u003c/code\u003e rejects with an error indicating that all promises were rejected. This method showcases handling situations where success is defined by the resolution of any one of multiple asynchronous tasks.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePromise.myAll\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003emyAll\u003c/code\u003e method mirrors the behavior of \u003ccode\u003ePromise.all\u003c/code\u003e, returning a promise that resolves when every promise in the input array resolves, or rejects immediately when any one of them rejects. This method is crucial for scenarios where the completion of all tasks is necessary before proceeding.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePromise.myAllSettled\u003c/h2\u003e\n\u003cp\u003eReplicating \u003ccode\u003ePromise.allSettled\u003c/code\u003e, \u003ccode\u003emyAllSettled\u003c/code\u003e returns a promise that resolves after all the input promises have settled, regardless of their individual outcomes. The resolution value is an array that describes the result of each promise, providing a comprehensive view of all outcomes. This method is particularly useful for handling multiple asynchronous operations where the completion of each is significant, irrespective of success or failure.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThrough the implementation of these methods, developers gain a deeper understanding of asynchronous operations and promise handling in JavaScript. These custom promise methods not only serve as educational tools but also as practical solutions for complex asynchronous patterns in real-world applications.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook",
+        "LinkedIn",
+        "ClickUp"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Build Promise Methods - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Dive deep into custom Promise methods in JavaScript with our expert guide. Learn how to implement myRace, myAny, myAll, and myAllSettled to control asynchronous operations like a pro, enhancing the efficiency and resilience of your web applications.",
+        "pageURL": "promise-methods",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Build Promise Methods  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eExtend the Promise object in JavaScript by implementing custom methods that mimic the functionality of existing Promise methods. Specifically, you are required to create the following methods:\u003c/p\u003e\n",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eThe provided solution introduces custom implementations for four methods akin to the native Promise methods: \u003ccode\u003emyRace\u003c/code\u003e, \u003ccode\u003emyAny\u003c/code\u003e, \u003ccode\u003emyAll\u003c/code\u003e, and \u003ccode\u003em",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

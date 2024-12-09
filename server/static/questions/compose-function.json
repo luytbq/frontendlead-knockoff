@@ -1,0 +1,144 @@
+{
+    "type": "coding",
+    "id": "compose-function",
+    "title": "43. Compose Function",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "compose-function",
+    "problemStatement": "\u003cp\u003eYou are tasked with implementing a \u003ccode\u003ecompose\u003c/code\u003e function that combines multiple single-argument functions into a single function. This composite function should apply the given functions in sequence to an initial value, transforming it step by step.\u003c/p\u003e\n\u003cp\u003eGiven three functions \u003ccode\u003ea\u003c/code\u003e, \u003ccode\u003eb\u003c/code\u003e, and \u003ccode\u003ec\u003c/code\u003e, each performing a distinct mathematical operation on an input value, your \u003ccode\u003ecompose\u003c/code\u003e function should enable these functions to be applied in the order they are provided.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eExample:\u003c/strong\u003e\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eFunction \u003ccode\u003ea\u003c/code\u003e: Multiplies the input by 4.\u003c/li\u003e\n\u003cli\u003eFunction \u003ccode\u003eb\u003c/code\u003e: Adds 4 to the input.\u003c/li\u003e\n\u003cli\u003eFunction \u003ccode\u003ec\u003c/code\u003e: Subtracts 1 from the input.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eStarting with an initial value of 5, the \u003ccode\u003ecompose\u003c/code\u003e function should return the final result after sequentially applying these functions. Therefore, \u003ccode\u003ecompose(a, b, c)(5)\u003c/code\u003e should yield 23, following these steps:\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003eApply \u003ccode\u003ea\u003c/code\u003e to 5: \u003ccode\u003ea(5) = 5 * 4 = 20\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003eApply \u003ccode\u003eb\u003c/code\u003e to 20: \u003ccode\u003eb(20) = 20 + 4 = 24\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003eApply \u003ccode\u003ec\u003c/code\u003e to 24: \u003ccode\u003ec(24) = 24 - 1 = 23\u003c/code\u003e\u003c/li\u003e\n\u003c/ol\u003e\n\u003cp\u003eThis example illustrates the transformation process, demonstrating how each function modifies the value passed through the composition.\u003c/p\u003e\n\u003cp\u003eYour implementation should allow for any number of functions to be composed, providing a flexible and powerful tool for function chaining and value transformation.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should correctly compose multiple functions and apply them to an initial value",
+            "test": "it('should correctly compose multiple functions and apply them to an initial value', (done) =\u003e {\r\n    const double = x =\u003e x * 2;\r\n    const increment = x =\u003e x + 1;\r\n    const square = x =\u003e x * x;\r\n\r\n    const composedFunc = compose(square, increment, double);\r\n    const result = composedFunc(5); // ((5 * 2) + 1)^2 = 121\r\n    expect(result).to.equal(121);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should handle the composition of a single function",
+            "test": "it('should handle the composition of a single function', (done) =\u003e {\r\n    const square = x =\u003e x * x;\r\n\r\n    const composedFunc = compose(square);\r\n    const result = composedFunc(4); // 4^2 = 16\r\n    expect(result).to.equal(16);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should return the initial value if no functions are composed",
+            "test": "it('should return the initial value if no functions are composed', (done) =\u003e {\r\n    const composedFunc = compose();\r\n    const result = composedFunc(10); // Just returns 10\r\n    expect(result).to.equal(10);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should handle functions that do not return a value",
+            "test": "it('should handle functions that do not return a value', (done) =\u003e {\r\n    const double = x =\u003e x * 2;\r\n    const noReturn = x =\u003e { console.log(x); }; // Does not return a value\r\n    const increment = x =\u003e x + 1;\r\n\r\n    const composedFunc = compose(increment, noReturn, double);\r\n    const result = composedFunc(5); // (5 * 2) is logged, undefined passed to increment, resulting in NaN\r\n    expect(result).to.be.NaN;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The compose function must accept an arbitrary number of functions as its arguments. Each of these functions will take a single numeric argument and return a numeric result."
+        },
+        {
+            "constraint": "The compose function should return a new function that, when called with an initial value, applies all the composed functions to this value in the order they were passed to compose."
+        },
+        {
+            "constraint": "Each function in the composition should be applied to the result of the previous function, starting with the initial value passed to the final composed function."
+        },
+        {
+            "constraint": "The initial value will always be a numeric value."
+        },
+        {
+            "constraint": "The composition should work correctly for any number of functions passed to compose, including the edge case where no functions are passed."
+        },
+        {
+            "constraint": "Functions will be applied from right to left, meaning the last function passed to compose will be applied first, and the first function will be applied last."
+        },
+        {
+            "constraint": "The compose function must handle cases where some of the functions in the composition do not return a value (i.e., return undefined). In such cases, the next function in the sequence should receive undefined as its argument."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function compose(...funcs) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default compose;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// Implement the compose function to combine the provided functions\r\nfunction compose(...funcs) {\r\n  return function(initialValue) {\r\n    // Use reduceRight to iterate over the functions from right to left,\r\n    // applying each function to the result of the previous one.\r\n    return funcs.reduceRight((accumulatedValue, currentFunc) =\u003e {\r\n      // Call the current function with the accumulated value and return the result.\r\n      // The accumulated value is initially the initialValue and then the result of the last function applied.\r\n      return currentFunc(accumulatedValue);\r\n    }, initialValue); // initialValue is the initial value of the accumulation.\r\n  };\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe \u003ccode\u003ecompose\u003c/code\u003e function is a cornerstone in functional programming, allowing developers to create a pipeline of functions that are applied in sequence to transform a given value. This technique is particularly powerful for creating readable and maintainable code by chaining together simple, single-purpose functions.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHow Compose Works\u003c/h2\u003e\n\u003cp\u003eAt its core, the \u003ccode\u003ecompose\u003c/code\u003e function takes a series of functions as arguments and returns a new function. This returned function, when invoked with an initial value, applies the original functions in reverse order, passing the result of each function as the argument to the next.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eImplementation Overview\u003c/h2\u003e\n\u003cp\u003eIn the provided implementation, the \u003ccode\u003ecompose\u003c/code\u003e function utilizes the \u003ccode\u003ereduceRight\u003c/code\u003e method to apply the functions in the correct order. The \u003ccode\u003ereduceRight\u003c/code\u003e method is ideal for this purpose because it starts the reduction from the last element of the array, aligning with the right-to-left function application in composition.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eExample Walkthrough\u003c/h2\u003e\n\u003cp\u003eConsider the functions \u003ccode\u003edouble\u003c/code\u003e, \u003ccode\u003eincrement\u003c/code\u003e, and \u003ccode\u003esquare\u003c/code\u003e defined as follows:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003ccode\u003edouble(x) = x * 2\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003eincrement(x) = x + 1\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003esquare(x) = x * x\u003c/code\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eComposing these functions with \u003ccode\u003ecompose(square, increment, double)\u003c/code\u003e and applying them to an initial value of 5, the process unfolds as:\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003eThe \u003ccode\u003edouble\u003c/code\u003e function is applied first, resulting in 10.\u003c/li\u003e\n\u003cli\u003eThe \u003ccode\u003eincrement\u003c/code\u003e function is applied next, resulting in 11.\u003c/li\u003e\n\u003cli\u003eFinally, the \u003ccode\u003esquare\u003c/code\u003e function is applied, resulting in 121.\u003c/li\u003e\n\u003c/ol\u003e\n\u003cp\u003eThe final result of this composition is 121, demonstrating the sequential application of the functions.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003ecompose\u003c/code\u003e function exemplifies the elegance and power of functional programming. By breaking down complex transformations into a series of simpler functions, developers can write more understandable and maintainable code, ultimately leading to cleaner and more efficient software development practices.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Algorithmic"
+    ],
+    "likes": 1,
+    "dislikes": null,
+    "videoLink": "",
+    "company": null,
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "43. Compose Function - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Unlock the power of function chaining in JavaScript with the compose function. Learn how to elegantly apply multiple functions in sequence to transform values for cleaner, more maintainable code.",
+        "pageURL": "compose-function",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Compose Function  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eYou are tasked with implementing a \u003ccode\u003ecompose\u003c/code\u003e function that combines multiple single-argument functions into a single function. This composite function should apply the given functions in",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe \u003ccode\u003ecompose\u003c/code\u003e function is a cornerstone in functional programming, allowing developers to create a pipeline of functions that are applied in sequence to transform a g",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

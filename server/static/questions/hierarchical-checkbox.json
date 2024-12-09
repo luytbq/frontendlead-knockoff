@@ -1,0 +1,91 @@
+{
+    "type": "vanilla",
+    "id": "hierarchical-checkbox",
+    "title": "61. Hierarchical Checkbox",
+    "difficulty": [
+        "Hard"
+    ],
+    "link": "hierarchical-checkbox",
+    "problemStatement": "\u003cp\u003eImplement a JavaScript solution to manage checkboxes in a hierarchical structure, ensuring the following functionality:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eWhen a parent checkbox is checked, all its child checkboxes should also be checked.\u003c/li\u003e\n\u003cli\u003eWhen a parent checkbox is unchecked, all its child checkboxes should be unchecked.\u003c/li\u003e\n\u003cli\u003eIf some, but not all, child checkboxes are checked, the parent checkbox should be in an indeterminate state.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThis problem presents a common scenario in user interfaces where options are nested within categories and subcategories, requiring a coherent and intuitive interaction pattern. The hierarchical structure of checkboxes can represent various real-world scenarios such as selecting features in a product, permissions in a software application, or categories in a content management system.\u003c/p\u003e\n\u003cp\u003eFor example, consider the following HTML structure:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\u0026lt;h1\u0026gt;Indeterminate Checkboxes\u0026lt;/h1\u0026gt;\r\n\u0026lt;ul\u0026gt;\r\n    \u0026lt;li\u0026gt;\r\n        \u0026lt;input type=\"checkbox\" name=\"tall\" id=\"tall\"\u0026gt;\r\n        \u0026lt;label for=\"tall\"\u0026gt;Tall Things\u0026lt;/label\u0026gt;\r\n        \u0026lt;ul\u0026gt;\r\n            \u0026lt;li\u0026gt;\r\n                \u0026lt;input type=\"checkbox\" name=\"tall-1\" id=\"tall-1\"\u0026gt;\r\n                \u0026lt;label for=\"tall-1\"\u0026gt;Buildings\u0026lt;/label\u0026gt;\r\n            \u0026lt;/li\u0026gt;\r\n            \u0026lt;li\u0026gt;\r\n                \u0026lt;input type=\"checkbox\" name=\"tall-2\" id=\"tall-2\"\u0026gt;\r\n                \u0026lt;label for=\"tall-2\"\u0026gt;Giants\u0026lt;/label\u0026gt;\r\n                \u0026lt;ul\u0026gt;\r\n                    \u0026lt;li\u0026gt;\r\n                        \u0026lt;input type=\"checkbox\" name=\"tall-2-1\" id=\"tall-2-1\"\u0026gt;\r\n                        \u0026lt;label for=\"tall-2-1\"\u0026gt;Andre\u0026lt;/label\u0026gt;\r\n                    \u0026lt;/li\u0026gt;\r\n                    \u0026lt;li\u0026gt;\r\n                        \u0026lt;input type=\"checkbox\" name=\"tall-2-2\" id=\"tall-2-2\"\u0026gt;\r\n                        \u0026lt;label for=\"tall-2-2\"\u0026gt;Paul Bunyan\u0026lt;/label\u0026gt;\r\n                    \u0026lt;/li\u0026gt;\r\n                \u0026lt;/ul\u0026gt;\r\n            \u0026lt;/li\u0026gt;\r\n            ...\r\n        \u0026lt;/ul\u0026gt;\r\n    \u0026lt;/li\u0026gt;\r\n    ...\r\n\u0026lt;/ul\u0026gt;\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eIn this structure, selecting \u0026#8220;Tall Things\u0026#8221; should automatically select \u0026#8220;Buildings,\u0026#8221; \u0026#8220;Giants,\u0026#8221; and all nested options under \u0026#8220;Giants.\u0026#8221; Conversely, deselecting any child option should update the parent\u0026#8217;s state to reflect that not all children are selected, thus showing the parent in an indeterminate state.\u003c/p\u003e\n\u003cp\u003eThis challenge requires a thoughtful approach to event handling and DOM traversal, ensuring that the state of each checkbox is accurately reflected throughout the hierarchy. As you work through this problem, consider the implications of each interaction, aiming for a solution that is both efficient and intuitive for the user.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should uncheck all child checkboxes when a parent is unchecked",
+            "test": "it('should uncheck all child checkboxes when a parent is unchecked', (done) =\u003e {\r\n    function createCheckboxHierarchy() {\r\n      const container = document.createElement('div');\r\n\r\n      // Create parent checkbox\r\n      const parentCheckbox = document.createElement('input');\r\n      parentCheckbox.type = 'checkbox';\r\n      parentCheckbox.id = 'parent';\r\n      container.appendChild(parentCheckbox);\r\n\r\n      // Create child list\r\n      const childList = document.createElement('ul');\r\n      container.appendChild(childList);\r\n\r\n      // Create child checkboxes\r\n      for (let i = 1; i \u003c= 3; i++) {\r\n        const childItem = document.createElement('li');\r\n        const childCheckbox = document.createElement('input');\r\n        childCheckbox.type = 'checkbox';\r\n        childCheckbox.id = `child-${i}`;\r\n        childItem.appendChild(childCheckbox);\r\n        childList.appendChild(childItem);\r\n      }\r\n\r\n      document.body.appendChild(container);\r\n      // Attach event listeners to ensure updateCheckboxHierarchy is called\r\n      parentCheckbox.addEventListener('change', updateCheckboxHierarchy);\r\n      Array.from(childList.querySelectorAll('input[type=\"checkbox\"]')).forEach(childCheckbox =\u003e {\r\n        childCheckbox.addEventListener('change', updateCheckboxHierarchy);\r\n      });\r\n      return { parentCheckbox, childCheckboxes: Array.from(childList.querySelectorAll('input[type=\"checkbox\"]')) };\r\n    }\r\n    const { parentCheckbox, childCheckboxes } = createCheckboxHierarchy();\r\n    parentCheckbox.checked = false;\r\n    parentCheckbox.dispatchEvent(new Event('change'));\r\n\r\n    const allChildrenUnchecked = childCheckboxes.every(checkbox =\u003e !checkbox.checked);\r\n    expect(allChildrenUnchecked).to.be.true;\r\n    document.body.innerHTML = '';    \r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The HTML structure will consist of nested unordered lists (\u003cul\u003e) with list items (\u003cli\u003e) containing checkboxes (\u003cinput type=\"checkbox\"\u003e). Each list item can contain another unordered list to represent a hierarchy."
+        },
+        {
+            "constraint": "The depth of the nested lists will not exceed 5 levels to ensure manageability and performance. Each checkbox might be associated with a label for better usability."
+        },
+        {
+            "constraint": "The JavaScript solution must be compatible with modern browsers (latest versions of Chrome, Firefox, Safari, and Edge)."
+        },
+        {
+            "constraint": "The solution should handle dynamically added checkboxes and hierarchies without the need for additional initialization."
+        },
+        {
+            "constraint": "Performance: The solution should minimize DOM manipulations and event listeners to ensure responsiveness, especially for large structures."
+        },
+        {
+            "constraint": "The solution must not use any external libraries or frameworks; it should be implemented in vanilla JavaScript."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function updateCheckboxHierarchy() {\r\n    // Write your code here\r\n}\r\n\r\n// Attach event listeners to existing checkboxes\r\ndocument.querySelectorAll('input[type=\"checkbox\"]').forEach(checkbox =\u003e {\r\n    checkbox.addEventListener('change', updateCheckboxHierarchy);\r\n});\r\n\r\n// Do not edit below this line\r\nexport default updateCheckboxHierarchy;",
+    "starterHTMLCode": "\u003ch1\u003eIndeterminate Checkboxes\u003c/h1\u003e\r\n\u003cul\u003e\r\n\t\u003cli\u003e\r\n\t\t\u003cinput type=\"checkbox\" name=\"tall\" id=\"tall\"\u003e\r\n\t\t\u003clabel for=\"tall\"\u003eTall Things\u003c/label\u003e\r\n\t\t\u003cul\u003e\r\n\t\t\t\u003cli\u003e\r\n\t\t\t\t\u003cinput type=\"checkbox\" name=\"tall-1\" id=\"tall-1\"\u003e\r\n\t\t\t\t\u003clabel for=\"tall-1\"\u003eBuildings\u003c/label\u003e\r\n\t\t\t\u003c/li\u003e\r\n\t\t\t\u003cli\u003e\r\n\t\t\t\t\u003cinput type=\"checkbox\" name=\"tall-2\" id=\"tall-2\"\u003e\r\n\t\t\t\t\u003clabel for=\"tall-2\"\u003eGiants\u003c/label\u003e\r\n\r\n\t\t\t\t\u003cul\u003e\r\n\t\t\t\t\t\u003cli\u003e\r\n\t\t\t\t\t\t\u003cinput type=\"checkbox\" name=\"tall-2-1\" id=\"tall-2-1\"\u003e\r\n\t\t\t\t\t\t\u003clabel for=\"tall-2-1\"\u003eAndre\u003c/label\u003e\r\n\t\t\t\t\t\u003c/li\u003e\r\n\t\t\t\t\t\u003cli\u003e\r\n\t\t\t\t\t\t\u003cinput type=\"checkbox\" name=\"tall-2-2\" id=\"tall-2-2\"\u003e\r\n\t\t\t\t\t\t\u003clabel for=\"tall-2-2\"\u003ePaul Bunyan\u003c/label\u003e\r\n\t\t\t\t\t\u003c/li\u003e\r\n\t\t\t\t\u003c/ul\u003e\r\n\t\t\t\u003c/li\u003e\r\n\t\t\t\u003cli\u003e\r\n\t\t\t\t\u003cinput type=\"checkbox\" name=\"tall-3\" id=\"tall-3\"\u003e\r\n\t\t\t\t\u003clabel for=\"tall-3\"\u003eTwo sandwiches\u003c/label\u003e\r\n\t\t\t\u003c/li\u003e\r\n\t\t\u003c/ul\u003e\r\n\t\u003c/li\u003e\r\n\t\u003cli\u003e\r\n\t\t\u003cinput type=\"checkbox\" name=\"short\" id=\"short\"\u003e\r\n\t\t\u003clabel for=\"short\"\u003eShort Things\u003c/label\u003e\r\n\r\n\t\t\u003cul\u003e\r\n\t\t\t\u003cli\u003e\r\n\t\t\t\t\u003cinput type=\"checkbox\" name=\"short-1\" id=\"short-1\"\u003e\r\n\t\t\t\t\u003clabel for=\"short-1\"\u003eSmurfs\u003c/label\u003e\r\n\t\t\t\u003c/li\u003e\r\n\t\t\t\u003cli\u003e\r\n\t\t\t\t\u003cinput type=\"checkbox\" name=\"short-2\" id=\"short-2\"\u003e\r\n\t\t\t\t\u003clabel for=\"short-2\"\u003eMushrooms\u003c/label\u003e\r\n\t\t\t\u003c/li\u003e\r\n\t\t\t\u003cli\u003e\r\n\t\t\t\t\u003cinput type=\"checkbox\" name=\"short-3\" id=\"short-3\"\u003e\r\n\t\t\t\t\u003clabel for=\"short-3\"\u003eOne Sandwich\u003c/label\u003e\r\n\t\t\t\u003c/li\u003e\r\n\t\t\u003c/ul\u003e\r\n\t\u003c/li\u003e\r\n\u003c/ul\u003e",
+    "starterCSSCode": "body {\r\n  padding: 20px;\r\n}\r\nul { \r\n  list-style: none;\r\n  margin: 5px 20px;\r\n}\r\nli {\r\n  margin: 10px 0;\r\n}\r\n\r\np { font-size: 12px; margin: 24px;}",
+    "solutionCode": "// A helper function to create arrays from node lists\r\nconst nodeArray = (selector, parent = document) =\u003e Array.from(parent.querySelectorAll(selector));\r\n\r\n// Select all checkboxes\r\nconst allCheckboxes = nodeArray('input');\r\n\r\nfunction updateCheckboxHierarchy(event) {\r\n  const changedCheckbox = event.target;\r\n\r\n  // Exit if the change event didn't originate from our list of checkboxes\r\n  if (!allCheckboxes.includes(changedCheckbox)) return;\r\n\r\n  // Check/uncheck children (including the clicked checkbox)\r\n  const children = nodeArray('input', changedCheckbox.parentElement);\r\n  children.forEach(child =\u003e child.checked = changedCheckbox.checked);\r\n\r\n  // Traverse up the tree from the clicked checkbox\r\n  let currentCheckbox = changedCheckbox;\r\n  while (currentCheckbox) {\r\n    const parent = currentCheckbox.closest('ul').parentNode.querySelector('input');\r\n    const siblings = nodeArray('input', parent.closest('li').querySelector('ul'));\r\n\r\n    // Check the checked status of siblings\r\n    const siblingCheckStatus = siblings.map(sibling =\u003e sibling.checked);\r\n    const allSiblingsChecked = siblingCheckStatus.every(Boolean);\r\n    const someSiblingsChecked = siblingCheckStatus.some(Boolean);\r\n\r\n    // Check the parent checkbox if all siblings are checked\r\n    // Set the indeterminate state if not all and not none are checked\r\n    parent.checked = allSiblingsChecked;\r\n    parent.indeterminate = !allSiblingsChecked \u0026\u0026 someSiblingsChecked;\r\n\r\n    // Prepare for the next loop\r\n    currentCheckbox = currentCheckbox !== parent ? parent : null;\r\n  }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe Hierarchical Checkbox functionality is a pivotal aspect of user interfaces where options are structured in a nested manner, necessitating an intuitive way to manage these relationships. This feature finds its use in various applications, from forms and settings to complex web applications that require nested selection controls.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eCore Logic of the Solution\u003c/h2\u003e\n\u003cp\u003eThe essence of this solution lies in two main operations: propagating changes from parents to children and aggregating states from children to parents.\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003ePropagating Changes Downwards:\u003c/strong\u003e When a parent checkbox is checked or unchecked, this change needs to be reflected across all its child checkboxes. This ensures consistency in the selection state, adhering to the hierarchical structure of the checkboxes.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eAggregating States Upwards:\u003c/strong\u003e The state of a parent checkbox (checked, unchecked, or indeterminate) is determined by the states of its child checkboxes. If all children are checked, the parent is checked. If all are unchecked, the parent is unchecked. If some are checked, the parent is in an indeterminate state, indicating a partial selection.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eImplementing the Solution\u003c/h2\u003e\n\u003cp\u003eThe implementation involves attaching a change event listener to all checkboxes. When a checkbox\u0026#8217;s state changes, the event listener invokes a function that:\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003eChecks or unchecks all child checkboxes, aligning them with the state of the changed checkbox.\u003c/li\u003e\n\u003cli\u003eTraverses up the hierarchy, updating each parent\u0026#8217;s state based on the combined states of its children. This involves setting the parent to checked, unchecked, or indeterminate as appropriate.\u003c/li\u003e\n\u003c/ol\u003e\n\u003cp\u003eThis approach ensures that the checkbox hierarchy behaves intuitively, with changes at any level appropriately influencing other related checkboxes.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eTechnical Considerations\u003c/h2\u003e\n\u003cp\u003eThe solution employs DOM traversal and manipulation techniques to dynamically manage the checkbox states. Care is taken to minimize reflows and repaints, ensuring that the functionality is efficient even with large numbers of nested checkboxes.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eImplementing a hierarchical checkbox functionality enhances user interfaces by providing a clear and intuitive way to manage nested selections. The JavaScript solution discussed offers a robust approach to achieving this, adaptable to various use cases and application requirements.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "App Design"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Google"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "61. Hierarchical Checkbox - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Master the art of managing hierarchical checkboxes in JavaScript with our comprehensive guide. Learn to synchronize parent and child checkboxes for intuitive user interfaces.",
+        "pageURL": "hierarchical-checkbox",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Hierarchical Checkbox  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eImplement a JavaScript solution to manage checkboxes in a hierarchical structure, ensuring the following functionality:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eWhen a parent checkbox is checked, all its child checkboxes shou",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe Hierarchical Checkbox functionality is a pivotal aspect of user interfaces where options are structured in a nested manner, necessitating an intuitive way to manage these re",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

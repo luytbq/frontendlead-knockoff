@@ -1,0 +1,129 @@
+{
+    "type": "coding",
+    "id": "javascript-event-emitter-guide",
+    "title": "14. Event Emitter",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "javascript-event-emitter-guide",
+    "problemStatement": "\u003cp\u003eIn modern application development, the asynchronous event-driven architecture plays a crucial role, especially in handling operations where the response time is uncertain. This architecture allows for a decoupled system where objects (emitters) can emit events at any time, and function objects (listeners) respond to these events as they are triggered.\u003c/p\u003e\n\u003cp\u003eThe challenge here is to implement an \u003ccode\u003eEventEmitter\u003c/code\u003e class that encapsulates this behavior. The class should provide mechanisms to:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eEmit events:\u003c/strong\u003e Trigger an event by name, executing all callbacks subscribed to this event.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eSubscribe to events:\u003c/strong\u003e Allow functions to listen for specific events and respond when those events are emitted. Each subscription should provide a way to release (unsubscribe) itself to avoid memory leaks and unintended behavior.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThe \u003ccode\u003eEventEmitter\u003c/code\u003e class should work as follows:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003eclass EventEmitter {\r\n  constructor() {\r\n    this.events = {};\r\n  }\r\n\r\n  subscribe(eventName, callback) {\r\n    // Logic to add a listener for the event\r\n  }\r\n\r\n  emit(eventName, ...args) {\r\n    // Logic to trigger an event and call all subscribed listeners\r\n  }\r\n}\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eWith this setup, you can create an instance of \u003ccode\u003eEventEmitter\u003c/code\u003e, subscribe functions to listen for named events, and emit those events at any point in your application. This approach is fundamental in creating non-blocking, asynchronous flows and is at the heart of many JavaScript frameworks and libraries.\u003c/p\u003e\n\u003cp\u003eThis task will test your ability to work with higher-order functions, callbacks, and the principles of event-driven programming. Implementing the \u003ccode\u003eEventEmitter\u003c/code\u003e class will deepen your understanding of these concepts, which are pivotal in modern JavaScript development.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should allow subscription to events and call the listeners when emitted",
+            "test": "it('should allow subscription to events and call the listeners when emitted', (done) =\u003e {\r\n    const emitter = new EventEmitter();\r\n    let receivedData = null;\r\n    emitter.subscribe('testEvent', (data) =\u003e {\r\n      receivedData = data;\r\n    });\r\n    \r\n    emitter.emit('testEvent', 'testData');\r\n    \r\n    expect(receivedData).to.equal('testData');\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should allow multiple subscriptions to the same event and call all listeners",
+            "test": "it('should allow multiple subscriptions to the same event and call all listeners', (done) =\u003e {\r\n    const emitter = new EventEmitter();\r\n    let callCount = 0;\r\n    emitter.subscribe('testEvent', () =\u003e callCount++);\r\n    emitter.subscribe('testEvent', () =\u003e callCount++);\r\n\r\n    emitter.emit('testEvent');\r\n\r\n    expect(callCount).to.equal(2);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should not call listeners after they have been unsubscribed",
+            "test": "it('should not call listeners after they have been unsubscribed', (done) =\u003e {\r\n    const emitter = new EventEmitter();\r\n    let callCount = 0;\r\n    const subscription = emitter.subscribe('testEvent', () =\u003e callCount++);\r\n    \r\n    emitter.emit('testEvent');\r\n    subscription.release();\r\n    emitter.emit('testEvent'); // This should not increase callCount\r\n\r\n    expect(callCount).to.equal(1);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The EventEmitter class must be able to handle an unlimited number of event names and listeners for each event. - Listeners should be called in the order they were added for a specific event."
+        },
+        {
+            "constraint": "Listeners should be called in the order they were added for a specific event."
+        },
+        {
+            "constraint": "Each subscription should return an object with a release method that, when called, removes the listener from the event. This prevents memory leaks and ensures that listeners are not called after being unsubscribed."
+        },
+        {
+            "constraint": "Emitting an event should call all listeners subscribed to that event with the provided arguments."
+        },
+        {
+            "constraint": " The EventEmitter should not use any external libraries or dependencies; it must be implemented with vanilla JavaScript."
+        },
+        {
+            "constraint": "Consider performance implications when adding, removing, and emitting events, especially for events with a large number of listeners."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "class EventEmitter {\r\n    constructor() {\r\n        // write your code here\r\n    }\r\n\r\n    subscribe(eventName, callback) {\r\n      // write your code here\r\n    }\r\n\r\n    emit(eventName, ...args) {\r\n      // write your code here\r\n    }\r\n}\r\n\r\n// Do not edit below this line\r\nexport default EventEmitter;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "class EventEmitter {\r\n  constructor() {\r\n    // Initialize an object to store events and their listeners\r\n    this.events = {};\r\n  }\r\n\r\n  subscribe(eventName, callback) {\r\n    // If the event doesn't exist, create a new array for this event\r\n    if (!this.events[eventName]) {\r\n      this.events[eventName] = [];\r\n    }\r\n\r\n    // Add the callback to the list of listeners for the specified event\r\n    const index = this.events[eventName].length;\r\n    this.events[eventName].push(callback);\r\n\r\n    // Return an object with a release method to remove the listener\r\n    return {\r\n      release: () =\u003e {\r\n        if (this.events[eventName]) {\r\n          // Remove the listener at the previously captured index\r\n          this.events[eventName].splice(index, 1);\r\n          // If no listeners remain for the event, delete the event from the object\r\n          if (!this.events[eventName].length) {\r\n            delete this.events[eventName];\r\n          }\r\n        }\r\n      }\r\n    };\r\n  }\r\n\r\n  emit(eventName, ...args) {\r\n    // Check if the event has listeners before proceeding\r\n    if (this.events[eventName]) {\r\n      // Call each listener associated with the event, passing in provided arguments\r\n      this.events[eventName].forEach(callback =\u003e callback.apply(this, args));\r\n    }\r\n  }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eDeep Dive into the EventEmitter Class Implementation\u003c/h1\u003e\n\u003cp\u003eThe \u003ccode\u003eEventEmitter\u003c/code\u003e class is a cornerstone of event-driven programming in JavaScript, facilitating asynchronous operations and allowing objects to communicate with each other through events. This pattern is incredibly useful in modern web development, where operations like user interactions, server requests, and signal handling require a non-blocking approach.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eCore Concepts\u003c/h2\u003e\n\u003cp\u003eAt its heart, the \u003ccode\u003eEventEmitter\u003c/code\u003e class maintains a registry of event listeners for various events. Each event can have multiple listeners that get called when the event is emitted. This allows for a decoupled system where components can react to events without knowing about the emitter\u0026#8217;s internal state or implementation.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eImplementing the EventEmitter\u003c/h2\u003e\n\u003cp\u003eThe implementation starts with a constructor that initializes an empty object to hold the events and their corresponding listeners. The \u003ccode\u003esubscribe\u003c/code\u003e method adds a listener to an event, creating the event\u0026#8217;s listener array if it doesn\u0026#8217;t already exist. It returns an object with a \u003ccode\u003erelease\u003c/code\u003e method, allowing subscribers to easily unsubscribe and prevent potential memory leaks or unintended behavior.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eEmitting Events\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eemit\u003c/code\u003e method is where the magic happens. When called with an event name and arguments, it invokes all listeners subscribed to that event, passing along any arguments. This method embodies the asynchronous, non-blocking nature of event-driven programming, enabling real-time responses to various triggers.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eUnsubscribing from Events\u003c/h2\u003e\n\u003cp\u003eEfficient management of listeners is crucial for maintaining performance and avoiding memory leaks. The \u003ccode\u003erelease\u003c/code\u003e method provided upon subscription ensures that listeners can be removed when they are no longer needed, making the \u003ccode\u003eEventEmitter\u003c/code\u003e both powerful and flexible.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eUnderstanding and implementing an \u003ccode\u003eEventEmitter\u003c/code\u003e is pivotal for JavaScript developers, underpinning many of the asynchronous operations and interactions in modern web applications. Through this class, developers can create highly interactive, responsive, and decoupled systems, showcasing the strength of JavaScript\u0026#8217;s event-driven nature.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "14. Event Emitter - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Discover how to leverage EventEmitter for event-driven JavaScript programming. Essential for advanced web development skills.",
+        "pageURL": "javascript-event-emitter-guide",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Event Emitter  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eIn modern application development, the asynchronous event-driven architecture plays a crucial role, especially in handling operations where the response time is uncertain. This architecture allows ",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eDeep Dive into the EventEmitter Class Implementation\u003c/h1\u003e\n\u003cp\u003eThe \u003ccode\u003eEventEmitter\u003c/code\u003e class is a cornerstone of event-driven programming in JavaScript, facilitating asynch",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+ructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

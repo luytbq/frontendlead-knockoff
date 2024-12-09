@@ -1,0 +1,180 @@
+{
+    "type": "coding",
+    "id": "flatten-xi",
+    "title": "59. Flatten XI",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "flatten-xi",
+    "problemStatement": "\u003cp\u003eWrite a function \u003ccode\u003eflattenWithPrefix(obj, prefix)\u003c/code\u003e that flattens a nested object into a single-level object. Each key in the resulting object should be a concatenation of the keys from the nested object, prefixed with the specified prefix. The function should handle arbitrary levels of nesting.\u003c/p\u003e\n\u003cp\u003eFor example, given the input object:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst input = { a: { b: { c: 1 }, d: 2 } };\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe expected output, with each key flattened and prefixed, would be:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e{ 'a.b.c': 1, 'a.d': 2 }\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe function should be able to traverse through the nested object, concatenating each key with its parent key(s) and the given prefix, to create a new, flattened object structure where each key represents the \u0026#8220;path\u0026#8221; to its value within the original nested object.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should flatten a nested object without prefix",
+            "test": "it('should flatten a nested object without prefix', () =\u003e {\r\n    const input = { a: { b: { c: 1 }, d: 2 } };\r\n    const expected = { 'a.b.c': 1, 'a.d': 2 };\r\n\r\n    const result = flattenWithPrefix(input);\r\n    expect(result).to.deep.equal(expected);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should flatten a nested object with a specified prefix",
+            "test": "it('should flatten a nested object with a specified prefix', () =\u003e {\r\n    const input = { a: { b: { c: 1 }, d: 2 } };\r\n    const expected = { 'prefix.a.b.c': 1, 'prefix.a.d': 2 };\r\n\r\n    const result = flattenWithPrefix(input, 'prefix');\r\n    expect(result).to.deep.equal(expected);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should handle complex nested objects",
+            "test": "it('should handle complex nested objects', () =\u003e {\r\n    const input = { a: { b: { c: { d: 3 } }, e: 4 }, f: 5 };\r\n    const expected = { 'a.b.c.d': 3, 'a.e': 4, 'f': 5 };\r\n\r\n    const result = flattenWithPrefix(input);\r\n    expect(result).to.deep.equal(expected);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should correctly handle arrays and primitive values",
+            "test": "it('should correctly handle arrays and primitive values', () =\u003e {\r\n    const input = { a: [1, 2, 3], b: 'hello', c: { d: true } };\r\n    const expected = { 'a': [1, 2, 3], 'b': 'hello', 'c.d': true };\r\n\r\n    const result = flattenWithPrefix(input);\r\n    expect(result).to.deep.equal(expected);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should return an empty object when input is empty",
+            "test": "it('should return an empty object when input is empty', () =\u003e {\r\n    const input = {};\r\n    const expected = {};\r\n\r\n    const result = flattenWithPrefix(input);\r\n    expect(result).to.deep.equal(expected);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 5,
+            "description": "should handle null and undefined values correctly",
+            "test": "it('should handle null and undefined values correctly', () =\u003e {\r\n    const input = { a: null, b: undefined, c: { d: 'value' } };\r\n    const expected = { 'a': null, 'b': undefined, 'c.d': 'value' };\r\n\r\n    const result = flattenWithPrefix(input);\r\n    expect(result).to.deep.equal(expected);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "flattenWithPrefix(obj, prefix) must handle an arbitrarily nested object obj and an optional string prefix."
+        },
+        {
+            "constraint": "Keys in the flattened object are created by concatenating nested keys with prefix, using . as a separator."
+        },
+        {
+            "constraint": "The function should work with any depth of object nesting."
+        },
+        {
+            "constraint": "Arrays and primitive values are assigned directly without flattening or altering."
+        },
+        {
+            "constraint": "The original input object remains unchanged."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function flattenWithPrefix(obj, prefix = '') {\r\n  // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default flattenWithPrefix;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function flattenWithPrefix(obj, prefix = '') {\r\n  let result = {}; // Initialize an empty object to hold the flattened result\r\n\r\n  // Iterate over each property in the object\r\n  for (const key in obj) {\r\n    // If a prefix is provided, concatenate it with the current key; otherwise, use the key as is\r\n    const newKey = prefix ? `${prefix}.${key}` : key;\r\n\r\n    // Check if the value associated with the current key is an object and not null or an array\r\n    if (typeof obj[key] === 'object' \u0026\u0026 obj[key] !== null \u0026\u0026 !Array.isArray(obj[key])) {\r\n      // If it is an object, recursively call flattenWithPrefix to flatten it further\r\n      const flattened = flattenWithPrefix(obj[key], newKey);\r\n      // Merge the flattened object from the recursive call into the current result object\r\n      result = { ...result, ...flattened };\r\n    } else {\r\n      // If the value is not an object (i.e., a primitive value or an array), add it to the result object\r\n      result[newKey] = obj[key];\r\n    }\r\n  }\r\n\r\n  // Return the flattened object after processing all properties\r\n  return result;\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eIntroduction\u003c/h2\u003e\n\u003cp\u003eFlattening nested objects into a single-level structure while preserving key hierarchies is a common task in data processing. The \u003ccode\u003eflattenWithPrefix\u003c/code\u003e function takes this concept further by allowing a customizable prefix for each key, enhancing readability and context.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eFunction Overview\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eflattenWithPrefix\u003c/code\u003e function transforms nested objects into a flattened structure. Each key in the resulting object is a concatenation of the nested keys, optionally prefixed, and separated by a dot (\u0026#8216;.\u0026#8217;). This function is particularly useful for creating flat representations of deeply nested objects, making them more accessible for operations like database storage or configuration management.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eImplementation Details\u003c/h2\u003e\n\u003cp\u003eAt its core, the function iterates over each key-value pair in the input object. For nested objects, it recursively applies the flattening process, appending keys to reflect their path within the original structure. Primitive values and arrays are directly assigned to their respective keys in the flattened object. The optional prefix is prepended to each key, providing a clear namespace and avoiding key collisions in broader contexts.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eKey Features\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eNested Object Handling:\u003c/strong\u003e Recursively processes nested objects to ensure deep structures are fully flattened.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003ePrefix Customization:\u003c/strong\u003e Allows the inclusion of a prefix for each key, enhancing clarity and preventing key overlap.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003ePrimitive and Array Preservation:\u003c/strong\u003e Ensures non-object values are preserved in their original form, maintaining data integrity.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eUse Cases\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eflattenWithPrefix\u003c/code\u003e function is versatile, applicable in scenarios ranging from data transformation for APIs to configuration settings where a flat structure is preferable for easy access and manipulation.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eBy providing a simple yet powerful means to flatten nested objects with the option for prefixed keys, the \u003ccode\u003eflattenWithPrefix\u003c/code\u003e function addresses a common need in software development, offering both functionality and flexibility in data handling.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Algorithmic"
+    ],
+    "likes": 1,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Google"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten with Prefix - Google Frontend Interview Question - FrontendLead",
+        "pageDescription": "Discover how to simplify complex data structures in JavaScript. Learn to use the flattenWithPrefix function to convert nested objects into a single-level format with customizable prefixed keys for better clarity and accessibility.",
+        "pageURL": "flatten-xi",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten with Prefix  Google Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function \u003ccode\u003eflattenWithPrefix(obj, prefix)\u003c/code\u003e that flattens a nested object into a single-level object. Each key in the resulting object should be a concatenation of the keys from th",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eIntroduction\u003c/h2\u003e\n\u003cp\u003eFlattening nested objects into a single-level structure while preserving key hierarchies is a common task in data processing. The \u003ccode\u003eflattenWithPrefix\u003c/",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 10,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/UV9Lp-3uwwg?si=sIkEur5qGudwyPgh",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,88 @@
+{
+    "type": "react",
+    "id": "transactions-list",
+    "title": "76. Transactions List",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "transactions-list",
+    "problemStatement": "\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" class=\"alignnone size-full wp-image-403\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-4.33.20-PM.png\" alt=\"\" width=\"234\" height=\"294\" /\u003e\u003c/p\u003e\n\u003cp\u003eYou are provided with a React application designed to manage and display a list of customer transactions. The primary functionalities of this application include:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eRendering the Transaction List:\u003c/strong\u003e Displaying an initial list of transactions to the user, each containing an ID, the customer\u0026#8217;s name, and the transaction amount.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eFiltering Transactions:\u003c/strong\u003e Allowing users to filter the transaction list by customer name through a text input field. The list updates in real-time based on the user\u0026#8217;s input, showing transactions that match the entered name (case-insensitively).\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eHighlighting Top Customer\u0026#8217;s Transactions:\u003c/strong\u003e Identifying the customer with the highest total transaction amount across all their transactions. The application highlights transactions associated with this top customer in the list, making them easily distinguishable.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThese features aim to enhance user experience by providing a clear and interactive way to manage and understand transaction data. Users can easily locate transactions for specific customers, and quickly identify which customer has the highest total transaction amount, thanks to the visual highlights applied to their transactions.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eImplementation Example:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\r\nconst transactions = [\r\n  { id: \"t_101\", customer: \"Alice Anderson\", amount: 84 },\r\n  { id: \"t_102\", customer: \"Bob Brown\", amount: 30 },\r\n  // Additional transactions...\r\n];\r\n\r\nfunction TransactionsList({ transactions }) {\r\n  // Component logic...\r\n  return (\r\n    \u0026lt;div\u0026gt;\r\n      \u0026lt;input type=\"text\" onChange={/* Filter logic */} /\u0026gt;\r\n      \u0026lt;ul\u0026gt;\r\n        {transactions.map(transaction =\u0026gt; (\r\n          \u0026lt;li key={transaction.id}\u0026gt;\r\n            \u0026lt;span style={{ backgroundColor: /* Highlighting logic */ }}\u0026gt;\r\n              {transaction.customer}\r\n            \u0026lt;/span\u0026gt;\r\n            : {transaction.amount}\r\n          \u0026lt;/li\u0026gt;\r\n        ))}\r\n      \u0026lt;/ul\u0026gt;\r\n    \u0026lt;/div\u0026gt;\r\n  );\r\n}\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis code snippet illustrates the basic structure and functionality of the React application, highlighting the key areas of rendering, filtering, and visual distinction of transactions. The actual logic for filtering and highlighting will depend on the user input and the aggregated transaction amounts per customer.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Transaction `id`s are unique."
+        },
+        {
+            "constraint": "Transactions data will consist of objects with `id`, `customer`, and `amount` properties."
+        },
+        {
+            "constraint": "Transaction `amount`s can be positive or negative, representing credits and debits."
+        },
+        {
+            "constraint": "The list can contain any number of transactions, but for performance reasons, it's recommended to keep it below 1000 entries in a real application."
+        },
+        {
+            "constraint": "The filter functionality is case-insensitive and should update the list in real-time as the user types."
+        },
+        {
+            "constraint": "The application will highlight only the transactions of the single top customer based on the total transaction amount. In case of a tie, all top customers will be highlighted."
+        },
+        {
+            "constraint": "The application should not modify the original `transactions` array; any transformation or filtering should be done on a copy of the data."
+        },
+        {
+            "constraint": "The highlighting color for the top customer's transactions is predefined (e.g., yellow) but can be easily changed in the code if needed."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "// Common React Hooks are already imported\r\n\r\nconst transactions = [\r\n  { id: \"t_101\", customer: \"Alice Anderson\", amount: 84 },\r\n  { id: \"t_102\", customer: \"Bob Brown\", amount: 30 },\r\n  { id: \"t_103\", customer: \"Carla Carter\", amount: 42 },\r\n  { id: \"t_104\", customer: \"David Davis\", amount: 26 },\r\n  { id: \"t_105\", customer: \"Evelyn Edwards\", amount: -84 },\r\n  { id: \"t_106\", customer: \"Frank Foster\", amount: 48 },\r\n  { id: \"t_107\", customer: \"Gina Green\", amount: 104 },\r\n  { id: \"t_108\", customer: \"Henry Harris\", amount: 140 },\r\n  { id: \"t_109\", customer: \"Ivy Ingram\", amount: 10 },\r\n  { id: \"t_110\", customer: \"Jack Johnson\", amount: 60 },\r\n  { id: \"t_111\", customer: \"Kara King\", amount: -26 },\r\n  { id: \"t_112\", customer: \"Liam Lee\", amount: -140 },\r\n  { id: \"t_113\", customer: \"Mia Martin\", amount: 26 },\r\n  { id: \"t_114\", customer: \"Nina Nelson\", amount: 44 }\r\n];\r\n\r\nfunction TransactionsList() {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default TransactionsList;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function TransactionsList() {\r\n  // useState hook to manage the filter state based on customer name\r\n  const [name, setName] = useState(\"\");\r\n\r\n  // Filter transactions based on user input, ignoring case sensitivity\r\n  const filteredList = transactions.filter((transaction) =\u003e {\r\n    return transaction.customer.toLowerCase().includes(name.toLowerCase());\r\n  });\r\n\r\n  // Object to hold the total amount per customer\r\n  let customersTotal = {};\r\n\r\n  // Calculate total amount per customer from the filtered list\r\n  filteredList.forEach((transaction) =\u003e {\r\n    const { customer, amount } = transaction;\r\n    if (!customersTotal[customer]) {\r\n      customersTotal[customer] = amount; // Initialize if customer doesn't exist\r\n    } else {\r\n      customersTotal[customer] += amount; // Accumulate amount for existing customer\r\n    }\r\n  });\r\n\r\n  // Find the maximum transaction total across all customers\r\n  const maxTotal = Math.max(...Object.values(customersTotal));\r\n\r\n  // Identify the customer(s) with the maximum transaction total\r\n  const topCustomers = Object.keys(customersTotal).filter((customer) =\u003e {\r\n    return customersTotal[customer] === maxTotal;\r\n  });\r\n\r\n  return (\r\n    \u003cdiv className=\"App\"\u003e\r\n      \u003clabel htmlFor=\"filterByName\"\u003eFilter:\u003c/label\u003e\r\n      \u003cinput\r\n        type=\"text\"\r\n        id=\"filterByName\"\r\n        name=\"filterByName\"\r\n        value={name}\r\n        onChange={(e) =\u003e setName(e.target.value)}\r\n      /\u003e\r\n      \u003cul\u003e\r\n        {filteredList.map((transaction) =\u003e (\r\n          \u003cli key={transaction.id} style={{\r\n            // Highlight the transaction if it belongs to a top customer\r\n            backgroundColor: topCustomers.includes(transaction.customer) ? \"yellow\" : \"transparent\"\r\n          }}\u003e\r\n            {transaction.customer}: {transaction.amount}\r\n          \u003c/li\u003e\r\n        ))}\r\n      \u003c/ul\u003e\r\n    \u003c/div\u003e\r\n  );\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eExploring the \u0026#8216;Transactions List\u0026#8217; Functionality in React\u003c/h1\u003e\n\u003cp\u003eThe \u0026#8216;Transactions List\u0026#8217; feature within a React application showcases efficient manipulation and presentation of transactional data. This functionality is crucial for providing users with an interactive and intuitive interface to handle customer transactions. This explanation delves into the implementation details of rendering the transaction list, enabling real-time filtering by customer names, and visually highlighting transactions of the top customer based on total transaction amounts.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eRendering the Transaction List\u003c/h2\u003e\n\u003cp\u003eAt the heart of the application lies the \u003ccode\u003eTransactionsList\u003c/code\u003e component, tasked with displaying an array of transactions. Each transaction, represented as an object, comprises an \u003ccode\u003eid\u003c/code\u003e, a \u003ccode\u003ecustomer\u003c/code\u003e name, and an \u003ccode\u003eamount\u003c/code\u003e. Utilizing React\u0026#8217;s \u003ccode\u003emap()\u003c/code\u003e function, the component iterates over the transaction array, rendering each transaction as a list item within an unordered list. The unique \u003ccode\u003eid\u003c/code\u003e of each transaction ensures optimal React rendering performance by providing a stable identity for each list element.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\u0026lt;ul\u0026gt;\r\n  {transactions.map(transaction =\u0026gt; (\r\n    \u0026lt;li key={transaction.id}\u0026gt;...\u0026lt;/li\u0026gt;\r\n  ))}\r\n\u0026lt;/ul\u0026gt;\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eFiltering Transactions\u003c/h2\u003e\n\u003cp\u003eTo enhance user interaction, the application includes a dynamic filtering feature, allowing users to narrow down transactions based on customer names. This functionality is facilitated through a controlled input element, which updates a state variable (\u003ccode\u003ename\u003c/code\u003e) with every user keystroke. The application then filters the transactions, comparing the user\u0026#8217;s input with the customer names in a case-insensitive manner, ensuring that only relevant transactions are displayed.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\u0026lt;input\r\n  type=\"text\"\r\n  value={name}\r\n  onChange={(e) =\u0026gt; setName(e.target.value)}\r\n/\u0026gt;\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHighlighting the Top Customer\u0026#8217;s Transactions\u003c/h2\u003e\n\u003cp\u003eA key feature of this application is its ability to identify and highlight the transactions belonging to the customer with the highest total transaction amount. This is accomplished by first aggregating the transaction amounts for each customer and then determining the maximum total amount. Transactions associated with the customer(s) achieving this maximum are then styled distinctively, providing a clear visual cue to the user.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst topCustomer = ...; // Logic to determine top customer\r\n\u0026lt;li style={{ backgroundColor: transaction.customer === topCustomer ? 'yellow' : 'transparent' }}\u0026gt;...\u0026lt;/li\u0026gt;\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis visual distinction not only aids in data analysis but also enhances the user experience by making significant data points stand out.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe \u0026#8216;Transactions List\u0026#8217; functionality in React exemplifies a harmonious blend of data handling, user interactivity, and visual feedback. By breaking down the implementation into coherent sections, this explanation aims to provide a clear understanding of the underlying mechanics. Such features are indispensable in modern web applications, where efficient data presentation and user engagement are paramount.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "App Design"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Stripe"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "76. Transactions List - Frontend Interview Question - FrontendLead",
+        "pageDescription": "\"Dive into our detailed guide on creating a dynamic Transactions List in React, covering real-time filtering, rendering, and highlighting top customers' transactions. Perfect for enhancing frontend skills and interview preparation.",
+        "pageURL": "transactions-list",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Transactions List  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" class=\"alignnone size-full wp-image-403\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-4.33.20-PM.png\" alt=\"\" width=\"234",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eExploring the \u0026#8216;Transactions List\u0026#8217; Functionality in React\u003c/h1\u003e\n\u003cp\u003eThe \u0026#8216;Transactions List\u0026#8217; feature within a React application showcases efficient manipula",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

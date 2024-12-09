@@ -1,0 +1,115 @@
+{
+    "type": "coding",
+    "id": "k-most-text-nodes",
+    "title": "64. K MostText Nodes",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "k-most-text-nodes",
+    "problemStatement": "\u003cp\u003eGiven a DOM tree representing a webpage and a limit (K), write a function to find the K most frequently appeared text nodes in the webpage. A text node is considered as a string of non-empty characters that are not equal to \u0026#8216;↵\u0026#8217;. Ignore other node types (e.g., element nodes) while counting the frequency. Return an array containing the K most frequent text nodes in descending order of their frequencies.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eExample:\u003c/strong\u003e\u003c/p\u003e\n\u003cp\u003eConsider the following webpage HTML:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\u0026lt;div id=\"root\"\u0026gt;\r\n  \u0026lt;p\u0026gt;This is a paragraph.\u0026lt;/p\u0026gt;\r\n  \u0026lt;div\u0026gt;\r\n    \u0026lt;span\u0026gt;This is some text.\u0026lt;/span\u0026gt;\r\n    \u0026lt;p\u0026gt;Another paragraph here.\u0026lt;/p\u0026gt;\r\n  \u0026lt;/div\u0026gt;\r\n  \u0026lt;p\u0026gt;This is another paragraph.\u0026lt;/p\u0026gt;\r\n\u0026lt;/div\u0026gt;\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eInput:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003etree = DOM tree of the webpage\u003c/li\u003e\n\u003cli\u003elimit = 3\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThe function \u003ccode\u003efindKFrequentWordsInTree(tree, limit)\u003c/code\u003e should analyze the text nodes within the given DOM tree and return the K (3 in this example) most frequently occurring text nodes.\u003c/p\u003e\n\u003cp\u003eThe expected output for this example, assuming the function correctly identifies and counts the frequency of text nodes, might be an array like \u003ccode\u003e['This', 'is', 'a']\u003c/code\u003e, reflecting the most common text nodes within the specified limit.\u003c/p\u003e\n\u003cp\u003eThis task tests your ability to traverse and process DOM trees, count frequency of specific nodes, and return a sorted list of these nodes based on their frequency, which are essential skills for manipulating web page content dynamically.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should correctly identify the most frequent text nodes",
+            "test": "it('should correctly identify the most frequent text nodes', (done) =\u003e {\r\n    const tree = {\r\n      nodeName: \"DIV\",\r\n      textContent: \"This is a paragraph. Another paragraph here. This is another paragraph.\",\r\n      children: [\r\n        {\r\n          nodeName: \"P\",\r\n          textContent: \"This is a paragraph.\",\r\n          children: [] // No children for a P element in this mock\r\n        },\r\n        {\r\n          nodeName: \"DIV\",\r\n          textContent: \"This is some text. Another paragraph here.\",\r\n          children: [\r\n            {\r\n              nodeName: \"SPAN\",\r\n              textContent: \"This is some text.\",\r\n              children: [] // No children for a SPAN element in this mock\r\n            },\r\n            {\r\n              nodeName: \"P\",\r\n              textContent: \"Another paragraph here.\",\r\n              children: [] // No children for a P element in this mock\r\n            }\r\n          ]\r\n        },\r\n        {\r\n          nodeName: \"P\",\r\n          textContent: \"This is another paragraph.\",\r\n          children: [] // No children for a P element in this mock\r\n        }\r\n      ]\r\n    };\r\n    const limit = 3;\r\n    const result = findKFrequentWordsInTree(tree, limit);\r\n    const expected = ['This', 'is', 'paragraph.']; \r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should return an empty array if limit is 0",
+            "test": "it('should return an empty array if limit is 0', (done) =\u003e {\r\n    const tree = {\r\n      nodeName: \"DIV\",\r\n      textContent: \"This is a paragraph. Another paragraph here. This is another paragraph.\",\r\n      children: [\r\n        {\r\n          nodeName: \"P\",\r\n          textContent: \"This is a paragraph.\",\r\n          children: [] // No children for a P element in this mock\r\n        },\r\n        {\r\n          nodeName: \"DIV\",\r\n          textContent: \"This is some text. Another paragraph here.\",\r\n          children: [\r\n            {\r\n              nodeName: \"SPAN\",\r\n              textContent: \"This is some text.\",\r\n              children: [] // No children for a SPAN element in this mock\r\n            },\r\n            {\r\n              nodeName: \"P\",\r\n              textContent: \"Another paragraph here.\",\r\n              children: [] // No children for a P element in this mock\r\n            }\r\n          ]\r\n        },\r\n        {\r\n          nodeName: \"P\",\r\n          textContent: \"This is another paragraph.\",\r\n          children: [] // No children for a P element in this mock\r\n        }\r\n      ]\r\n    };\r\n    const result = findKFrequentWordsInTree(tree, 0);\r\n    expect(result).to.deep.equal([]);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should handle cases where text nodes are fewer than limit",
+            "test": "it('should handle cases where text nodes are fewer than limit', (done) =\u003e {\r\n    const tree = {\r\n      nodeName: \"DIV\",\r\n      textContent: \"This is a paragraph. Another paragraph here. This is another paragraph.\",\r\n      children: [\r\n        {\r\n          nodeName: \"P\",\r\n          textContent: \"This is a paragraph.\",\r\n          children: [] // No children for a P element in this mock\r\n        },\r\n        {\r\n          nodeName: \"DIV\",\r\n          textContent: \"This is some text. Another paragraph here.\",\r\n          children: [\r\n            {\r\n              nodeName: \"SPAN\",\r\n              textContent: \"This is some text.\",\r\n              children: [] // No children for a SPAN element in this mock\r\n            },\r\n            {\r\n              nodeName: \"P\",\r\n              textContent: \"Another paragraph here.\",\r\n              children: [] // No children for a P element in this mock\r\n            }\r\n          ]\r\n        },\r\n        {\r\n          nodeName: \"P\",\r\n          textContent: \"This is another paragraph.\",\r\n          children: [] // No children for a P element in this mock\r\n        }\r\n      ]\r\n    };\r\n    const limit = 10; // Assuming the tree has fewer than 10 unique text nodes\r\n    const result = findKFrequentWordsInTree(tree, limit);\r\n    // The expected array should contain all unique text nodes, fewer than the limit\r\n    expect(result.length).to.be.at.most(limit);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should ignore nodes that are not text nodes",
+            "test": "it('should ignore nodes that are not text nodes', (done) =\u003e {\r\n    const tree = {\r\n      nodeName: \"DIV\",\r\n      textContent: \"This is a paragraph. Another paragraph here. This is another paragraph.\",\r\n      children: [\r\n        {\r\n          nodeName: \"P\",\r\n          textContent: \"This is a paragraph.\",\r\n          children: [] // No children for a P element in this mock\r\n        },\r\n        {\r\n          nodeName: \"DIV\",\r\n          textContent: \"This is some text. Another paragraph here.\",\r\n          children: [\r\n            {\r\n              nodeName: \"SPAN\",\r\n              textContent: \"This is some text.\",\r\n              children: [] // No children for a SPAN element in this mock\r\n            },\r\n            {\r\n              nodeName: \"P\",\r\n              textContent: \"Another paragraph here.\",\r\n              children: [] // No children for a P element in this mock\r\n            }\r\n          ]\r\n        },\r\n        {\r\n          nodeName: \"P\",\r\n          textContent: \"This is another paragraph.\",\r\n          children: [] // No children for a P element in this mock\r\n        }\r\n      ]\r\n    };\r\n    function allItemsAreTextNodes(array) {\r\n      // Implement logic to verify all items in the array are text nodes\r\n      // This could involve checking against a predefined list of expected text nodes or other logic as per your test setup\r\n      return true; // Placeholder return value\r\n    }\r\n    // This test assumes the presence of non-text nodes in 'tree'\r\n    const limit = 3;\r\n    const result = findKFrequentWordsInTree(tree, limit);\r\n    // The result should only contain text nodes, non-text nodes should not impact the outcome\r\n    expect(result).to.satisfy(allItemsAreTextNodes);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The DOM tree's depth will not exceed 20 levels to prevent excessive recursion or iteration depth, safeguarding against stack overflow or significant performance degradation."
+        },
+        {
+            "constraint": "Text nodes can include any characters except '↵' and will be trimmed to remove whitespace at the beginning and end. This ensures that only meaningful text is considered."
+        },
+        {
+            "constraint": "The input array can contain a vast number of elements, but for practical performance reasons, it's advised to keep the total number of text nodes below 10,000."
+        },
+        {
+            "constraint": "The function will accept two arguments: a DOM tree element (tree) and an integer (limit) representing the number of most frequent text nodes to return."
+        },
+        {
+            "constraint": "The solution should aim for a time complexity of O(n log n) due to the sorting requirement, where n is the total number of text nodes in the DOM tree."
+        },
+        {
+            "constraint": "The use of external libraries for DOM manipulation or array sorting is not allowed, encouraging a fundamental understanding of these operations."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function findKFrequentWordsInTree(tree, limit) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default findKFrequentWordsInTree;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function findKFrequentWordsInTree(tree, limit) {\r\n  const Q = [tree]; // Initialize a queue with the root element\r\n  const textNodesMap = {}; // Map to store the frequency of text nodes\r\n\r\n  while (Q.length) {\r\n    const current = Q.shift(); // Dequeue the current element\r\n    const currentTextContentList = current.textContent.trim().split(/\\s+/); // Split the text content by whitespace to get individual words\r\n\r\n    currentTextContentList.forEach(item =\u003e {\r\n      if (item.length \u0026\u0026 item != '↵' \u0026\u0026 typeof item === 'string') { // Ignore empty strings and '↵'\r\n        if (!textNodesMap[item]) textNodesMap[item] = 0; // Initialize the count if the text node is encountered for the first time\r\n        textNodesMap[item]++; // Increment the count for the text node\r\n      }\r\n    });\r\n\r\n    if (current.children.length) {\r\n      Q.push(...current.children); // Enqueue the children of the current element\r\n    }\r\n  }\r\n\r\n  const keys = Object.keys(textNodesMap); // Get all the text node keys\r\n  keys.sort((a, b) =\u003e textNodesMap[b] - textNodesMap[a]); // Sort the keys based on the frequency in descending order\r\n\r\n  return keys.slice(0, limit); // Return the K most frequent text nodes\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe solution to finding the K most frequently appeared text nodes in a webpage involves a systematic approach to traverse the DOM tree, identify text nodes, count their occurrences, and then sort these counts to find the top K text nodes. This process is crucial for tasks such as keyword analysis, content summarization, and SEO optimization on webpages.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eAlgorithm Overview\u003c/h2\u003e\n\u003cp\u003eThe core of the algorithm lies in its breadth-first search (BFS) traversal of the DOM tree. BFS ensures that all nodes at the current level are processed before moving on to the nodes at the next level. This is achieved by using a queue to keep track of nodes as they are encountered.\u003c/p\u003e\n\u003cp\u003eThe function \u003ccode\u003efindKFrequentWordsInTree\u003c/code\u003e starts by initializing a queue with the root of the DOM tree and an empty map to store the frequency of each unique text node encountered. As the tree is traversed, each node\u0026#8217;s text content is split into individual words, and the frequency of each word is updated in the map.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eKey Implementation Details\u003c/h2\u003e\n\u003cp\u003eOne critical aspect of the implementation is the handling of text content. The algorithm splits text content by whitespace and filters out any strings that are empty or equal to \u0026#8216;↵\u0026#8217;, ensuring only meaningful text nodes are counted. This is particularly important for accurately reflecting the content\u0026#8217;s structure and emphasis.\u003c/p\u003e\n\u003cp\u003eAfter traversing the entire DOM tree and populating the frequency map, the next step is to sort the map\u0026#8217;s keys (the text nodes) based on their frequency in descending order. This sorting is crucial for identifying the most frequent text nodes.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eChallenges and Considerations\u003c/h2\u003e\n\u003cp\u003eSeveral challenges can arise with this approach, particularly concerning performance and scalability. The BFS traversal can become resource-intensive on large or deeply nested DOM trees. Additionally, the final sorting step has a computational complexity that can impact performance with a large number of unique text nodes.\u003c/p\u003e\n\u003cp\u003eTo mitigate these challenges, optimizations such as limiting the depth of traversal or implementing more efficient sorting algorithms can be considered.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion and Applications\u003c/h2\u003e\n\u003cp\u003eThe algorithm to find the K most frequent text nodes offers valuable insights into the content\u0026#8217;s structure and emphasis, which can be applied to various domains such as content analysis, SEO optimization, and user experience improvement on web platforms. Understanding and optimizing such algorithms is key to developing efficient and effective content analysis tools.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "DOM API"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Google"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Most Frequent Text Nodes in Webpage - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Master the technique to identify the K most frequent text nodes in webpages. This guide covers a comprehensive approach with code examples, perfect for enhancing your frontend interview skills.",
+        "pageURL": "k-most-text-nodes",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Most Frequent Text Nodes in Webpage  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eGiven a DOM tree representing a webpage and a limit (K), write a function to find the K most frequently appeared text nodes in the webpage. A text node is considered as a string of non-empty charac",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe solution to finding the K most frequently appeared text nodes in a webpage involves a systematic approach to traverse the DOM tree, identify text nodes, count their occurren",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

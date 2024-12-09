@@ -1,0 +1,204 @@
+{
+    "type": "coding",
+    "id": "custom-javascript-array-methods-mymap-myfilter-myreduce",
+    "title": "8. Array Methods",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "custom-javascript-array-methods-mymap-myfilter-myreduce",
+    "problemStatement": "\u003cp\u003eJavaScript arrays come with a set of powerful built-in methods like \u003ccode\u003emap()\u003c/code\u003e, \u003ccode\u003efilter()\u003c/code\u003e, and \u003ccode\u003ereduce()\u003c/code\u003e that are essential for manipulating array elements. The task is to recreate these methods, named \u003ccode\u003emyMap()\u003c/code\u003e, \u003ccode\u003emyFilter()\u003c/code\u003e, and \u003ccode\u003emyReduce()\u003c/code\u003e, by adding them to the \u003ccode\u003eArray.prototype\u003c/code\u003e. These custom methods should mimic the functionality of their native counterparts, enabling similar operations on arrays without using the built-in methods.\u003c/p\u003e\n\u003cp\u003eHere is a brief overview of what each method should accomplish:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003emyMap(callback):\u003c/strong\u003e This method should create a new array populated with the results of calling a provided function on every element in the calling array.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003emyFilter(callback):\u003c/strong\u003e It should create a new array with all elements that pass the test implemented by the provided function.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003emyReduce(callback, initialValue):\u003c/strong\u003e This method applies a function against an accumulator and each element in the array (from left to right) to reduce it to a single value, starting from \u003ccode\u003einitialValue\u003c/code\u003e if provided.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThese custom methods are not only a great way to understand how JavaScript\u0026#8217;s built-in array methods work under the hood but also serve as an excellent exercise in enhancing one\u0026#8217;s ability to extend native JavaScript objects in a meaningful way.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should apply the callback to each element and return a new array",
+            "test": "describe('myMap', () =\u003e {\r\n    it('should apply the callback to each element and return a new array', () =\u003e {\r\n      const input = [1, 2, 3];\r\n      const result = input.myMap(x =\u003e x * 2);\r\n      expect(result).to.deep.equal([2, 4, 6]);\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should return a new array with only the elements that pass the callback condition",
+            "test": "describe('myFilter', () =\u003e {\r\n    it('should return a new array with only the elements that pass the callback condition', () =\u003e {\r\n      const input = [1, 2, 3, 4, 5];\r\n      const result = input.myFilter(x =\u003e x % 2 === 0);\r\n      expect(result).to.deep.equal([2, 4]);\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should accumulate the array elements according to the callback",
+            "test": "describe('myReduce', () =\u003e {\r\n    it('should accumulate the array elements according to the callback', () =\u003e {\r\n      const input = [1, 2, 3, 4];\r\n      const result = input.myReduce((acc, curr) =\u003e acc + curr, 0);\r\n      expect(result).to.equal(10);\r\n    });\r\n\r\n    it('should use the first element as the initial value if none is provided', () =\u003e {\r\n      const input = [1, 2, 3, 4];\r\n      const result = input.myReduce((acc, curr) =\u003e acc + curr);\r\n      expect(result).to.equal(10);\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should use the first element as the initial value if none is provided",
+            "test": "describe('myReduce', () =\u003e {\r\n    it('should accumulate the array elements according to the callback', () =\u003e {\r\n      const input = [1, 2, 3, 4];\r\n      const result = input.myReduce((acc, curr) =\u003e acc + curr, 0);\r\n      expect(result).to.equal(10);\r\n    });\r\n\r\n    it('should use the first element as the initial value if none is provided', () =\u003e {\r\n      const input = [1, 2, 3, 4];\r\n      const result = input.myReduce((acc, curr) =\u003e acc + curr);\r\n      expect(result).to.equal(10);\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "myMap should apply the callback to each element and return a new array",
+            "test": "it('myMap should apply the callback to each element and return a new array', (done) =\u003e {\r\n    const input = [1, 2, 3];\r\n    const result = input.myMap(x =\u003e x * 2);\r\n    expect(result).to.deep.equal([2, 4, 6]);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 5,
+            "description": "myMap should handle an empty array",
+            "test": "it('myMap should handle an empty array', (done) =\u003e {\r\n    const input = [];\r\n    const result = input.myMap(x =\u003e x * 2);\r\n    expect(result).to.deep.equal([]);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 6,
+            "description": "myFilter should return a new array with only the elements that pass the callback condition",
+            "test": "it('myFilter should return a new array with only the elements that pass the callback condition', (done) =\u003e {\r\n    const input = [1, 2, 3, 4, 5];\r\n    const result = input.myFilter(x =\u003e x % 2 === 0);\r\n    expect(result).to.deep.equal([2, 4]);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 7,
+            "description": "myFilter should return an empty array if no elements pass the condition",
+            "test": "it('myFilter should return an empty array if no elements pass the condition', (done) =\u003e {\r\n    const input = [1, 3, 5];\r\n    const result = input.myFilter(x =\u003e x % 2 === 0);\r\n    expect(result).to.deep.equal([]);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 8,
+            "description": "myReduce should accumulate the array elements according to the callback",
+            "test": "it('myReduce should accumulate the array elements according to the callback', (done) =\u003e {\r\n    const input = [1, 2, 3, 4];\r\n    const result = input.myReduce((acc, curr) =\u003e acc + curr, 0);\r\n    expect(result).to.equal(10);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 9,
+            "description": "myReduce should use the first element as the initial value if none is provided",
+            "test": "it('myReduce should use the first element as the initial value if none is provided', (done) =\u003e {\r\n    const input = [1, 2, 3, 4];\r\n    const result = input.myReduce((acc, curr) =\u003e acc + curr);\r\n    expect(result).to.equal(10);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 10,
+            "description": "myReduce should handle an array with a single element and no initial value by returning the single element",
+            "test": "it('myReduce should handle an array with a single element and no initial value by returning the single element', (done) =\u003e {\r\n    const input = [5];\r\n    const result = input.myReduce((acc, curr) =\u003e acc + curr);\r\n    expect(result).to.equal(5);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 11,
+            "description": "myReduce should correctly handle an empty array with an initial value",
+            "test": "it('myReduce should correctly handle an empty array with an initial value', (done) =\u003e {\r\n    const input = [];\r\n    const result = input.myReduce((acc, curr) =\u003e acc + curr, 10);\r\n    expect(result).to.equal(10);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The functions must be added to Array.prototype to be available on all array instances."
+        },
+        {
+            "constraint": "myMap(callback): The callback function should receive three arguments: the current element, its index, and the array being traversed."
+        },
+        {
+            "constraint": "myMap(callback): A new array should be returned without modifying the original array."
+        },
+        {
+            "constraint": "myFilter(callback): The callback function receives the same arguments as in myMap."
+        },
+        {
+            "constraint": "myFilter(callback): Only elements for which the callback returns a truthy value should be included in the new array."
+        },
+        {
+            "constraint": "myFilter(callback): The original array must remain unchanged."
+        },
+        {
+            "constraint": " myReduce(callback, initialValue): The callback function receives four arguments: the accumulator, the current element, the current index, and the array."
+        },
+        {
+            "constraint": " myReduce(callback, initialValue): If initialValue is not provided, the first element of the array should be used as the initial accumulator value, and the iteration starts from the second element."
+        },
+        {
+            "constraint": " myReduce(callback, initialValue): The function should return a single value that results from the reduction process."
+        },
+        {
+            "constraint": "All custom methods should handle empty arrays gracefully."
+        },
+        {
+            "constraint": "Circular references within arrays should not cause infinite loops or errors."
+        },
+        {
+            "constraint": "The methods should not use the corresponding built-in map, filter, or reduce methods in their implementations."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "// Adding myMap to the Array prototype\r\nArray.prototype.myMap = function(callback) {\r\n    // Implement the logic here\r\n};\r\n\r\n// Adding myFilter to the Array prototype\r\nArray.prototype.myFilter = function(callback) {\r\n    // Implement the logic here\r\n};\r\n\r\n// Adding myReduce to the Array prototype\r\nArray.prototype.myReduce = function(callback, initialValue) {\r\n    // Implement the logic here\r\n};\r\n\r\n// Do not edit below this line\r\nexport default Array;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// Adding myMap to the Array prototype\r\nArray.prototype.myMap = function(callback) {\r\n  const mappedItems = []; // Create an empty array to store mapped items\r\n  for (let index = 0; index \u003c this.length; index++) {\r\n    // Call the callback function with the current element, index, and the whole array, then push the result to mappedItems\r\n    mappedItems.push(callback(this[index], index, this));\r\n  }\r\n  return mappedItems; // Return the new array with mapped items\r\n};\r\n\r\n// Adding myFilter to the Array prototype\r\nArray.prototype.myFilter = function(callback) {\r\n  const filteredItems = []; // Create an empty array for items that pass the filter\r\n  for (let i = 0; i \u003c this.length; i++) {\r\n    // If the callback function returns true for the current element, add it to filteredItems\r\n    if (callback(this[i], i, this)) {\r\n      filteredItems.push(this[i]);\r\n    }\r\n  }\r\n  return filteredItems; // Return the new array with filtered items\r\n};\r\n\r\n// Adding myReduce to the Array prototype\r\nArray.prototype.myReduce = function(callback, initialValue) {\r\n  let accumulator = initialValue === undefined ? this[0] : initialValue; // Initialize accumulator\r\n  let startingIndex = initialValue === undefined ? 1 : 0; // Determine starting index based on initialValue presence\r\n\r\n  for (let index = startingIndex; index \u003c this.length; index++) {\r\n    // Apply the callback function to each element, accumulating the result\r\n    accumulator = callback(accumulator, this[index], index, this);\r\n  }\r\n\r\n  return accumulator; // Return the final accumulated value\r\n};",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eCustom Array Methods: myMap, myFilter, myReduce\u003c/h2\u003e\n\u003cp\u003eThis guide delves into the implementation of custom array methods that mirror the functionality of JavaScript\u0026#8217;s native array operations. These custom methods, \u003ccode\u003emyMap\u003c/code\u003e, \u003ccode\u003emyFilter\u003c/code\u003e, and \u003ccode\u003emyReduce\u003c/code\u003e, are designed to extend the \u003ccode\u003eArray.prototype\u003c/code\u003e, offering analogous functionalities to \u003ccode\u003emap()\u003c/code\u003e, \u003ccode\u003efilter()\u003c/code\u003e, and \u003ccode\u003ereduce()\u003c/code\u003e respectively.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch3\u003emyMap Method\u003c/h3\u003e\n\u003cp\u003eThe \u003ccode\u003emyMap\u003c/code\u003e method transforms each element in an array based on a callback function. It creates a new array where each element is the result of calling the callback function on every element of the original array. The callback function receives three parameters: the current element, its index, and the entire array.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch3\u003emyFilter Method\u003c/h3\u003e\n\u003cp\u003e\u003ccode\u003emyFilter\u003c/code\u003e constructs a new array filled with elements that pass a condition defined in a callback function. The callback is executed on every element; it also receives the current element, its index, and the entire array as parameters. Only elements for which the callback returns a truthy value are included in the new array.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch3\u003emyReduce Method\u003c/h3\u003e\n\u003cp\u003e\u003ccode\u003emyReduce\u003c/code\u003e method reduces an array to a single value by applying a callback function to each element of the array in succession. The callback function receives four arguments: the accumulator, the current element, the current index, and the entire array. An initial value for the accumulator can also be provided as an argument to \u003ccode\u003emyReduce\u003c/code\u003e.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch3\u003eConclusion\u003c/h3\u003e\n\u003cp\u003eImplementing custom versions of \u003ccode\u003emap()\u003c/code\u003e, \u003ccode\u003efilter()\u003c/code\u003e, and \u003ccode\u003ereduce()\u003c/code\u003e functions provides insightful exposure to array manipulation and callback functions in JavaScript, enhancing understanding of fundamental programming concepts.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Amazon",
+        "Robinhood",
+        "Zillow",
+        "Netflix",
+        "LinkedIn",
+        "Stripe",
+        "Snap",
+        "Vimeo"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Build Array Methods such as .map, .filter, and .reduce - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Dive into our guide on creating custom JavaScript array methods. Learn how to implement your own versions of myMap, myFilter, and myReduce, enhancing your understanding of array manipulation and functional programming in JavaScript.",
+        "pageURL": "custom-javascript-array-methods-mymap-myfilter-myreduce",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Build Array Methods such as map filter and reduce  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eJavaScript arrays come with a set of powerful built-in methods like \u003ccode\u003emap()\u003c/code\u003e, \u003ccode\u003efilter()\u003c/code\u003e, and \u003ccode\u003ereduce()\u003c/code\u003e that are essential for manipulating array elements. The task",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eCustom Array Methods: myMap, myFilter, myReduce\u003c/h2\u003e\n\u003cp\u003eThis guide delves into the implementation of custom array methods that mirror the functionality of JavaScript\u0026#8217;s na",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

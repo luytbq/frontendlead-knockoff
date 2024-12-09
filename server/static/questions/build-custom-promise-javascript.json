@@ -1,0 +1,141 @@
+{
+    "type": "coding",
+    "id": "build-custom-promise-javascript",
+    "title": "9. Build Promise",
+    "difficulty": [
+        "Hard"
+    ],
+    "link": "build-custom-promise-javascript",
+    "problemStatement": "\u003cp class=\"mt-3\"\u003eYou are tasked with implementing a custom Promise class in JavaScript, mimicking the behavior of the native Promise. This includes handling asynchronous operations, chaining methods, and error management.\u003c/p\u003e\n\u003cp class=\"mt-3\"\u003eYour implementation should support the basic promise methods: \u003ccode\u003ethen\u003c/code\u003e, \u003ccode\u003ecatch\u003c/code\u003e, and the constructor should take an executor function with \u003ccode\u003eresolve\u003c/code\u003e and \u003ccode\u003ereject\u003c/code\u003e parameters.\u003c/p\u003e\n\u003cp\u003eHere\u0026#8217;s an example of how your custom Promise might be used:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst promise = new MyPromise((resolve, reject) =\u0026gt; {\r\n  setTimeout(() =\u0026gt; resolve(\"Success!\"), 1000);\r\n});\r\npromise.then(value =\u0026gt; console.log(value));\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003ePlease make sure to include a method called \u003ccode\u003egetState()\u003c/code\u003e that returns the STATE to pass all unit tests.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should resolve with the correct value",
+            "test": "it('should resolve with the correct value', (done) =\u003e {\r\n    const promise = new MyPromise((resolve, reject) =\u003e {\r\n      resolve('Success');\r\n    });\r\n    promise.then(value =\u003e {\r\n      expect(value).to.equal('Success');\r\n      done();\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should support promise chaining with then",
+            "test": "it('should support promise chaining with then', (done) =\u003e {\r\n    const promise = new MyPromise((resolve, reject) =\u003e {\r\n      resolve(1);\r\n    });\r\n\r\n    promise\r\n      .then(value =\u003e value + 1)\r\n      .then(value =\u003e {\r\n        expect(value).to.equal(2);\r\n        done();\r\n      });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should catch errors thrown in a then block",
+            "test": "it('should catch errors thrown in a then block', (done) =\u003e {\r\n    const promise = new MyPromise((resolve, reject) =\u003e {\r\n      resolve('ok');\r\n    });\r\n\r\n    promise\r\n      .then(() =\u003e {\r\n        throw new Error('Test Error');\r\n      })\r\n      .catch(error =\u003e {\r\n        expect(error.message).to.equal('Test Error');\r\n        done();\r\n      });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should be asynchronous",
+            "test": "it('should be asynchronous', (done) =\u003e {\r\n    let asyncCheck = false;\r\n\r\n    const promise = new MyPromise((resolve, reject) =\u003e {\r\n      resolve();\r\n    });\r\n\r\n    promise.then(() =\u003e {\r\n      expect(asyncCheck).to.be.true;\r\n      done();\r\n    });\r\n\r\n    asyncCheck = true;\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should handle nested promise chains correctly",
+            "test": "it('should handle nested promise chains correctly', (done) =\u003e {\r\n    new MyPromise(resolve =\u003e resolve(1))\r\n      .then(firstResult =\u003e {\r\n        return new MyPromise(resolve =\u003e resolve(firstResult + 1));\r\n      })\r\n      .then(finalResult =\u003e {\r\n        expect(finalResult).to.equal(2);\r\n        done(); // Call done() after all asynchronous operations are complete\r\n      })\r\n      .catch(error =\u003e {\r\n        done(error); // Call done with error if any error occurs\r\n      });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 5,
+            "description": "should handle multiple then calls on the same promise",
+            "test": "it('should handle multiple then calls on the same promise', (done) =\u003e {\r\n    const promise = new MyPromise(resolve =\u003e resolve(10));\r\n    let count = 0;\r\n\r\n    promise.then(result =\u003e {\r\n      expect(result).to.equal(10);\r\n      count++;\r\n    });\r\n\r\n    promise.then(result =\u003e {\r\n      expect(result).to.equal(10);\r\n      count++;\r\n      // Ensure both then callbacks have been called\r\n      expect(count).to.equal(2);\r\n      done();\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 6,
+            "description": "should execute multiple callbacks added by then for a single state transition",
+            "test": "it('should execute multiple callbacks added by then for a single state transition', (done) =\u003e {\r\n    const promise = new MyPromise(resolve =\u003e resolve('multi'));\r\n    let counter = 0;\r\n\r\n    promise.then(result =\u003e {\r\n      expect(result).to.equal('multi');\r\n      counter++;\r\n    });\r\n\r\n    promise.then(result =\u003e {\r\n      expect(result).to.equal('multi');\r\n      counter++;\r\n      expect(counter).to.equal(2); // Both callbacks should have been called\r\n      done();\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 7,
+            "description": "should resolve with another promise",
+            "test": "it('should resolve with another promise', (done) =\u003e {\r\n    const innerPromise = new MyPromise(resolve =\u003e resolve('inner'));\r\n    new MyPromise(resolve =\u003e resolve(innerPromise))\r\n      .then(result =\u003e {\r\n        if (result instanceof MyPromise) {\r\n          result.then(innerResult =\u003e {\r\n            expect(innerResult).to.equal('inner');\r\n            done();\r\n          }).catch(error =\u003e {\r\n            done(error);\r\n          });\r\n        } else {\r\n          expect(result).to.equal('inner');\r\n          done();\r\n        }\r\n      })\r\n      .catch(error =\u003e {\r\n        done(error);\r\n      });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Execution time should be reasonable for promise resolution/rejection."
+        },
+        {
+            "constraint": "Memory usage should be kept to a minimum."
+        },
+        {
+            "constraint": "The implementation should not use the native Promise."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "// Write your code here\r\nclass MyPromise {\r\n  constructor(executor) {\r\n    // Initialization code here\r\n  }\r\n\r\n  then(onFulfilled, onRejected) {\r\n    // Method implementation here\r\n  }\r\n\r\n  catch(onRejected) {\r\n    // Method implementation here\r\n  }\r\n  \r\n  // Method to return the private state property\r\n  getState() {\r\n    return this.#state;\r\n  }\r\n}\r\n\r\n// Do not edit below this line\r\nexport default MyPromise;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// Define possible states for the promise\r\nconst STATE = {\r\n  PENDING: 'pending',\r\n  SUCCESS: 'fulfilled',\r\n  REJECTED: 'rejected'\r\n};\r\n\r\n// Define the MyPromise class\r\nclass MyPromise {\r\n  // Private variables to store value, state, success callbacks, and rejected callbacks\r\n  #value = null;\r\n  #state = STATE.PENDING;\r\n  #successCallbacks = [];\r\n  #rejectedCallbacks = [];\r\n\r\n  // Constructor function to initialize the promise with an executor function\r\n  constructor(executorFunc) {\r\n    try {\r\n      // Call the executor function with resolve and reject functions as parameters\r\n      executorFunc(\r\n        val =\u003e this.#resolve(val), // Call the private resolve method with the resolved value\r\n        val =\u003e this.#reject(val)   // Call the private reject method with the rejected value\r\n      );\r\n    } catch(e) {\r\n      // If an error occurs during execution, reject the promise with the error\r\n      this.#reject(e);      \r\n    }\r\n  }\r\n\r\n  // Private method to resolve the promise with a value\r\n  #resolve(val) {\r\n    // Set the value of the promise\r\n    this.#value = val;\r\n    // Set the state of the promise to fulfilled\r\n    this.#state = STATE.SUCCESS;\r\n    // Call all success callbacks registered for this promise\r\n    this.#successCallbacks.forEach(cb =\u003e cb());\r\n  }\r\n\r\n  // Private method to reject the promise with a reason\r\n  #reject(val) {\r\n    // Set the value of the promise\r\n    this.#value = val;\r\n    // Set the state of the promise to rejected\r\n    this.#state = STATE.REJECTED;\r\n    // Call all rejected callbacks registered for this promise\r\n    this.#rejectedCallbacks.forEach(cb =\u003e cb());\r\n  }\r\n\r\n  // Method to handle fulfillment and rejection of the promise\r\n  then(onFulfilled, onRejected) {\r\n    return new MyPromise((resolve, reject) =\u003e {\r\n      // Success callback function\r\n      const successCallback = () =\u003e {\r\n        // If onFulfilled is not provided, resolve with the current value\r\n        if (!onFulfilled) return resolve(this.#value);\r\n        // Execute the onFulfilled callback asynchronously\r\n        queueMicrotask(() =\u003e {\r\n          try {\r\n            // Call onFulfilled with the current value\r\n            const result = onFulfilled(this.#value);\r\n            // If onFulfilled returns a promise, chain it\r\n            if (result instanceof MyPromise) {\r\n              result.then(resolve, reject); // Chain the promises\r\n            } else {\r\n              resolve(result); // Resolve with the result\r\n            }\r\n          } catch (e) {\r\n            reject(e); // Reject if an error occurs\r\n          }\r\n        });\r\n      };\r\n\r\n      // Failure callback function\r\n      const failedCallback = () =\u003e {\r\n        // If onRejected is not provided, reject with the current value\r\n        if (!onRejected) return reject(this.#value);\r\n        // Execute the onRejected callback asynchronously\r\n        queueMicrotask(() =\u003e {\r\n          try {\r\n            // Call onRejected with the current value\r\n            const result = onRejected(this.#value);\r\n            // If onRejected returns a promise, chain it\r\n            if (result instanceof MyPromise) {\r\n              result.then(resolve, reject); // Chain the promises\r\n            } else {\r\n              resolve(result); // Resolve with the result\r\n            }\r\n          } catch (e) {\r\n            reject(e); // Reject if an error occurs\r\n          }\r\n        });\r\n      };\r\n\r\n      // Switch statement to handle different states of the promise\r\n      switch (this.#state) {\r\n        // If the promise is pending, register callbacks\r\n        case STATE.PENDING:\r\n          this.#successCallbacks.push(successCallback);\r\n          this.#rejectedCallbacks.push(failedCallback);\r\n          break;\r\n        // If the promise is fulfilled, call the success callback immediately\r\n        case STATE.SUCCESS:\r\n          successCallback();\r\n          break;\r\n        // If the promise is rejected, call the failure callback immediately\r\n        case STATE.REJECTED:\r\n          failedCallback();\r\n          break;\r\n        // Throw an error if the state is unknown\r\n        default:\r\n          throw new Error('Unknown state');\r\n      }\r\n    });\r\n  }\r\n\r\n  // Method to get the current state of the promise\r\n  getState() {\r\n    return this.#state;\r\n  }\r\n\r\n  // Method to catch any rejected promise\r\n  catch(onRejected) {\r\n    return this.then(null, onRejected);\r\n  }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003ch1\u003eUnderstanding Asynchronous JavaScript with MyPromise\u003c/h1\u003e\n\u003cp\u003eAsynchronous programming is an essential aspect of modern JavaScript development, allowing developers to execute non-blocking operations and manage concurrency effectively. Promises are a fundamental abstraction for handling asynchronous operations, providing a cleaner and more organized way to deal with asynchronous code compared to traditional callback-based approaches.\u003c/p\u003e\n\u003ch2\u003eIntroduction to MyPromise\u003c/h2\u003e\n\u003cp\u003eIn this article, we\u0026#8217;ll explore the implementation of a custom promise-like class called MyPromise. This class aims to provide a simplified version of the native JavaScript Promise class, demonstrating the core concepts behind promises and how they can be implemented from scratch.\u003c/p\u003e\n\u003ch3\u003eState Management\u003c/h3\u003e\n\u003cp\u003eAt the heart of any promise implementation lies the concept of state management. Promises typically have three states: pending, fulfilled, and rejected. The MyPromise class mimics this behavior by defining an internal state variable and associated constants.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\r\nconst STATE = {\r\n  PENDING: 'pending',\r\n  SUCCESS: 'fulfilled',\r\n  REJECTED: 'rejected'\r\n};\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe STATE object encapsulates the possible states of a promise, providing a clear representation of the promise\u0026#8217;s lifecycle.\u003c/p\u003e\n\u003ch3\u003eConstructor and Executor Function\u003c/h3\u003e\n\u003cp\u003eThe constructor function of the MyPromise class takes an executor function as its parameter. This function is immediately invoked upon creating a new MyPromise instance and is responsible for initiating the asynchronous operation.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\r\nclass MyPromise {\r\n  constructor(executorFunc) {\r\n    try {\r\n      executorFunc(\r\n        val =\u0026gt; this.#resolve(val),\r\n        val =\u0026gt; this.#reject(val)\r\n      );\r\n    } catch(e) {\r\n      this.#reject(e);      \r\n    }\r\n  }\r\n}\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe executor function receives two parameters: \u003ccode\u003eresolve\u003c/code\u003e and \u003ccode\u003ereject\u003c/code\u003e. These functions are used to fulfill or reject the promise, respectively, based on the outcome of the asynchronous operation.\u003c/p\u003e\n\u003ch3\u003eResolving and Rejecting Promises\u003c/h3\u003e\n\u003cp\u003eResolving and rejecting promises are fundamental operations in promise implementations. The MyPromise class defines private methods for resolving and rejecting promises, encapsulating the logic for setting the promise\u0026#8217;s value and state.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\r\nclass MyPromise {\r\n  #resolve(val) {\r\n    this.#value = val;\r\n    this.#state = STATE.SUCCESS;\r\n    this.#successCallbacks.forEach(cb =\u0026gt; cb());\r\n  }\r\n\r\n  #reject(val) {\r\n    this.#value = val;\r\n    this.#state = STATE.REJECTED;\r\n    this.#rejectedCallbacks.forEach(cb =\u0026gt; cb());\r\n  }\r\n}\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eUpon resolving or rejecting a promise, any registered success or failure callbacks are invoked, notifying subscribers of the promise\u0026#8217;s state change.\u003c/p\u003e\n\u003ch3\u003eHandling Asynchronous Operations with then()\u003c/h3\u003e\n\u003cp\u003eThe \u003ccode\u003ethen()\u003c/code\u003e method is the primary mechanism for handling asynchronous operations and chaining promises in the MyPromise class. It allows developers to attach fulfillment and rejection handlers to a promise, enabling sequential execution of asynchronous tasks.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\r\nclass MyPromise {\r\n  then(onFulfilled, onRejected) {\r\n    return new MyPromise((resolve, reject) =\u0026gt; {\r\n      const successCallback = () =\u0026gt; {\r\n        if (!onFulfilled) return resolve(this.#value);\r\n        queueMicrotask(() =\u0026gt; {\r\n          try {\r\n            const result = onFulfilled(this.#value);\r\n            if (result instanceof MyPromise) {\r\n              result.then(resolve, reject); // Chain promises\r\n            } else {\r\n              resolve(result); // Resolve with result\r\n            }\r\n          } catch (e) {\r\n            reject(e); // Reject on error\r\n          }\r\n        });\r\n      };\r\n      // Similar logic for failedCallback\r\n    });\r\n  }\r\n}\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe \u003ccode\u003ethen()\u003c/code\u003e method returns a new MyPromise instance, enabling chaining of asynchronous operations. If the fulfillment or rejection handler returns a promise, it is chained to the current promise, ensuring proper sequencing of asynchronous tasks.\u003c/p\u003e\n\u003ch3\u003eHandling Errors with catch()\u003c/h3\u003e\n\u003cp\u003eError handling is an integral part of promise-based asynchronous programming. The \u003ccode\u003ecatch()\u003c/code\u003e method provides a convenient way to handle promise rejections and propagate errors through the promise chain.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\r\nclass MyPromise {\r\n  catch(onRejected) {\r\n    return this.then(null, onRejected);\r\n  }\r\n}\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe \u003ccode\u003ecatch()\u003c/code\u003e method is a shorthand for attaching a rejection handler to a promise. It allows developers to specify a callback function to be executed when the promise is rejected, simplifying error handling in asynchronous code.\u003c/p\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe MyPromise class provides a foundational understanding of how promises work internally and demonstrates the core concepts behind asynchronous JavaScript programming. By implementing a promise-like class from scratch, developers can gain insights into the mechanics of promises and learn how to leverage them effectively in their applications.\u003c/p\u003e\n\u003cp\u003eUnderstanding promises is crucial for mastering asynchronous JavaScript development and building robust and scalable applications that can handle complex asynchronous tasks with ease.\u003c/p\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/w9plxTCGAVE",
+    "company": [
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Build a Custom Promise in JavaScript - Frontend Interview Prep - FrontendLead",
+        "pageDescription": "Learn how to implement your own Promise class in JavaScript to handle asynchronous operations like a pro. This guide covers everything from basic promise creation to advanced chaining and error handling.",
+        "pageURL": "build-custom-promise-javascript",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Build a Custom Promise in JavaScript  Frontend Interview Prep  FrontendLead in Javascript?",
+            "text": "\u003cp class=\"mt-3\"\u003eYou are tasked with implementing a custom Promise class in JavaScript, mimicking the behavior of the native Promise. This includes handling asynchronous operations, chaining methods, a",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003ch1\u003eUnderstanding Asynchronous JavaScript with MyPromise\u003c/h1\u003e\n\u003cp\u003eAsynchronous programming is an essential aspect of modern JavaScript development, allowing developers to execute non-blocking operation",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

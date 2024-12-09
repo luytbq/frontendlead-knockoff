@@ -1,0 +1,137 @@
+{
+    "type": "coding",
+    "id": "this-methods",
+    "title": "45. Custom “this” Methods",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "this-methods",
+    "problemStatement": "\u003cp\u003eYou are tasked with creating custom implementations of three essential methods found in the Function prototype: \u003ccode\u003emyCall\u003c/code\u003e, \u003ccode\u003emyApply\u003c/code\u003e, and \u003ccode\u003emyBind\u003c/code\u003e. These methods are designed to emulate the functionality of JavaScript\u0026#8217;s native \u003ccode\u003eFunction.prototype.call\u003c/code\u003e, \u003ccode\u003eFunction.prototype.apply\u003c/code\u003e, and \u003ccode\u003eFunction.prototype.bind\u003c/code\u003e methods, respectively. This challenge provides a deep dive into handling function context (`this`) and arguments in JavaScript, which is crucial for function execution and object-oriented programming.\u003c/p\u003e\n\u003cp\u003eThe \u003ccode\u003emyCall\u003c/code\u003e method should enable a function to be invoked with a specified `this` context and individual arguments, mirroring the behavior of \u003ccode\u003eFunction.prototype.call\u003c/code\u003e. The \u003ccode\u003emyApply\u003c/code\u003e method, on the other hand, should allow a function to be called with an array of arguments, akin to \u003ccode\u003eFunction.prototype.apply\u003c/code\u003e. Finally, the \u003ccode\u003emyBind\u003c/code\u003e method is expected to return a new function that, when called at a later time, will have its `this` context and initial arguments preset, resembling \u003ccode\u003eFunction.prototype.bind\u003c/code\u003e.\u003c/p\u003e\n\u003cp\u003eImplementing these custom methods not only showcases the flexibility and dynamism of JavaScript but also serves as a valuable exercise in understanding the core mechanics of function execution and context binding. By crafting \u003ccode\u003emyCall\u003c/code\u003e, \u003ccode\u003emyApply\u003c/code\u003e, and \u003ccode\u003emyBind\u003c/code\u003e from the ground up, you will gain a deeper insight into these fundamental aspects of JavaScript and enhance your problem-solving skills for various programming challenges.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "myCall should correctly apply the given context and arguments",
+            "test": "it('myCall should correctly apply the given context and arguments', () =\u003e {\r\n    const obj = { value: 10 };\r\n    function testFunc(a, b) {\r\n      return this.value + a + b;\r\n    }\r\n\n    const result = testFunc.myCall(obj, 5, 5);\r\n    expect(result).to.equal(20); // Assuming \"expect\" assertion is defined\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "myApply should correctly apply the given context and an array of arguments",
+            "test": "it('myApply should correctly apply the given context and an array of arguments', () =\u003e {\r\n    const obj = { value: 15 };\r\n    function testFunc(a, b) {\r\n      return this.value + a + b;\r\n    }\r\n\n    const result = testFunc.myApply(obj, [10, 5]);\r\n    expect(result).to.equal(30); // Assuming \"expect\" assertion is defined\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "myBind should correctly return a new function with bound context and arguments",
+            "test": "it('myBind should correctly return a new function with bound context and arguments', () =\u003e {\r\n    const obj = { value: 20 };\r\n    function testFunc(a, b) {\r\n      return this.value + a + b;\r\n    }\r\n\n    const boundFunc = testFunc.myBind(obj, 10);\r\n    const result = boundFunc(10);\r\n    expect(result).to.equal(40); // Assuming \"expect\" assertion is defined\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The myCall method must not use the native Function.prototype.call method in its implementation."
+        },
+        {
+            "constraint": "Similarly, myApply should be implemented without using Function.prototype.apply."
+        },
+        {
+            "constraint": "The myBind method must not utilize the native Function.prototype.bind in its logic."
+        },
+        {
+            "constraint": "All custom methods should be defined on the Function.prototype to make them available to all function instances."
+        },
+        {
+            "constraint": "The thisContext argument provided to these methods can be any object and should be used as the this value when executing the target function."
+        },
+        {
+            "constraint": "For myCall and myApply, if no thisContext is provided, the global object (e.g., window in browsers or global in Node.js) should be used as the default context."
+        },
+        {
+            "constraint": "The myApply method should be able to handle an args array that is either undefined or null, treating it as an empty array."
+        },
+        {
+            "constraint": "The myBind method should return a new function that can be called later, with the bound thisContext and any pre-specified arguments, followed by arguments provided at the call time."
+        },
+        {
+            "constraint": "The myBind method should also allow the bound function to be constructed if used with the new operator, in which case the provided thisContext should be ignored, and the this value should be set to the newly created object."
+        },
+        {
+            "constraint": "Ensure proper handling of edge cases, such as non-object contexts or non-function objects attempting to use these methods."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "// myCall implementation\r\nFunction.prototype.myCall = function(thisContext, ...args) {\r\n    // Write your code here\r\n}\r\n\r\n// myApply implementation\r\nFunction.prototype.myApply = function(thisContext, args) {\r\n    // Write your code here\r\n}\r\n\r\n// myBind implementation\r\nFunction.prototype.myBind = function(thisContext, ...args) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default Function",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// Define myCall function on Function prototype\r\nFunction.prototype.myCall = function(thisContext = window, ...args) {\r\n  // Fallback to window if no context is provided, or use the provided context\r\n  const context = thisContext || globalThis; // globalThis for a more universal approach\r\n\r\n  // Create a unique property on the context object to avoid overwriting an existing property\r\n  const fnSymbol = Symbol();\r\n  context[fnSymbol] = this;\r\n\r\n  // Execute the function with the provided arguments\r\n  const result = context[fnSymbol](...args);\r\n\r\n  // Clean up by deleting the temporary function property\r\n  delete context[fnSymbol];\r\n\r\n  // Return the result of the function call\r\n  return result;\r\n};\r\n\r\n// Define myApply function on Function prototype\r\nFunction.prototype.myApply = function(thisContext = window, args = []) {\r\n  // Fallback to window if no context is provided, and default args to an empty array if undefined\r\n  return this.myCall(thisContext, ...args); // Utilize myCall with spread operator for arguments\r\n};\r\n\r\n// Define myBind function on Function prototype\r\nFunction.prototype.myBind = function(thisContext, ...bindArgs) {\r\n  // Save the original function context and arguments\r\n  const originalFunc = this;\r\n\r\n  // Return a new function that captures both initial and subsequent arguments\r\n  return function(...callArgs) {\r\n    // Check if the function is called as a constructor\r\n    if (new.target) {\r\n      // Create a new instance of the original function, passing both sets of arguments\r\n      const instance = new originalFunc(...bindArgs, ...callArgs);\r\n      return instance;\r\n    }\r\n\r\n    // If not a constructor call, apply the original function with combined arguments\r\n    return originalFunc.myCall(thisContext, ...bindArgs, ...callArgs);\r\n  };\r\n};",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eIntroduction to Custom Context Methods\u003c/h2\u003e\n\u003cp\u003eThe implementation of \u003ccode\u003emyCall\u003c/code\u003e, \u003ccode\u003emyApply\u003c/code\u003e, and \u003ccode\u003emyBind\u003c/code\u003e methods is a deep dive into understanding function contexts, arguments, and the flexibility of JavaScript functions. These custom methods mimic the functionality of their native counterparts, allowing us to control the execution context and bind arguments to functions.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003emyCall Method Explained\u003c/h2\u003e\n\u003col\u003e\n\u003cli\u003e\u003cstrong\u003eContext Assignment:\u003c/strong\u003e Defaults to the global object if no context is provided, ensuring a valid \u003ccode\u003ethis\u003c/code\u003e reference.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eUnique Property Key:\u003c/strong\u003e Uses a unique Symbol as a property key on the context object to avoid property name collisions.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eFunction Invocation:\u003c/strong\u003e Temporarily assigns and invokes the function on the context object with specified arguments, maintaining the correct \u003ccode\u003ethis\u003c/code\u003e value.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eCleanup:\u003c/strong\u003e Removes the temporary function property from the context object post invocation.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eReturn Value:\u003c/strong\u003e Returns the result of the function call, akin to a standard function execution.\u003c/li\u003e\n\u003c/ol\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003emyApply Method Explained\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003emyApply\u003c/code\u003e method closely resembles \u003ccode\u003emyCall\u003c/code\u003e but is tailored for an array of arguments. By employing \u003ccode\u003emyCall\u003c/code\u003e within its implementation, \u003ccode\u003emyApply\u003c/code\u003e efficiently reuses logic, ensuring arguments are properly spread and the context is correctly applied.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003emyBind Method Explained\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003emyBind\u003c/code\u003e method creates a bound function that retains specified \u003ccode\u003ethis\u003c/code\u003e context and initial arguments. This bound function, when invoked, combines both initially bound arguments and those provided at the call time, offering extensive flexibility in function execution.\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eStoring Function and Arguments:\u003c/strong\u003e Retains the original function context and pre-bound arguments for later use.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eConstructor Call Handling:\u003c/strong\u003e Detects constructor calls to ensure \u003ccode\u003ethis\u003c/code\u003e is bound to the new object instance, preserving the \u003ccode\u003enew\u003c/code\u003e operator\u0026#8217;s semantics.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eRegular Function Call:\u003c/strong\u003e For non-constructor calls, combines all arguments and applies the correct context, using \u003ccode\u003emyCall\u003c/code\u003e for invocation.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThrough the custom implementation of \u003ccode\u003emyCall\u003c/code\u003e, \u003ccode\u003emyApply\u003c/code\u003e, and \u003ccode\u003emyBind\u003c/code\u003e, we gain a comprehensive understanding of function context management in JavaScript, enhancing our ability to write more flexible and maintainable code.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix",
+        "Apple",
+        "LinkedIn",
+        "Stripe",
+        "ClickUp",
+        "PayPal",
+        "Snap",
+        "Vimeo",
+        "Adobe",
+        "TikTok",
+        "Atlassian"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Build .call(), .bind(), and .apply() from scratch - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Master the art of function context and binding in JavaScript with our comprehensive guide. Learn how to implement your own myCall, myApply, and myBind functions to gain deeper insights into JavaScript's powerful features.",
+        "pageURL": "this-methods",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Build call bind and apply from scratch  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eYou are tasked with creating custom implementations of three essential methods found in the Function prototype: \u003ccode\u003emyCall\u003c/code\u003e, \u003ccode\u003emyApply\u003c/code\u003e, and \u003ccode\u003emyBind\u003c/code\u003e. These methods are",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eIntroduction to Custom Context Methods\u003c/h2\u003e\n\u003cp\u003eThe implementation of \u003ccode\u003emyCall\u003c/code\u003e, \u003ccode\u003emyApply\u003c/code\u003e, and \u003ccode\u003emyBind\u003c/code\u003e methods is a deep dive into understandin",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,103 @@
+{
+    "type": "react",
+    "id": "api-search-and-render-image",
+    "title": "37. API Search and Render Image",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "api-search-and-render-image",
+    "problemStatement": "\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screen-Shot-2023-10-02-at-5.10.24-PM-300x290.png\" alt=\"\" width=\"300\" height=\"290\" class=\"alignnone size-medium wp-image-383\" srcset=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screen-Shot-2023-10-02-at-5.10.24-PM-300x290.png 300w, https://api.frontendlead.com/wp-content/uploads/2024/03/Screen-Shot-2023-10-02-at-5.10.24-PM.png 532w\" sizes=\"(max-width: 300px) 100vw, 300px\" /\u003e\u003c/p\u003e\n\u003cp\u003eDevelop a basic React user interface that accomplishes the following tasks:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eFetches data from an external API.\u003c/li\u003e\n\u003cli\u003eRenders a header image using the first item from the API\u0026#8217;s response.\u003c/li\u003e\n\u003cli\u003eDisplays a list of results, each with a title and a button.\u003c/li\u003e\n\u003cli\u003eIncludes a search input field to filter through the list items based on the title.\u003c/li\u003e\n\u003cli\u003eAllows users to update the main header image by clicking a button associated with each list item.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThis UI challenge focuses on implementing core React functionalities, including state management with \u003ccode\u003euseState\u003c/code\u003e, side effects with \u003ccode\u003euseEffect\u003c/code\u003e, componentization, and event handling. Styling is not a primary concern for this task, but the functionality to filter results and update the main image based on user interaction is crucial.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eExample Interaction:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e1. Upon loading, the UI fetches data from the API and displays the first image as the main header image.\r\n2. A list of titles is displayed below the header image, each with a corresponding \"Click Me\" button.\r\n3. The user can type in the search field to filter the list of titles.\r\n4. Clicking on a \"Click Me\" button next to a title updates the header image to that of the clicked item's image.\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis task assesses your ability to handle data fetching, state management, and dynamic rendering in React, which are essential skills for frontend development.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The application must be implemented using React."
+        },
+        {
+            "constraint": "Data should be fetched from the provided API endpoint (https://dummyjson.com/products) using fetch within useEffect."
+        },
+        {
+            "constraint": "The main image should initially display the first image from the first item in the fetched data."
+        },
+        {
+            "constraint": "The list should display the title of each product and a button next to it."
+        },
+        {
+            "constraint": "Implement a search functionality that filters the list of products by their titles based on the user's input. The filtering should be case-insensitive."
+        },
+        {
+            "constraint": "When a user clicks the button next to a product, the main image should update to show the first image of the clicked product."
+        },
+        {
+            "constraint": "Ensure that the application does not throw any errors or warnings, including React-specific ones like missing key props for list elements."
+        },
+        {
+            "constraint": "The UI should include a search input field that updates the list of products in real-time as the user types."
+        },
+        {
+            "constraint": "The original data fetched from the API must not be modified. Instead, use component state to manage filtered results and the selected image."
+        },
+        {
+            "constraint": "The application should handle loading states and potential errors gracefully during the data fetching process."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "// Common React Hooks are already imported\r\n// Template literals are not allowed.\r\n\r\nconst Product = ({ product, onProductClick }) =\u003e {\r\n    // Write your code here\r\n}\r\n\r\nconst ImageRender = () =\u003e {\r\n   // Write your code here\r\n};\r\n\r\n// Do not edit below this line\r\nexport default ImageRender;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// Product component representing each item in the list\r\nconst Product = ({ product, onProductClick }) =\u003e {\r\n    const handleClick = () =\u003e {\r\n        // Invokes the callback function passed from the parent component when a product is clicked\r\n        onProductClick(product)\r\n    }\r\n    return (\r\n        \u003cdiv\u003e\r\n            {product.title} {/* Renders the title of the product */}\r\n            \u003cbutton onClick={handleClick}\u003eClick Me\u003c/button\u003e {/* Button to select the product */}\r\n        \u003c/div\u003e\r\n    )\r\n}\r\n\r\n// Main component for image rendering and product listing\r\nconst ImageRender = () =\u003e {\r\n    const [products, setProducts] = useState([]); // State for storing the list of all products\r\n    const [selectedImage, setSelectedImage] = useState(''); // State for the currently selected image\r\n    const [searchVal, setSearchVal] = useState(''); // State for the search input value\r\n    const [filteredResults, setFilteredResults] = useState([]); // State for the filtered list of products\r\n\r\n    useEffect(() =\u003e {\r\n        // Fetches product data from the API on component mount\r\n        const fetchResults = async() =\u003e {\r\n            const results = await fetch('https://dummyjson.com/products');\r\n            const json = await results.json();\r\n            setProducts(json.products);\r\n            setFilteredResults(json.products);\r\n            setSelectedImage(json.products[0].images[0]); // Sets the first image as the selected image by default\r\n        }\r\n        fetchResults();\r\n    }, []);\r\n\r\n    const onProductClick = (product) =\u003e {\r\n        // Updates the selected image when a product is clicked\r\n        setSelectedImage(product.images[0]);\r\n    }\r\n\r\n    const handleSearch = (e) =\u003e {\r\n        // Updates the search value and filters the product list based on the search input\r\n        const val = e.target.value;\r\n        setSearchVal(val);\r\n        const filtered = products.filter(\r\n            product =\u003e product.title.toLowerCase().includes(val.toLowerCase())\r\n        );\r\n        setFilteredResults(filtered);\r\n    }\r\n    \r\n    return (\r\n        \u003cdiv style={{ width: 500, margin: '0 auto' }}\u003e\r\n            \u003cdiv style={{ width: '100%' }}\u003e\r\n                \u003cimg src={selectedImage} alt=\"Selected Product\" style={{ width: '100%', height: 200 }} /\u003e\r\n            \u003c/div\u003e\r\n\r\n            \u003cdiv style={{ width: '100%' }}\u003e\r\n                \u003cinput type=\"text\" placeholder=\"Search\" value={searchVal} onChange={handleSearch} /\u003e\r\n            \u003c/div\u003e\r\n\r\n            \u003cdiv style={{ width: '100%' }}\u003e\r\n                {filteredResults.map((product, idx) =\u003e \r\n                    \u003cProduct key={idx} product={product} onProductClick={onProductClick} /\u003e\r\n                )}\r\n            \u003c/div\u003e\r\n        \u003c/div\u003e\r\n    );\r\n};",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eUnderstanding the React Image Gallery Application\u003c/h1\u003e\n\u003cp\u003eThis article delves into the intricacies of creating a dynamic React application that fetches and displays images from an external API, incorporates a search functionality, and allows users to interactively update the main display image by clicking on individual items in a list.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eComponent Structure\u003c/h2\u003e\n\u003cp\u003eThe application comprises two main components:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eProduct:\u003c/strong\u003e Represents each item in the product list, displaying the product title and a button to select the product as the main image.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eImageRender:\u003c/strong\u003e The parent component responsible for fetching data, rendering the main image, search input, and list of \u003ccode\u003eProduct\u003c/code\u003e components.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eState Management and Data Fetching\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eImageRender\u003c/code\u003e component utilizes the \u003ccode\u003euseState\u003c/code\u003e hook to manage various states:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003ccode\u003eproducts\u003c/code\u003e: Stores the complete list of products fetched from the API.\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003eselectedImage\u003c/code\u003e: Holds the URL of the currently selected main image.\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003esearchVal\u003c/code\u003e: Tracks the user\u0026#8217;s input in the search field.\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003efilteredResults\u003c/code\u003e: Contains the list of products filtered based on the search criteria.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eData is fetched from the API using the \u003ccode\u003euseEffect\u003c/code\u003e hook to ensure the fetch operation runs once when the component mounts.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eInteractive Features\u003c/h2\u003e\n\u003cp\u003eInteractive elements in the application include:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eSearch Functionality:\u003c/strong\u003e The search input allows users to filter the product list in real-time. This is achieved by updating the \u003ccode\u003efilteredResults\u003c/code\u003e state based on the user\u0026#8217;s input.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eUpdating the Main Image:\u003c/strong\u003e Each \u003ccode\u003eProduct\u003c/code\u003e component includes a \u0026#8220;Click Me\u0026#8221; button that, when clicked, updates the main image to that of the selected product. This interactivity is handled through a callback function passed down from the parent component.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThis React application demonstrates fundamental concepts such as component composition, state management, effectful operations, and event handling. By building such an application, developers can gain a deeper understanding of React\u0026#8217;s capabilities and how to create interactive and dynamic user interfaces.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "App Design"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": null,
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "API Search and Render Image - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Master React by building an interactive UI that fetches and displays images from an API, includes a real-time search function, and allows dynamic image updates. Perfect for enhancing your frontend skills.",
+        "pageURL": "api-search-and-render-image",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement API Search and Render Image  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screen-Shot-2023-10-02-at-5.10.24-PM-300x290.png\" alt=\"\" width=\"300\" height=\"290\" class=\"alignnone ",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eUnderstanding the React Image Gallery Application\u003c/h1\u003e\n\u003cp\u003eThis article delves into the intricacies of creating a dynamic React application that fetches and displays images from",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+,
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

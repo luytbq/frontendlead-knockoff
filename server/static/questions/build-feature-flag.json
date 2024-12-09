@@ -1,0 +1,129 @@
+{
+    "type": "coding",
+    "id": "build-feature-flag",
+    "title": "85. FeatureFlag",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "build-feature-flag",
+    "problemStatement": "\u003cp\u003eCreate a \u003ccode\u003eFeatureFlag\u003c/code\u003e class that manages feature flags in a web application. Feature flags are a powerful technique in software development, allowing developers to enable or disable certain features dynamically, often used for testing new features, A/B testing, or enabling features for specific users or environments.\u003c/p\u003e\n\u003cp\u003eThe \u003ccode\u003eFeatureFlag\u003c/code\u003e class should provide the functionality to check if specific features are enabled or disabled based on stored flags. It should also include a method to retrieve feature flags from local storage, simulating the fetching of feature configurations from a persistent storage or a remote configuration service.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eClass Requirements:\u003c/strong\u003e\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eA constructor that initializes the feature flags.\u003c/li\u003e\n\u003cli\u003eA private method \u003ccode\u003e_fetchFeatures\u003c/code\u003e that simulates fetching feature flags from local storage and populates the \u003ccode\u003efeatures\u003c/code\u003e object.\u003c/li\u003e\n\u003cli\u003eA method \u003ccode\u003eisEnabled\u003c/code\u003e that accepts an array of feature names and returns an array of objects indicating the enabled status of each feature.\u003c/li\u003e\n\u003cli\u003eAn optional method \u003ccode\u003euseFeatureFlag\u003c/code\u003e similar to \u003ccode\u003eisEnabled\u003c/code\u003e, demonstrating alternative naming or functionality as desired.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e\u003cstrong\u003eExample Usage:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst featureFlag = new FeatureFlag();\r\nconsole.log(featureFlag.isEnabled(['feature', 'feature2']));\r\n// Output: [{feature: true}, {feature2: false}]\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe class should handle cases where local storage might not be accessible due to browser restrictions or privacy settings, defaulting to an empty configuration in such cases.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should initialize with default feature flags when none are set in local storage",
+            "test": "it('should initialize with default feature flags when none are set in local storage', (done) =\u003e {\r\n    // Ensure local storage is clear before the test\r\n    localStorage.clear();\r\n\r\n    const featureFlag = new FeatureFlag();\r\n    const isEnabledResult = featureFlag.isEnabled(['feature', 'feature2']);\r\n    \r\n    // Check if the default features are correctly initialized\r\n    expect(isEnabledResult).to.deep.equal([{ feature: true }, { feature2: false }]);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should correctly fetch features from local storage if available",
+            "test": "it('should correctly fetch features from local storage if available', (done) =\u003e {\r\n    // Manually set features in local storage before the test\r\n    const storedFeatures = { feature3: true, feature4: false };\r\n    localStorage.setItem('features', JSON.stringify(storedFeatures));\r\n\r\n    const featureFlag = new FeatureFlag();\r\n    const isEnabledResult = featureFlag.isEnabled(['feature3', 'feature4']);\r\n\r\n    // Check if the features from local storage are correctly fetched\r\n    expect(isEnabledResult).to.deep.equal([{ feature3: true }, { feature4: false }]);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Storage Mechanism: The class should simulate fetching feature flags from a persistent storage. In this scenario, local storage is used as an example, but the class should be designed to easily adapt to other storage mechanisms or external configuration services."
+        },
+        {
+            "constraint": "Error Handling: The class should gracefully handle errors, such as when local storage is inaccessible due to browser restrictions. In such cases, it should default to an empty set of feature flags."
+        },
+        {
+            "constraint": "Data Format: Feature flags should be stored as an object where keys represent feature names and boolean values indicate whether the feature is enabled (true) or disabled (false)."
+        },
+        {
+            "constraint": "Feature Check: The isEnabled method (and the optional useFeatureFlag method) should accept an array of feature names to check and return an array of objects, each containing the feature name as the key and a boolean indicating its enabled status."
+        },
+        {
+            "constraint": "Initialization: Upon instantiation, the class should attempt to fetch the current feature flags from storage and populate the features property. If the features are not available in storage, it should attempt to set a default configuration to storage."
+        },
+        {
+            "constraint": "Modularity: While this problem uses local storage for simplicity, the class should be designed in a way that makes it easy to switch to other storage mechanisms or configuration sources, keeping in mind the principle of separation of concerns."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "class FeatureFlag {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default FeatureFlag;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": " class FeatureFlag {\r\n    constructor() {\r\n        this.features = this._fetchFeatures();\r\n    }\r\n\r\n    // Private helper method to fetch features from local storage\r\n    _fetchFeatures() {\r\n        try {\r\n            const storedFeatures = localStorage.getItem('features');\r\n            if (storedFeatures) {\r\n                return JSON.parse(storedFeatures);\r\n            } else {\r\n                // Default features setup if none are found in local storage\r\n                const defaultFeatures = {\r\n                    'feature': true,\r\n                    'feature2': false\r\n                };\r\n                localStorage.setItem('features', JSON.stringify(defaultFeatures));\r\n                return defaultFeatures;\r\n            }\r\n        } catch (error) {\r\n            console.error('Failed to fetch features from local storage:', error);\r\n            // Return an empty object in case of an error (e.g., local storage access is restricted)\r\n            return {};\r\n        }\r\n    }\r\n\r\n    // Checks if the specified features are enabled\r\n    isEnabled(featuresToCheck) {\r\n        return featuresToCheck.map(feature =\u003e ({\r\n            [feature]: !!this.features[feature]\r\n        }));\r\n    }\r\n\r\n    // Optional method similar to isEnabled, demonstrating alternative naming or functionality\r\n    useFeatureFlag(featuresToCheck = []) {\r\n        return this.isEnabled(featuresToCheck);\r\n    }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eImplementing a FeatureFlag Class for Dynamic Feature Management\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eFeature flags are a crucial component in modern software development, allowing teams to toggle features on and off without redeploying code. The \u003ccode\u003eFeatureFlag\u003c/code\u003e class provides a structured way to manage these flags, leveraging local storage to simulate the persistence of feature configurations.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eCore Functionalities\u003c/h2\u003e\n\u003cp\u003eThe class includes several key functionalities:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eInitialization:\u003c/strong\u003e On instantiation, the class attempts to fetch existing feature flags from local storage or initializes default flags if none are found.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eFeature Checking:\u003c/strong\u003e The \u003ccode\u003eisEnabled\u003c/code\u003e method allows checking the status of one or more features, returning their enabled states.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eResilience:\u003c/strong\u003e The class gracefully handles errors, such as inaccessible local storage, ensuring that the application can still function with default or empty feature configurations.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eTechnical Implementation\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003e_fetchFeatures\u003c/code\u003e method encapsulates the logic for retrieving or setting feature flags in local storage, serving as a foundation for the class\u0026#8217;s functionality. This method employs a try-catch block to handle potential errors and fallbacks gracefully.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eBest Practices\u003c/h2\u003e\n\u003cp\u003eThis implementation follows best practices by:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eSeparating concerns, with private methods handling specific tasks like fetching features.\u003c/li\u003e\n\u003cli\u003eEnsuring the class is robust against errors and exceptional circumstances, such as browser restrictions on local storage.\u003c/li\u003e\n\u003cli\u003eProviding a clear and concise API for feature flag checking, making it easy to use and integrate within larger applications.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eExtensibility and Future Improvements\u003c/h2\u003e\n\u003cp\u003eWhile the current implementation focuses on local storage, the class design allows for easy adaptation to other storage mechanisms or external feature flag services, enhancing its utility and flexibility for various use cases.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Atlassian"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "85. FeatureFlag - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Unlock the power of dynamic feature management in your web applications with our FeatureFlag class. Learn how to implement, use, and extend feature flags for seamless development and testing workflows.",
+        "pageURL": "build-feature-flag",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  FeatureFlag  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eCreate a \u003ccode\u003eFeatureFlag\u003c/code\u003e class that manages feature flags in a web application. Feature flags are a powerful technique in software development, allowing developers to enable or disable cer",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eImplementing a FeatureFlag Class for Dynamic Feature Management\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eFeature flags are a crucial component in modern software development, allowing teams to toggle features ",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

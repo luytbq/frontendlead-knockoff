@@ -1,0 +1,150 @@
+{
+    "type": "coding",
+    "id": "api-retry",
+    "title": "86. API Retry",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "api-retry",
+    "problemStatement": "\u003cp\u003eImplement an asynchronous function \u003ccode\u003eretryApiCall\u003c/code\u003e that attempts to call a given API function and retries a specified number of times if the call fails or does not return a successful response (status code 200). The function should wait for a given interval between retries.\u003c/p\u003e\n\u003cp\u003eThe function should accept the following parameters:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003ccode\u003eapiFunction\u003c/code\u003e: A function that makes the API call and returns a promise.\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003emaxRetries\u003c/code\u003e: The maximum number of retries allowed.\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003eretryInterval\u003c/code\u003e: The interval (in milliseconds) to wait between retries.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e\u003cstrong\u003eFunction Signature:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003easync function retryApiCall(apiFunction: () =\u003e Promise\u003cany\u003e, maxRetries: number, retryInterval: number): Promise\u003cany\u003e\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e\u003cstrong\u003eExample Usage:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst fetchData = async () =\u003e {\r\n    // Simulated API call\r\n    return fetch('https://example.com/data');\r\n};\r\n\r\nretryApiCall(fetchData, 3, 1000)\r\n    .then(response =\u003e console.log('Data:', response))\r\n    .catch(error =\u003e console.error('Failed to fetch data:', error));\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eEnsure that the function correctly handles retries, waiting the specified interval between attempts, and throws an error if the maximum number of retries is reached without a successful response.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should successfully retry until the API call succeeds",
+            "test": "it('should successfully retry until the API call succeeds', (done) =\u003e {\r\n    let attempt = 0;\r\n    const mockApiFunction = async () =\u003e {\r\n      attempt++;\r\n      if (attempt \u003c 3) {\r\n        throw new Error('Temporary failure');\r\n      }\r\n      return { status: 200, data: 'Success' };\r\n    };\r\n\r\n    retryApiCall(mockApiFunction, 5, 100)\r\n      .then(response =\u003e {\r\n        expect(response.data).to.equal('Success');\r\n        expect(attempt).to.equal(3);\r\n        done();\r\n      })\r\n      .catch(done);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should throw an error after exceeding the maximum number of retries",
+            "test": "it('should throw an error after exceeding the maximum number of retries', (done) =\u003e {\r\n    const mockApiFunction = async () =\u003e {\r\n      throw new Error('Permanent failure');\r\n    };\r\n\r\n    retryApiCall(mockApiFunction, 2, 100)\r\n      .then(() =\u003e {\r\n        done(new Error('Expected method to reject.'));\r\n      })\r\n      .catch(error =\u003e {\r\n        expect(error.message).to.include('API call failed after 2 retries');\r\n        done();\r\n      });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should handle non-200 status codes by retrying",
+            "test": "it('should handle non-200 status codes by retrying', (done) =\u003e {\r\n    let attempt = 0;\r\n    const mockApiFunction = async () =\u003e {\r\n      attempt++;\r\n      if (attempt \u003c 2) {\r\n        return { status: 500 };\r\n      }\r\n      return { status: 200, data: 'Success' };\r\n    };\r\n\r\n    retryApiCall(mockApiFunction, 3, 100)\r\n      .then(response =\u003e {\r\n        expect(response.status).to.equal(200);\r\n        expect(attempt).to.equal(2);\r\n        done();\r\n      })\r\n      .catch(done);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Asynchronous Execution: The retryApiCall function must be asynchronous, properly handling and awaiting promises from the API function calls."
+        },
+        {
+            "constraint": "Error Handling: The function should gracefully handle both rejected promises and non-successful response status codes (anything other than 200) from the API function."
+        },
+        {
+            "constraint": "Retry Logic: The function must implement retry logic, attempting to call the apiFunction up to maxRetries times if previous attempts fail or return non-successful responses."
+        },
+        {
+            "constraint": "Retry Interval: There should be a delay of retryInterval milliseconds between each retry attempt. This delay must be respected before making a subsequent retry."
+        },
+        {
+            "constraint": "Termination Condition: The function should stop retrying and either return a successful response or throw an error in the following scenarios:  A successful response (status code 200) is received. The maximum number of retries (maxRetries) is reached."
+        },
+        {
+            "constraint": "Return Value: On success, the function should return the successful response from the API call. On failure (after exhausting all retries), it should throw an error indicating the failure."
+        },
+        {
+            "constraint": "Function Signature: The apiFunction parameter should be a function that returns a promise (e.g., from a fetch call)."
+        },
+        {
+            "constraint": "Idempotency Consideration: It is assumed that the apiFunction can be safely retried without unwanted side effects. The retry mechanism is best suited for idempotent API operations."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "async function retryApiCall(apiFunction, maxRetries, retryInterval) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default retryApiCall;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "async function retryApiCall(apiFunction, maxRetries, retryInterval) {\r\n  for (let retries = 0; retries \u003c maxRetries; retries++) {\r\n    try {\r\n      const response = await apiFunction();\r\n      if (response.status === 200) {\r\n        // Successful response, return it\r\n        return response;\r\n      } else {\r\n        // Non-successful response status, wait for retryInterval before retrying\r\n        await new Promise(resolve =\u003e setTimeout(resolve, retryInterval));\r\n      }\r\n    } catch (error) {\r\n      // Catch and log the error, wait for retryInterval before retrying\r\n      console.error(`Attempt ${retries + 1} failed:`, error);\r\n      if (retries \u003c maxRetries - 1) { // Check to avoid waiting after the last attempt\r\n        await new Promise(resolve =\u003e setTimeout(resolve, retryInterval));\r\n      }\r\n    }\r\n  }\r\n  // Max retries reached without a successful response, throw an error\r\n  throw new Error(`API call failed after ${maxRetries} retries`);\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eImplementing API Retry Logic with Asynchronous JavaScript\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eDealing with unreliable network conditions and server errors is a common challenge in web development. The \u003ccode\u003eretryApiCall\u003c/code\u003e function provides a robust solution by implementing retry logic for API calls, ensuring that transient failures don\u0026#8217;t immediately lead to request failures.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eUnderstanding the Retry Mechanism\u003c/h2\u003e\n\u003cp\u003eThe function employs a while loop to attempt the given API function up to a specified number of retries. It leverages JavaScript\u0026#8217;s asynchronous capabilities, utilizing \u003ccode\u003easync/await\u003c/code\u003e syntax for readability and simplicity.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eKey Components of the Solution\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eRetry Counter:\u003c/strong\u003e The function keeps track of the number of attempts and retries the API call until the counter reaches the specified maximum retries.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eError Handling:\u003c/strong\u003e It gracefully handles both exceptions thrown by the API function and non-successful HTTP status codes by retrying the request after a specified interval.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eDelay Between Retries:\u003c/strong\u003e To avoid overwhelming the server or network, the function waits for a defined interval before making another attempt, using \u003ccode\u003esetTimeout\u003c/code\u003e wrapped in a promise.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Applications\u003c/h2\u003e\n\u003cp\u003eThis retry logic is particularly useful in scenarios where network conditions are unpredictable or when dealing with endpoints that might occasionally fail or be temporarily overloaded.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eretryApiCall\u003c/code\u003e function is an essential tool in the modern web developer\u0026#8217;s arsenal, providing a straightforward and effective way to enhance the reliability of web applications.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Atlassian"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "86. API Retry - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Learn how to implement effective API retry logic in JavaScript, ensuring your web applications remain resilient in the face of network issues and server errors. Enhance reliability and user experience with our guide.",
+        "pageURL": "api-retry",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  API Retry  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eImplement an asynchronous function \u003ccode\u003eretryApiCall\u003c/code\u003e that attempts to call a given API function and retries a specified number of times if the call fails or does not return a successful res",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eImplementing API Retry Logic with Asynchronous JavaScript\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eDealing with unreliable network conditions and server errors is a common challenge in web development. The \u003cco",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+crosoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

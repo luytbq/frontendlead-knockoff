@@ -1,0 +1,119 @@
+{
+    "type": "vanilla",
+    "id": "masonry-grid",
+    "title": "20. Masonry Grid",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "masonry-grid",
+    "problemStatement": "\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" class=\"alignnone size-medium wp-image-388\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-3.42.59-PM-300x195.png\" alt=\"\" width=\"300\" height=\"195\" srcset=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-3.42.59-PM-300x195.png 300w, https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-3.42.59-PM-768x499.png 768w, https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-3.42.59-PM.png 776w\" sizes=\"(max-width: 300px) 100vw, 300px\" /\u003e\u003c/p\u003e\n\u003cp\u003eCreate a dynamic Masonry layout using Vanilla JavaScript, which organizes a series of items into a grid layout that optimizes space by fitting elements in the optimal position based on available vertical space. This layout should resemble the way stones are laid in a masonry wall, where each item is placed in the shortest column available at the time of placement, creating a staggered effect rather than a uniform grid.\u003c/p\u003e\n\u003cp\u003eYour task is to implement a function that positions each item within a container to achieve the Masonry layout effect. Each item has its own content and height, and the layout should consist of a specified number of columns with a fixed gap between items. The items should be arranged such that they fill up the shortest column available, ensuring that the layout is balanced and the overall height of the grid is minimized.\u003c/p\u003e\n\u003cp\u003eThe implementation should include the following:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eA function to create a new DOM element for each item, setting its class, text content, width, and height.\u003c/li\u003e\n\u003cli\u003eA function to calculate the position of each item and append it to the container, ensuring items are placed in the shortest column to achieve the Masonry effect.\u003c/li\u003e\n\u003cli\u003eConsideration for the number of columns and the gap between items, dynamically adjusting the layout based on the container\u0026#8217;s width.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e\u003cstrong\u003eExample:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst items = [\r\n    { content: 'Item 1', height: 150 },\r\n    { content: 'Item 2', height: 100 },\r\n    { content: 'Item 3', height: 120 },\r\n    // more items...\r\n];\r\n\r\n// Expected to create a Masonry layout with the given items inside a container with an id of 'masonry'.\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis task assesses your ability to manipulate the DOM using Vanilla JavaScript, handle dynamic layout calculations, and apply creative problem-solving to achieve complex layout patterns without external libraries.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should correctly position items in the container",
+            "test": "it('should correctly position items in the container', (done) =\u003e {\r\n    document.body.innerHTML = '\u003cdiv id=\"masonry\" style=\"width: 800px;\"\u003e\u003c/div\u003e'; // Ensure the container is wide enough for multiple columns\r\n    const items = [\r\n      { content: 'Test Item 1', height: 150 },\r\n      { content: 'Test Item 2', height: 120 },\r\n      { content: 'Test Item 3', height: 180 },\r\n    ];\r\n    const masonryGrid = new MasonryGrid('masonry', items);\r\n    masonryGrid.positionMasonryItems();\r\n\r\n    const item = document.querySelector('.item');\r\n    expect(item).not.to.be.null;\r\n    expect(item.style.position).to.equal('absolute');\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should not overlap items in the same column",
+            "test": "it('should not overlap items in the same column', (done) =\u003e {\r\n    document.body.innerHTML = '\u003cdiv id=\"masonry\" style=\"width: 800px;\"\u003e\u003c/div\u003e';\r\n    const items = [\r\n      { content: 'Test Item 1', height: 50 },\r\n      { content: 'Test Item 2', height: 60 },\r\n      { content: 'Test Item 3', height: 70 },\r\n      { content: 'Test Item 4', height: 80 }, // Adding more items to ensure column filling\r\n      { content: 'Test Item 5', height: 90 },\r\n    ];\r\n    const masonryGrid = new MasonryGrid('masonry', items);\r\n    masonryGrid.positionMasonryItems();\r\n\r\n    const container = document.getElementById('masonry');\r\n    const positionedItems = container.querySelectorAll('.item');\r\n    let overlap = false;\r\n\r\n    // Checking for overlap\r\n    positionedItems.forEach((item, index) =\u003e {\r\n      const itemRect = item.getBoundingClientRect();\r\n      for (let i = index + 1; i \u003c positionedItems.length; i++) {\r\n        const compareItemRect = positionedItems[i].getBoundingClientRect();\r\n        if (compareItemRect.left === itemRect.left \u0026\u0026 !(compareItemRect.top \u003e= itemRect.bottom || compareItemRect.bottom \u003c= itemRect.top)) {\r\n          overlap = true;\r\n          break;\r\n        }\r\n      }\r\n    });\r\n\r\n    expect(overlap).to.be.false;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should set the container height to the height of the tallest column",
+            "test": "it('should set the container height to the height of the tallest column', (done) =\u003e {\r\n    document.body.innerHTML = '\u003cdiv id=\"masonry\" style=\"width: 800px;\"\u003e\u003c/div\u003e';\r\n    const items = [\r\n      { content: 'Test Item 1', height: 150 },\r\n      { content: 'Test Item 2', height: 250 }, // Taller item ensuring variance in column heights\r\n      { content: 'Test Item 3', height: 200 },\r\n    ];\r\n    const masonryGrid = new MasonryGrid('masonry', items);\r\n    masonryGrid.positionMasonryItems();\r\n\r\n    const containerHeight = parseInt(document.getElementById('masonry').style.height, 10);\r\n    expect(containerHeight).to.be.at.least(Math.max(...items.map(item =\u003e item.height))); // Container height should be at least as tall as the tallest item\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should correctly create a masonry item with specified content, width, and height",
+            "test": "it('should correctly create a masonry item with specified content, width, and height', (done) =\u003e {\r\n    document.body.innerHTML = '\u003cdiv id=\"masonry\" style=\"width: 800px;\"\u003e\u003c/div\u003e';\r\n    const items = []; // Items array can be empty for this test\r\n    const masonryGrid = new MasonryGrid('masonry', items);\r\n\r\n    const testContent = 'Test Content';\r\n    const testWidth = 100; // in pixels\r\n    const testHeight = 200; // in pixels\r\n\r\n    const masonryItem = masonryGrid.createMasonryItem(testContent, testWidth, testHeight);\r\n\r\n    // Check if the created item is a DOM element\r\n    expect(masonryItem instanceof HTMLElement).to.be.true;\r\n\r\n    // Check the content of the created item\r\n    expect(masonryItem.textContent).to.equal(testContent);\r\n\r\n    // Check the style properties of the created item\r\n    expect(masonryItem.style.width).to.equal(testWidth + 'px');\r\n    expect(masonryItem.style.height).to.equal(testHeight + 'px');\r\n\r\n    // Optionally, check if the item has the correct class\r\n    expect(masonryItem.classList.contains('item')).to.be.true;\r\n\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The Masonry grid should dynamically adjust to the width of its container, recalculating positions when the container's width changes."
+        },
+        {
+            "constraint": "The number of columns in the grid is fixed, but you should provide an easy way to adjust this number in the code."
+        },
+        {
+            "constraint": "Items in the grid can have varying heights but should maintain a consistent width within a column."
+        },
+        {
+            "constraint": "The gap between items, both vertically and horizontally, should be consistent and adjustable in the code."
+        },
+        {
+            "constraint": "The solution should not use external libraries or frameworks; it must be implemented in Vanilla JavaScript."
+        },
+        {
+            "constraint": "The input array will contain a manageable number of elements to ensure browser performance is not significantly impacted."
+        },
+        {
+            "constraint": "The solution should consider the case where the container's width cannot perfectly fit the specified number of columns and adjust accordingly."
+        },
+        {
+            "constraint": "The layout must be recalculated on window resize to maintain the Masonry grid appearance."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "// Item definitions, each with its content and height\r\nconst items = [\r\n    { content: 'Item 1', height: 150 },\r\n    { content: 'Item 2', height: 100 },\r\n    { content: 'Item 3', height: 200 },\r\n    { content: 'Item 4', height: 130 },\r\n    { content: 'Item 5', height: 180 },\r\n    { content: 'Item 6', height: 120 },\r\n    { content: 'Item 7', height: 170 },\r\n    { content: 'Item 8', height: 140 },\r\n    { content: 'Item 9', height: 110 },\r\n    { content: 'Item 10', height: 160 }\r\n];\r\n\r\nclass MasonryGrid {\r\n    constructor(containerId, items) {\r\n        // Write your code here\r\n    }\r\n\r\n    createMasonryItem(content, width, height) {\r\n        // Write your code here\r\n    }\r\n\r\n    positionMasonryItems() {\r\n        // Write your code here\r\n    }\r\n}\r\n\r\n// Ensure the DOM is fully loaded before initializing the MasonryGrid\r\nif(document.getElementById('sandbox')) {\r\n    const masonryGrid = new MasonryGrid('masonry', items);\r\n\tmasonryGrid.positionMasonryItems();\r\n}\r\n\r\n// Do not edit below this line\r\nexport default MasonryGrid;",
+    "starterHTMLCode": "\u003cdiv id=\"sandbox\"\u003e\r\n  \u003cdiv id=\"masonry\"\u003e\u003c/div\u003e\r\n\u003c/div\u003e",
+    "starterCSSCode": "#masonry { left: 20px; top: 20px; width: 95%; position: relative; }\r\n#masonry div { text-align: center; }\r\n#masonry div:nth-child(1n) { background: ghostwhite }\r\n#masonry div:nth-child(2n) { background: skyblue }\r\n#masonry div:nth-child(3n) { background: seagreen }",
+    "solutionCode": "// Item definitions, each with its content and height\r\nconst items = [\r\n    { content: 'Item 1', height: 150 },\r\n    { content: 'Item 2', height: 100 },\r\n    { content: 'Item 3', height: 200 },\r\n    { content: 'Item 4', height: 130 },\r\n    { content: 'Item 5', height: 180 },\r\n    { content: 'Item 6', height: 120 },\r\n    { content: 'Item 7', height: 170 },\r\n    { content: 'Item 8', height: 140 },\r\n    { content: 'Item 9', height: 110 },\r\n    { content: 'Item 10', height: 160 }\r\n];\r\n\r\nclass MasonryGrid {\r\n    constructor(containerId, items) {\r\n        this.container = document.getElementById(containerId);\r\n        if (!this.container) {\r\n            console.error('Container with id ' + containerId + ' not found.');\r\n            return;\r\n        }\r\n        this.items = items;\r\n        this.columns = 4; // Default number of columns\r\n        this.gap = 10; // Default gap between items\r\n    }\r\n\r\n    createMasonryItem(content, width, height) {\r\n        const item = document.createElement('div');\r\n        item.classList.add('item');\r\n        item.textContent = content;\r\n        item.style.height = height + 'px';\r\n        item.style.width = width + 'px';\r\n        return item;\r\n    }\r\n\r\n    positionMasonryItems() {\r\n        const columnWidth = this.container.clientWidth / this.columns - this.gap;\r\n        const columnHeights = new Array(this.columns).fill(0);\r\n\r\n        this.items.forEach(({ content, height }) =\u003e {\r\n            const item = this.createMasonryItem(content, columnWidth, height);\r\n            const shortestColumnIndex = columnHeights.indexOf(Math.min.apply(null, columnHeights));\r\n\r\n            item.style.position = 'absolute';\r\n            item.style.left = (shortestColumnIndex * (columnWidth + this.gap)) + 'px';\r\n            item.style.top = columnHeights[shortestColumnIndex] + 'px';\r\n\r\n            this.container.appendChild(item);\r\n\r\n            columnHeights[shortestColumnIndex] += height + this.gap;\r\n        });\r\n\r\n        this.container.style.height = Math.max.apply(null, columnHeights) + 'px';\r\n    }\r\n\r\n    // Optionally, add methods to update items, columns, or gap\r\n    updateItems(newItems) {\r\n        this.items = newItems;\r\n    }\r\n\r\n    updateColumns(newColumns) {\r\n        this.columns = newColumns;\r\n    }\r\n\r\n    updateGap(newGap) {\r\n        this.gap = newGap;\r\n    }\r\n}\r\n\r\n// Ensure the DOM is fully loaded before initializing the MasonryGrid\r\nif(document.getElementById('sandbox')) {\r\n    const masonryGrid = new MasonryGrid('masonry', items);\r\n\tmasonryGrid.positionMasonryItems();\r\n}\r\n\r\n// Do not edit below this line\r\nexport default MasonryGrid;",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eImplementing a Dynamic Masonry Grid Layout in Vanilla JavaScript\u003c/h1\u003e\n\u003cp\u003eCreating a Masonry Grid layout, reminiscent of a mason fitting stones in a sturdy wall, involves positioning elements in a staggered fashion to optimize the use of space. This article delves into a Vanilla JavaScript implementation that achieves such a layout without external libraries, enhancing the developer\u0026#8217;s understanding of DOM manipulation and layout algorithms.\u003c/p\u003e\n\u003csection\u003e\n\u003ch2\u003eThe Basics of Masonry Layout\u003c/h2\u003e\n\u003cp\u003eMasonry layouts present content in a visually appealing, staggered grid where items of varying heights fit together in an optimal manner. Unlike traditional grids, Masonry layouts minimize vertical gaps between items, creating a seamless and cohesive user experience.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eKey Functions of Our Implementation\u003c/h2\u003e\n\u003cp\u003eOur Masonry Grid layout relies on two primary functions: \u003ccode\u003ecreateMasonryItem\u003c/code\u003e and \u003ccode\u003epositionMasonryItems\u003c/code\u003e.\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003ecreateMasonryItem:\u003c/strong\u003e This function dynamically creates a new item for the grid. It assigns the item\u0026#8217;s content, dimensions, and styling, preparing it for placement within the layout.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003epositionMasonryItems:\u003c/strong\u003e The core of our layout algorithm, this function calculates and assigns the position of each item based on the shortest column available. It ensures that items are placed in a way that optimally fills the available space, adhering to the Masonry layout principle.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eUnderstanding the Layout Algorithm\u003c/h2\u003e\n\u003cp\u003eThe Masonry layout algorithm employed here is relatively straightforward yet effective. It involves the following steps:\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003eDetermining the number of columns based on the container\u0026#8217;s width and the desired column width.\u003c/li\u003e\n\u003cli\u003eInitializing an array to track the cumulative height of each column.\u003c/li\u003e\n\u003cli\u003eIterating over each item, placing it in the shortest column at the time of placement.\u003c/li\u003e\n\u003cli\u003eUpdating the cumulative height of the chosen column to include the new item and the gap between items.\u003c/li\u003e\n\u003cli\u003eRepeating this process until all items are positioned, ensuring a balanced and visually appealing layout.\u003c/li\u003e\n\u003c/ol\u003e\n\u003cp\u003eThis algorithm effectively distributes items across the grid, dynamically adapting to varying item heights and ensuring minimal vertical gaps.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Considerations and Enhancements\u003c/h2\u003e\n\u003cp\u003eWhile the implementation provided is robust for many use cases, developers may consider several enhancements to tailor the layout to specific needs. These might include:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eResponsive adjustments to the number of columns based on viewport size.\u003c/li\u003e\n\u003cli\u003eAnimations for items as they\u0026#8217;re positioned within the layout.\u003c/li\u003e\n\u003cli\u003eIntegration with image loading to ensure accurate positioning once images are fully loaded.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThese enhancements can further refine the user experience and adapt the layout to a broader range of applications.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe Masonry Grid layout is a powerful tool in a web developer\u0026#8217;s arsenal, enabling the creation of dynamic, visually engaging layouts that make efficient use of space. By understanding and implementing this layout in Vanilla JavaScript, developers can gain deeper insights into DOM manipulation and layout design, skills that are invaluable in the ever-evolving landscape of web development.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "App Design"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": null,
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Masonry Grid Layout - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Master the Masonry Grid Layout using Vanilla JavaScript for your next frontend interview. Learn how to create dynamic, space-optimized layouts without external libraries",
+        "pageURL": "masonry-grid",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Masonry Grid Layout  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" class=\"alignnone size-medium wp-image-388\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-3.42.59-PM-300x195.png\" alt=\"\" ",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eImplementing a Dynamic Masonry Grid Layout in Vanilla JavaScript\u003c/h1\u003e\n\u003cp\u003eCreating a Masonry Grid layout, reminiscent of a mason fitting stones in a sturdy wall, involves positioning elem",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

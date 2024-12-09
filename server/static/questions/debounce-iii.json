@@ -1,0 +1,124 @@
+{
+    "type": "coding",
+    "id": "debounce-iii",
+    "title": "47. Debounce III",
+    "difficulty": [
+        "Hard"
+    ],
+    "link": "debounce-iii",
+    "problemStatement": "\u003cp\u003eThe goal is to implement an advanced version of the \u003ccode\u003edebounce()\u003c/code\u003e function in JavaScript, which introduces an \u003ccode\u003eoptions\u003c/code\u003e parameter. This parameter contains two properties: \u003ccode\u003eleading\u003c/code\u003e and \u003ccode\u003etrailing\u003c/code\u003e, both of which are boolean flags.\u003c/p\u003e\n\u003cp\u003eThe \u003ccode\u003eleading\u003c/code\u003e flag determines if the debounced function should execute immediately on the first call. When \u003ccode\u003etrue\u003c/code\u003e, the function triggers right away; otherwise, it waits for the specified delay. The \u003ccode\u003etrailing\u003c/code\u003e flag, on the other hand, controls the execution of the function after the delay. If \u003ccode\u003etrue\u003c/code\u003e, the function executes after the delay; if \u003ccode\u003efalse\u003c/code\u003e, it does not.\u003c/p\u003e\n\u003cp\u003eBy default, the debounce function behaves traditionally, with \u003ccode\u003e{leading: false, trailing: true}\u003c/code\u003e. This task involves creating a debounce mechanism that adapts to these options, providing flexibility in function execution timing. This adaptation is crucial for optimizing event handling and response strategies in various scenarios.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eExample:\u003c/strong\u003e Consider a sequence of function calls with corresponding delays. The enhanced debounced function should execute these calls based on the configured \u003ccode\u003eleading\u003c/code\u003e and \u003ccode\u003etrailing\u003c/code\u003e options, potentially reducing the number of invocations for efficiency.\u003c/p\u003e\n\u003cp\u003eNote: In testing environments, especially browsers, the accuracy of \u003ccode\u003esetTimeout()\u003c/code\u003e and \u003ccode\u003eclearTimeout()\u003c/code\u003e might not be reliable. Thus, alternative implementations should be considered for evaluating the debounced function\u0026#8217;s behavior.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should execute immediately on the first call when leading is true",
+            "test": "it('should execute immediately on the first call when leading is true', (done) =\u003e {\r\n    let counter = 0;\r\n    const increment = () =\u003e { counter += 1; };\r\n    const debouncedIncrement = debounce(increment, 100, { leading: true, trailing: false });\r\n\r\n    debouncedIncrement();\r\n    // Counter should be incremented immediately\r\n    expect(counter).to.equal(1);\r\n\r\n    setTimeout(() =\u003e {\r\n      // Counter should not change after the wait period as trailing is false\r\n      expect(counter).to.equal(1);\r\n      done();\r\n    }, 150);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should execute only once after the wait period when trailing is true and leading is false",
+            "test": "it('should execute only once after the wait period when trailing is true and leading is false', (done) =\u003e {\r\n    let counter = 0;\r\n    const increment = () =\u003e { counter += 1; };\r\n    const debouncedIncrement = debounce(increment, 100, { leading: false, trailing: true });\r\n\r\n    debouncedIncrement();\r\n    debouncedIncrement();\r\n    debouncedIncrement();\r\n    // Counter should not be incremented immediately\r\n    expect(counter).to.equal(0);\r\n\r\n    setTimeout(() =\u003e {\r\n      // Counter should be incremented only once after the wait period\r\n      expect(counter).to.equal(1);\r\n      done();\r\n    }, 150);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should handle multiple calls and only execute on the trailing edge when both leading and trailing are true",
+            "test": "it('should handle multiple calls and only execute on the trailing edge when both leading and trailing are true', (done) =\u003e {\r\n    let counter = 0;\r\n    const increment = () =\u003e { counter += 1; };\r\n    const debouncedIncrement = debounce(increment, 100, { leading: true, trailing: true });\r\n\r\n    debouncedIncrement(); // This call should increment immediately\r\n    debouncedIncrement();\r\n    debouncedIncrement();\r\n\r\n    setTimeout(() =\u003e {\r\n      // Counter should be incremented again after the wait period, total twice\r\n      expect(counter).to.equal(2);\r\n      done();\r\n    }, 150);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should preserve the context and arguments of the debounced function",
+            "test": "it('should preserve the context and arguments of the debounced function', (done) =\u003e {\r\n    const context = { value: 0 };\r\n    const add = function(amount) { this.value += amount; };\r\n    const debouncedAdd = debounce(add, 100).bind(context);\r\n\r\n    debouncedAdd(5);\r\n    setTimeout(() =\u003e {\r\n      expect(context.value).to.equal(5); // Context and arguments should be preserved\r\n      done();\r\n    }, 150);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The debounce function must handle functions with any number of arguments."
+        },
+        {
+            "constraint": "The wait parameter specifies the delay in milliseconds."
+        },
+        {
+            "constraint": "The option parameter is an object with leading and trailing boolean properties, defaulting to {leading: false, trailing: true}."
+        },
+        {
+            "constraint": "Execution on the leading edge should only occur once per delay period, even if multiple calls are made."
+        },
+        {
+            "constraint": "The function should not execute on the trailing edge if it has already executed on the leading edge within the same delay period."
+        },
+        {
+            "constraint": "The function must ensure accurate this context and arguments for the debounced function."
+        },
+        {
+            "constraint": "Execution must respect the specified delay, considering browser or environment inaccuracies with setTimeout and clearTimeout."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function debounce(func, wait, options = { leading: false, trailing: true }) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default debounce;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function debounce(func, wait, option = {leading: false, trailing: true}) {\r\n  // Declare a variable timer to store the timeout ID\r\n  let timer;\r\n  \r\n  // Define and return an anonymous function that will be called when the debounced function is called\r\n  return function(...args) {\r\n    // Declare a variable invoked to check if the function was invoked\r\n    let invoked = false;\r\n    // Determine if the function should be run immediately\r\n    let shouldRunImmediately = option.leading \u0026\u0026 !timer;\r\n    if (shouldRunImmediately) {\r\n      // Call the function immediately if option.leading is true and timer is not set\r\n      func.call(this, ...args);\r\n      // Set invoked to true\r\n      invoked = true;\r\n    }\r\n    // Clear the previous timeout\r\n    clearTimeout(timer);\r\n    // Set a new timeout with the wait time\r\n    timer = setTimeout(() =\u003e {\r\n      // Call the function if option.trailing is true and the function was not invoked\r\n      if (option.trailing \u0026\u0026 !invoked) {\r\n        func.call(this, ...args);\r\n      }\r\n      // Reset the timer\r\n      timer = null;\r\n    }, wait);\r\n  };\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eUnderstanding the Enhanced Debounce Function in JavaScript\u003c/h1\u003e\n\u003cp\u003eDebouncing is a crucial technique in JavaScript, especially for optimizing performance in response to high-frequency events like scrolling, resizing, or keystrokes. An enhanced version of the \u003ccode\u003edebounce()\u003c/code\u003e function introduces options for more granular control over function execution timing.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eCore Concepts\u003c/h2\u003e\n\u003cp\u003eThe debounce function delays executing a function until a certain period of inactivity. It\u0026#8217;s particularly useful in situations where you want to limit the execution frequency of a function that might otherwise be called very frequently.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eEnhancements in the Debounce Function\u003c/h2\u003e\n\u003cp\u003eThis enhanced version adds an \u003ccode\u003eoptions\u003c/code\u003e parameter, allowing for immediate execution on the first call (\u003ccode\u003eleading\u003c/code\u003e) and/or after the delay (\u003ccode\u003etrailing\u003c/code\u003e).\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eLeading Execution:\u003c/strong\u003e When \u003ccode\u003eleading\u003c/code\u003e is set to \u003ccode\u003etrue\u003c/code\u003e, the function is executed immediately on the first call within a wait period, instead of waiting for the delay.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eTrailing Execution:\u003c/strong\u003e The \u003ccode\u003etrailing\u003c/code\u003e option, when \u003ccode\u003etrue\u003c/code\u003e, ensures the function is executed at the end of the wait period if it was invoked during the period.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eImplementation Details\u003c/h2\u003e\n\u003cp\u003eThe function maintains a timer to track the wait period. If the \u003ccode\u003eleading\u003c/code\u003e option is true and the timer hasn\u0026#8217;t started, the function executes immediately. Regardless, the timer is reset after every call to ensure the function only executes once per wait period, adhering to the \u003ccode\u003etrailing\u003c/code\u003e option.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\r\nfunction debounce(func, wait, option = {leading: false, trailing: true}) {\r\n  let timer;\r\n  return function(...args) {\r\n    let invoked = false;\r\n    let shouldRunImmediately = option.leading \u0026\u0026 !timer;\r\n    if (shouldRunImmediately) {\r\n      func.call(this, ...args);\r\n      invoked = true;\r\n    }\r\n    clearTimeout(timer);\r\n    timer = setTimeout(() =\u003e {\r\n      if (option.trailing \u0026\u0026 !invoked) {\r\n        func.call(this, ...args);\r\n      }\r\n      timer = null;\r\n    }, wait);\r\n  };\r\n}\r\n    \u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Applications\u003c/h2\u003e\n\u003cp\u003eThe enhanced debounce function is invaluable in scenarios requiring optimization for high-frequency events, such as resizing browsers, scrolling through content, or detecting keystrokes in real-time applications.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Google",
+        "Microsoft"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "47. Debounce III - Google Frontend Interview Question - FrontendLead",
+        "pageDescription": "Dive into advanced debounce techniques in JavaScript, including leading and trailing edge execution, to optimize web application performance. Learn how to effectively manage high-frequency events and improve user experience with our comprehensive guide.",
+        "pageURL": "debounce-iii",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Debounce III  Google Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eThe goal is to implement an advanced version of the \u003ccode\u003edebounce()\u003c/code\u003e function in JavaScript, which introduces an \u003ccode\u003eoptions\u003c/code\u003e parameter. This parameter contains two properties: \u003ccode",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eUnderstanding the Enhanced Debounce Function in JavaScript\u003c/h1\u003e\n\u003cp\u003eDebouncing is a crucial technique in JavaScript, especially for optimizing performance in response to high-fr",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+}
+            }
+        }
+    }
+}

@@ -1,0 +1,156 @@
+{
+    "type": "coding",
+    "id": "throttle",
+    "title": "5. Throttle",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "throttle",
+    "problemStatement": "\u003cp\u003eIn this challenge, you are tasked with creating a \u003ccode\u003ethrottle\u003c/code\u003e function, a fundamental concept in optimizing web applications by controlling the rate at which a function is executed. This mechanism is particularly beneficial for handling events that fire at a high frequency, such as scrolling or resizing, ensuring that the event handler doesn\u0026#8217;t get called more often than is necessary for a smooth user experience.\u003c/p\u003e\n\u003ch3\u003eFunction Requirements:\u003c/h3\u003e\n\u003cp\u003eThe \u003ccode\u003ethrottle\u003c/code\u003e function should accept a callback function and a delay time in milliseconds as parameters. It must return a new function, called \u003ccode\u003ethrottler\u003c/code\u003e, that, when invoked, ensures the callback function is executed at most once in the specified delay period.\u003c/p\u003e\n\u003ch3\u003eBehavioral Specifications:\u003c/h3\u003e\n\u003cul\u003e\n\u003cli\u003eThe \u003ccode\u003ethrottler\u003c/code\u003e function calculates the time elapsed since the last callback execution and decides whether to execute the callback immediately or after the remaining delay.\u003c/li\u003e\n\u003cli\u003eIf the elapsed time is less than the specified delay, the \u003ccode\u003ethrottler\u003c/code\u003e function postpones the callback execution until the full delay period has passed since the last execution.\u003c/li\u003e\n\u003cli\u003eThe \u003ccode\u003ethrottler\u003c/code\u003e function also provides a \u003ccode\u003ecancel\u003c/code\u003e method to cancel any scheduled callback execution, enhancing control over the throttling behavior.\u003c/li\u003e\n\u003c/ul\u003e\n\u003ch3\u003eTechnical Approach:\u003c/h3\u003e\n\u003cp\u003eImplement the \u003ccode\u003ethrottle\u003c/code\u003e function using closure to maintain the state between invocations, such as the last call time and any pending timer. This approach ensures that the callback is not executed more frequently than the specified delay, regardless of how often the \u003ccode\u003ethrottler\u003c/code\u003e function is called.\u003c/p\u003e\n\u003cp\u003eBy integrating the \u003ccode\u003ethrottle\u003c/code\u003e function into your application, you can significantly improve performance and user experience by reducing the frequency of heavy computations or DOM manipulations in response to rapid, high-frequency events.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should maintain the context and arguments of the original function calls",
+            "test": "it('should maintain the context and arguments of the original function calls', (done) =\u003e {\r\n    const context = { value: 0 };\r\n    const incrementValue = function(amount) {\r\n      this.value += amount;\r\n    };\r\n    const throttledIncrement = throttle(incrementValue.bind(context), 100);\r\n\r\n    throttledIncrement(10);\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(context.value).to.equal(10);\r\n      done();\r\n    }, 150);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should allow a call after the delay period has passed",
+            "test": "it('should allow a call after the delay period has passed', (done) =\u003e {\r\n    let callCount = 0;\r\n    const incrementCallCount = () =\u003e callCount++;\r\n    const throttledIncrement = throttle(incrementCallCount, 200);\r\n\r\n    throttledIncrement(); // First call should go through\r\n    setTimeout(() =\u003e {\r\n      throttledIncrement(); // Second call should go through after 250ms\r\n    }, 250);\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(callCount).to.equal(2);\r\n      done();\r\n    }, 500);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should execute the first call immediately when leading calls are allowed",
+            "test": "it('should execute the first call immediately when leading calls are allowed', (done) =\u003e {\r\n    let callTimes = [];\r\n    const logCallTime = () =\u003e callTimes.push(Date.now());\r\n    const throttledLogCallTime = throttle(logCallTime, 200, { leading: true });\r\n\r\n    throttledLogCallTime(); // This call should be executed immediately\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(callTimes.length).to.equal(1);\r\n      done();\r\n    }, 100);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should execute a trailing call after the delay period if there are ignored calls",
+            "test": "it('should execute a trailing call after the delay period if there are ignored calls', (done) =\u003e {\r\n    let callTimes = [];\r\n    const logCallTime = () =\u003e callTimes.push(Date.now());\r\n    const throttledLogCallTime = throttle(logCallTime, 200, { trailing: true });\r\n\r\n    throttledLogCallTime(); // First call, executed immediately\r\n    setTimeout(() =\u003e {\r\n      throttledLogCallTime(); // Second call, should be ignored but schedule a trailing call\r\n    }, 100);\r\n    setTimeout(() =\u003e {\r\n      throttledLogCallTime(); // Third call, should be ignored\r\n    }, 150);\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(callTimes.length).to.equal(2);\r\n      done();\r\n    }, 400);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should preserve the context and arguments of the original function",
+            "test": "it('should preserve the context and arguments of the original function', (done) =\u003e {\r\n    const context = { value: 10 };\r\n    const addValue = function(amount) { this.value += amount; };\r\n    const throttledAddValue = throttle(addValue.bind(context), 200);\r\n\r\n    throttledAddValue(5); // This call should go through, adding 5 to context.value\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(context.value).to.equal(15);\r\n      done();\r\n    }, 250);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 5,
+            "description": "should execute only the first and last calls when leading and trailing options are true",
+            "test": "it('should execute only the first and last calls when leading and trailing options are true', (done) =\u003e {\r\n    let callCount = 0;\r\n    const incrementCallCount = () =\u003e callCount++;\r\n    const throttledIncrement = throttle(incrementCallCount, 200, { leading: true, trailing: true });\r\n\r\n    throttledIncrement(); // First call, should go through\r\n    for (let i = 0; i \u003c 5; i++) {\r\n      setTimeout(() =\u003e {\r\n        throttledIncrement(); // Rapid successive calls, should result in only the last one being executed\r\n      }, 10 * i);\r\n    }\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(callCount).to.equal(2); // Only the first and last calls should have been executed\r\n      done();\r\n    }, 300);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 6,
+            "description": "should not execute the function after the throttler has been canceled",
+            "test": "it('should not execute the function after the throttler has been canceled', (done) =\u003e {\r\n    let callCount = 0;\r\n    const incrementCallCount = () =\u003e callCount++;\r\n    const throttledIncrement = throttle(incrementCallCount, 200);\r\n\r\n    throttledIncrement(); // First call, should go through\r\n    throttledIncrement.cancel(); // Cancel any scheduled calls\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(callCount).to.equal(1); // No further calls should have been executed after canceling\r\n      done();\r\n    }, 250);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The function \u003ccode\u003ecallback\u003c/code\u003e should be a valid JavaScript function."
+        },
+        {
+            "constraint": "The \u003ccode\u003edelay\u003c/code\u003e parameter should be a positive integer representing milliseconds."
+        },
+        {
+            "constraint": "Nested or successive calls to the throttled function within the delay period should either postpone the next function call until the end of the delay period or ignore these calls, based on the implementation."
+        },
+        {
+            "constraint": "The throttled function should maintain the context (\u003ccode\u003ethis\u003c/code\u003e) and arguments of the original function calls."
+        },
+        {
+            "constraint": "The throttle function should include a \u003ccode\u003ecancel\u003c/code\u003e method to allow cancellation of a scheduled function call."
+        },
+        {
+            "constraint": "Performance considerations should be taken into account, especially in scenarios involving frequent event firing, such as scrolling or resizing."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function throttle(callback, delay) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default throttle;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// Define a function called throttle which takes a callback function and a delay time as parameters.\r\nfunction throttle(callback, delay) {\r\n  // Create a variable called timer.\r\n  let timer;\r\n  // Create a variable called lastCallTime and initialize it to 0.\r\n  let lastCallTime = 0;\r\n  // Define a new function called throttler which takes any number of arguments.\r\n  const throttler = function(...args) {\r\n    // Get the current time.\r\n    const currentTime = Date.now();\r\n    // Calculate the time difference between the current call and the last call.\r\n    const differenceBetweenLastCallTime = currentTime - lastCallTime;\r\n    // Calculate the remaining delay time.\r\n    const delayRemaining = delay - differenceBetweenLastCallTime;\r\n\r\n    // If there is delay remaining, clear the previous timer and set a new timer for the remaining delay time.\r\n    if(delayRemaining \u003e 0) {\r\n      clearTimeout(timer);\r\n      timer = setTimeout(() =\u003e {\r\n        // Call the original callback function with the provided arguments.\r\n        callback.call(this, ...args);\r\n        // Set the last call time to the current time.\r\n        lastCallTime = Date.now();\r\n      }, delayRemaining);\r\n    } else {\r\n      // If there is no delay remaining, call the original callback function with the provided arguments immediately.\r\n      callback.call(this, ...args);\r\n      // Set the last call time to the current time.\r\n      lastCallTime = currentTime;\r\n    }\r\n  }\r\n\r\n  // Add a cancel method to the throttler function which clears the timer.\r\n  throttler.cancel = () =\u003e clearTimeout(timer);\r\n\r\n  // Return the throttler function.\r\n  return throttler;\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eUnderstanding the Throttle Function in JavaScript\u003c/h1\u003e\n\u003cp\u003eThe throttle function is a crucial concept in JavaScript, especially for handling events that can fire at a high frequency, such as scrolling, resizing, or mouse movements. By limiting the rate at which a function can fire, throttle helps in improving performance and ensuring smoother user experiences.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHow Throttle Works\u003c/h2\u003e\n\u003cp\u003eThrottle controls the execution frequency of a function by specifying a delay period between calls. If multiple calls are made within this delay, only one will be executed, effectively \u0026#8216;throttling\u0026#8217; the execution rate. The key components of our throttle implementation include:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eA \u003ccode\u003etimer\u003c/code\u003e variable to manage the scheduling of function calls.\u003c/li\u003e\n\u003cli\u003eA \u003ccode\u003elastCallTime\u003c/code\u003e to keep track of the last execution time of the throttled function.\u003c/li\u003e\n\u003cli\u003eA \u003ccode\u003ethrottler\u003c/code\u003e function that decides whether to call the callback immediately or delay its execution based on the elapsed time since the last call.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eCode Breakdown\u003c/h2\u003e\n\u003cpre\u003e\u003ccode\u003e\r\nfunction throttle(callback, delay) {\r\n  let timer;\r\n  let lastCallTime = 0;\r\n\r\n  const throttler = function(...args) {\r\n    const currentTime = Date.now();\r\n    const timeSinceLastCall = currentTime - lastCallTime;\r\n    const delayRemaining = delay - timeSinceLastCall;\r\n\r\n    clearTimeout(timer);\r\n\r\n    if (delayRemaining \u0026lt;= 0) { callback.apply(this, args); lastCallTime = currentTime; } else { timer = setTimeout(() =\u0026gt; {\r\n        callback.apply(this, args);\r\n        lastCallTime = Date.now();\r\n      }, delayRemaining);\r\n    }\r\n  };\r\n\r\n  throttler.cancel = function() {\r\n    clearTimeout(timer);\r\n  };\r\n\r\n  return throttler;\r\n}\r\n    \u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis implementation ensures that the callback function is executed no more frequently than the specified delay period, with the ability to cancel scheduled calls via the \u003ccode\u003ethrottler.cancel\u003c/code\u003e method.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Applications\u003c/h2\u003e\n\u003cp\u003eThrottle is widely used in web development for optimizing event handlers and reducing unnecessary computations. For instance, it can be applied to:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eScroll events to update UI elements based on scroll position.\u003c/li\u003e\n\u003cli\u003eResize events to recalculate layout dimensions.\u003c/li\u003e\n\u003cli\u003eMousemove events for tracking mouse movements with reduced frequency.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe throttle function is an essential tool in a web developer\u0026#8217;s arsenal for improving app performance and user experience. By understanding and implementing throttle, developers can efficiently manage event-driven behavior in their applications.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 1,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/xf58_woO1oc",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix",
+        "Apple",
+        "LinkedIn",
+        "Stripe",
+        "ClickUp",
+        "PayPal",
+        "Snap",
+        "Vimeo",
+        "Adobe",
+        "TikTok"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "How to build Throttle in Javascript - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Lets dive into building a throttler function in javascript. We will explain what Throttle does, how to implement it and a video solution.",
+        "pageURL": "throttle",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement How to build Throttle in Javascript  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eIn this challenge, you are tasked with creating a \u003ccode\u003ethrottle\u003c/code\u003e function, a fundamental concept in optimizing web applications by controlling the rate at which a function is executed. This ",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eUnderstanding the Throttle Function in JavaScript\u003c/h1\u003e\n\u003cp\u003eThe throttle function is a crucial concept in JavaScript, especially for handling events that can fire at a high frequ",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

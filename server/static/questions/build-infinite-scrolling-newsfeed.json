@@ -1,0 +1,86 @@
+{
+    "type": "vanilla",
+    "id": "build-infinite-scrolling-newsfeed",
+    "title": "63. Infinite Scrolling News Feed",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "build-infinite-scrolling-newsfeed",
+    "problemStatement": "\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" class=\"alignnone size-medium wp-image-348\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-1.49.33-PM-300x208.png\" alt=\"\" width=\"300\" height=\"208\" srcset=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-1.49.33-PM-300x208.png 300w, https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-1.49.33-PM-768x534.png 768w, https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-1.49.33-PM.png 924w\" sizes=\"(max-width: 300px) 100vw, 300px\" /\u003e\u003c/p\u003e\n\u003cp\u003eYou have been tasked with creating a Facebook-like newsfeed that displays user-generated content with infinite scrolling. The application should fetch user data from a mock API endpoint and display it in a feed. As users scroll down the feed, more content should be dynamically loaded, ensuring a seamless user experience.\u003c/p\u003e\n\u003cp\u003eEndpoint: https://dummyjson.com/users?limit=10\u0026amp;skip=1\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eFunctional Requirements:\u003c/strong\u003e\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eThe feed should initially load a set number of posts.\u003c/li\u003e\n\u003cli\u003eAs the user scrolls to the bottom of the feed, more posts should be loaded dynamically.\u003c/li\u003e\n\u003cli\u003eThe application should handle cases where no more data is available to load.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e\u003cstrong\u003eInput/Output Examples:\u003c/strong\u003e\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eInput:\u003c/strong\u003e Initial load of the page\u003cbr /\u003e\n\u003cstrong\u003eExpected Output:\u003c/strong\u003e Displays the first set of user-generated content along with a loader element.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eInput:\u003c/strong\u003e Scroll to the bottom of the feed\u003cbr /\u003e\n\u003cstrong\u003eExpected Output:\u003c/strong\u003e Removes the loader element and appends more user-generated content to the feed.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eInput:\u003c/strong\u003e Scroll to the bottom of the feed again\u003cbr /\u003e\n\u003cstrong\u003eExpected Output:\u003c/strong\u003e Continues appending additional user-generated content to the feed.\u003c/li\u003e\n\u003c/ul\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The feed should not exceed initial loading of 10 posts to optimize performance."
+        },
+        {
+            "constraint": "Infinite scrolling should trigger loading of 5 additional posts at a time."
+        },
+        {
+            "constraint": "Posts can include text, images, or both, but the total payload size for each batch must not exceed 5MB to ensure efficient loading."
+        },
+        {
+            "constraint": "The application must handle network errors gracefully, providing user feedback in case of failed data fetching."
+        },
+        {
+            "constraint": "API requests should include a timeout of 10 seconds to prevent hanging requests."
+        },
+        {
+            "constraint": "The frontend should be implemented using vanilla JavaScript, HTML, and CSS without reliance on heavy frameworks or libraries to maximize performance."
+        },
+        {
+            "constraint": "The infinite scrolling feature should be efficient and not trigger multiple loads at the same scroll position."
+        },
+        {
+            "constraint": "The application must be compatible with the latest versions of Chrome, Firefox, and Safari."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "class FeedApp {\r\n    constructor() {\r\n        this.feedWrapper = document.querySelector('.feed .wrapper');\r\n    }\r\n\r\n    init() {\r\n        // Write your code here\r\n    }\r\n\r\n    async renderFeed(limit, skip) {\r\n        // Write your code here\r\n    }\r\n\r\n    async fetchFeed(limit, skip) {\r\n        // Write your code here\r\n    }\r\n\r\n    renderFeedItem(feedItemData) {\r\n        // Write your code here\r\n    }\r\n\r\n    renderLoader() {\r\n        // Write your code here\r\n    }\r\n\r\n    handleInfiniteScroll() {\r\n        // Write your code here\r\n    }\r\n}\r\n\r\n// Do not edit below this line\r\nconst app = new FeedApp();\r\napp.init();\r\n\r\n// Do not edit below this line\r\nexport default FeedApp;",
+    "starterHTMLCode": "  \u003cdiv class=\"feed\"\u003e\r\n    \u003cdiv class=\"wrapper\"\u003e\r\n    \u003c/div\u003e\r\n  \u003c/div\u003e",
+    "starterCSSCode": ".feed {\r\n  width: 100%;\r\n  overflow: hidden;\r\n  background: #f0f2f5;\r\n  min-height: 100vh;\r\n  padding-top: 20px;\r\n}\r\n\r\n.feed .wrapper {\r\n  width: 600px;\r\n  margin: 0 auto;\r\n  padding-bottom: 20px;\r\n}\r\n\r\n.feed .wrapper .feed-item {\r\n  width: 100%;\r\n  overflow: hidden;\r\n  background: #fff;\r\n  border-radius: 10px;\r\n  border: 1px solid #ddd;\r\n  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);\r\n  margin-bottom: 20px;\r\n  padding: 15px;\r\n}\r\n\r\n.feed .wrapper .feed-item .name {\r\n  font-size: 20px;\r\n  font-weight: bold;\r\n  margin-bottom: 10px;\r\n}\r\n\r\n.feed .wrapper .feed-item .content {\r\n  width: 100%;\r\n}\r\n\r\n.feed .wrapper .feed-item .content img {\r\n  max-width: 100%;\r\n  border-radius: 5px;\r\n  margin-top: 10px;\r\n  width: 100%;\r\n  object-fit: contain;\r\n  height: 200px;\r\n}\r\n\r\n.feed .loader {\r\n  height: 20px;\r\n  background: #ddd;\r\n  text-align: center;\r\n  font-weight: bold;\r\n  padding: 20px;\r\n  border-radius: 5px;\r\n  color: #666;\r\n  margin-bottom: 20px;\r\n}\r\n",
+    "solutionCode": "class FeedApp {\r\n\tconstructor() {\r\n  \tthis.feedWrapper = document.querySelector('.feed .wrapper');\r\n  \tthis._limit = 2;\r\n  \tthis._skip = 0\r\n  }\r\n  \r\n  init() {\r\n  \tthis.renderFeed(this._limit, this._skip)\r\n  }\r\n  \r\n  async renderFeed(limit, skip) {\r\n  \tthis.observer = null;\r\n    \r\n  \ttry {\r\n    \tconst feedItems = await this.fetchFeed(limit, skip);\r\n      feedItems.forEach(feedItem =\u003e this.renderFeedItem(feedItem));\r\n      this.renderLoader();\r\n      setTimeout(() =\u003e {\r\n      \tthis.observer = this.handleInfiniteScroll();\r\n      }, 200)\r\n    } catch(error) {\r\n    \tthrow new Error(error);\r\n    }\r\n  }\r\n  \r\n  async fetchFeed(limit, skip) {\r\n  \ttry {\r\n    \tconst response = await fetch(\r\n      \t'https://dummyjson.com/users?limit='+limit+'\u0026skip='+skip\r\n      );\r\n      const feedItems = await response.json();\r\n   \t \treturn feedItems.users;\r\n    } catch(error) {\r\n    \tthrow new Error(error);\r\n    }\r\n  }\r\n  \r\n  renderFeedItem(feedItemData) {\r\n  \tconst feedItemElement = document.createElement('div');\r\n    feedItemElement.className = 'feed-item';\r\n    if(feedItemData.firstName) {\r\n    \tconst feedItemHeaderElement = document.createElement('div');\r\n      feedItemHeaderElement.className = 'name';\r\n      feedItemHeaderElement.textContent = feedItemData.firstName + feedItemData.lastName;\r\n      feedItemElement.append(feedItemHeaderElement)\r\n    }\r\n    \r\n    if(feedItemData.image) {\r\n    \tconst feedItemContentElement = document.createElement('div');\r\n      feedItemContentElement.className = 'content';\r\n      feedItemContentElement.innerHTML = '\u003cimg src=\"' + feedItemData.image + '\" alt=\"\" /\u003e'\r\n      feedItemElement.append(feedItemContentElement);\r\n    }\r\n    \r\n    this.feedWrapper.append(feedItemElement)\r\n  }\r\n  \r\n  renderLoader() {\r\n  \tconst loaderElement = document.createElement('div');\r\n    loaderElement.className = 'loader';\r\n    loaderElement.textContent = 'loading...'\r\n  \tthis.feedWrapper.append(loaderElement)\r\n  }\r\n  \r\n  handleInfiniteScroll() {\r\n  \tconst observer = new IntersectionObserver((entries) =\u003e {\r\n    \tif(entries[0].isIntersecting) {\r\n      \tentries[0].target.remove();\r\n      \tthis._skip += 2;\r\n      \tthis.renderFeed(this._limit, this._skip)\r\n      }\r\n    });\r\n    \r\n    const loader = document.querySelector('.loader');\r\n    observer.observe(loader);\r\n    return observer;\r\n  }\r\n}\r\n\r\nconst app = new FeedApp();\r\napp.init();",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eImplementing a Facebook-Like Newsfeed with Infinite Scrolling\u003c/h1\u003e\n\u003cp\u003eThe development of a dynamic newsfeed akin to that of Facebook involves several key components: fetching data from an API, rendering this data as a series of posts or \u0026#8220;feed items\u0026#8221; on the webpage, and implementing an infinite scrolling mechanism to continuously load content as the user scrolls down the feed.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eFetching Data from an API\u003c/h2\u003e\n\u003cp\u003eTo simulate fetching user-generated content, we use a mock API endpoint. This is achieved through the \u003ccode\u003efetchFeed\u003c/code\u003e function within our \u003ccode\u003eFeedApp\u003c/code\u003e class, which asynchronously requests data using the Fetch API. The function constructs a URL with parameters for pagination, using \u003ccode\u003elimit\u003c/code\u003e to specify the number of items to fetch and \u003ccode\u003eskip\u003c/code\u003e to exclude a certain number of items from the start of the dataset.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst response = await fetch(\\`https://dummyjson.com/users?limit=\\${limit}\u0026amp;skip=\\${skip}\\`);\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eOnce the data is fetched, it\u0026#8217;s parsed from JSON format and the relevant part of the response (in this case, \u003ccode\u003eusers\u003c/code\u003e) is returned to be processed further.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eRendering Feed Items\u003c/h2\u003e\n\u003cp\u003eFor each item received from the API, a DOM element is created and appended to the feed. This process is handled by the \u003ccode\u003erenderFeedItem\u003c/code\u003e function. It creates a new \u003ccode\u003ediv\u003c/code\u003e for each feed item, and conditionally adds child elements such as a header for the user\u0026#8217;s name and an image, depending on the data received.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst feedItemElement = document.createElement('div');\r\nfeedItemElement.className = 'feed-item';\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eImplementing Infinite Scrolling\u003c/h2\u003e\n\u003cp\u003eInfinite scrolling is a critical feature of our newsfeed, allowing users to continuously engage with new content without the disruption of pagination controls. This is achieved using the Intersection Observer API, which provides a way to asynchronously observe changes in the intersection of a target element with an ancestor element or with a top-level document\u0026#8217;s viewport.\u003c/p\u003e\n\u003cp\u003eThe \u003ccode\u003ehandleInfiniteScroll\u003c/code\u003e function sets up an observer on the loader element. When the loader becomes visible in the viewport (indicating that the user has scrolled to the bottom of the feed), the observer\u0026#8217;s callback function triggers the loading of additional content by calling \u003ccode\u003erenderFeed\u003c/code\u003e with updated parameters.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst observer = new IntersectionObserver((entries) =\u0026gt; {\r\n  if(entries[0].isIntersecting) {\r\n    entries[0].target.remove();\r\n    this._skip += this._limit;\r\n    this.renderFeed(this._limit, this._skip);\r\n  }\r\n});\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThis solution combines modern JavaScript features and best practices to create an interactive, continuously loading newsfeed. By understanding and implementing these concepts, developers can enhance user experiences in web applications, providing content in an efficient, engaging manner.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": null,
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Building an Infinite Scrolling Newsfeed - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Master the art of building an infinite scrolling newsfeed, akin to Facebook, with our step-by-step guide. Learn essential frontend techniques to dynamically load content and enhance user experience.",
+        "pageURL": "build-infinite-scrolling-newsfeed",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Building an Infinite Scrolling Newsfeed  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" class=\"alignnone size-medium wp-image-348\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-1.49.33-PM-300x208.png\" alt=\"\" ",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eImplementing a Facebook-Like Newsfeed with Infinite Scrolling\u003c/h1\u003e\n\u003cp\u003eThe development of a dynamic newsfeed akin to that of Facebook involves several key components: fetching d",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

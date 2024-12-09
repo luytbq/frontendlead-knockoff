@@ -1,0 +1,113 @@
+{
+    "type": "vanilla",
+    "id": "navigation",
+    "title": "21. Navigation",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "navigation",
+    "problemStatement": "\u003cp\u003eThe given problem involves understanding and explaining a JavaScript function that dynamically generates a navigation menu based on a nested data structure. The data, represented in a JavaScript array of objects, outlines a hierarchical structure of navigation items, where each item can have a name and potentially a list of child items, denoting sub-navigation menus.\u003c/p\u003e\n\u003cp\u003eThe primary challenge is to traverse this nested data structure and create an HTML navigation menu that reflects the hierarchical relationships. This involves creating \u003ccode\u003e\u0026lt;ul\u0026gt;\u003c/code\u003e elements for each level of the hierarchy, \u003ccode\u003e\u0026lt;li\u0026gt;\u003c/code\u003e elements for each navigation item, and nesting them appropriately according to their parent-child relationships in the data.\u003c/p\u003e\n\u003cp\u003eThe JavaScript function \u003ccode\u003erenderNav\u003c/code\u003e takes this navigation data as input and renders the corresponding HTML structure within a specified context, which by default is \u003ccode\u003edocument.body\u003c/code\u003e. The function uses recursion to handle nested data, allowing it to generate menus at any depth.\u003c/p\u003e\n\u003cp\u003eFor example, given a simplified version of the navigation data:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e[\r\n  {\r\n    \"name\": \"Home\",\r\n    \"children\": [\r\n      {\r\n        \"name\": \"About\",\r\n        \"children\": [\r\n          {\"name\": \"Team\", \"children\": []},\r\n          {\"name\": \"History\", \"children\": []}\r\n        ]\r\n      }\r\n    ]\r\n  },\r\n  {\"name\": \"Services\", \"children\": []}\r\n]\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe function would produce an HTML structure similar to:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\u0026lt;ul\u0026gt;\r\n  \u0026lt;li\u0026gt;Home\r\n    \u0026lt;ul\u0026gt;\r\n      \u0026lt;li\u0026gt;About\r\n        \u0026lt;ul\u0026gt;\r\n          \u0026lt;li\u0026gt;Team\u0026lt;/li\u0026gt;\r\n          \u0026lt;li\u0026gt;History\u0026lt;/li\u0026gt;\r\n        \u0026lt;/ul\u0026gt;\r\n      \u0026lt;/li\u0026gt;\r\n    \u0026lt;/ul\u0026gt;\r\n  \u0026lt;/li\u0026gt;\r\n  \u0026lt;li\u0026gt;Services\u0026lt;/li\u0026gt;\r\n\u0026lt;/ul\u0026gt;\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis task evaluates your ability to work with DOM manipulation, recursion, and data structures in JavaScript, which are essential skills for frontend development.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should render the top-level navigation items",
+            "test": "it('should render the top-level navigation items', (done) =\u003e {\r\n    function flattenNames(data) {\r\n      let names = [];\r\n      data.forEach(item =\u003e {\r\n        names.push(item.name);\r\n        if (item.children) {\r\n          names = names.concat(flattenNames(item.children));\r\n        }\r\n      });\r\n      return names;\r\n    }\r\n    const container = document.createElement('div');\r\n    document.body.appendChild(container);\r\n    renderNav(navigationData, container);\r\n    const topLevelItems = container.querySelectorAll(':scope \u003e ul \u003e li');\r\n    expect(topLevelItems.length).to.equal(navigationData.length);\r\n    document.body.removeChild(container);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should correctly nest child navigation items",
+            "test": "it('should correctly nest child navigation items', (done) =\u003e {\r\n    const container = document.createElement('div');\r\n    document.body.appendChild(container);\r\n    renderNav(navigationData, container);\r\n    const nestedLists = container.querySelectorAll('ul \u003e li \u003e ul');\r\n    expect(nestedLists.length).to.be.greaterThan(0);\r\n    document.body.removeChild(container);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should not have empty list items",
+            "test": "it('should not have empty list items', (done) =\u003e {\r\n    const container = document.createElement('div');\r\n    document.body.appendChild(container);\r\n    renderNav(navigationData, container);\r\n    const allListItems = container.querySelectorAll('li');\r\n    let hasEmpty = false;\r\n    allListItems.forEach(li =\u003e {\r\n      if (li.textContent.trim().length === 0) {\r\n        hasEmpty = true;\r\n      }\r\n    });\r\n    expect(hasEmpty).to.be.false;\r\n    document.body.removeChild(container);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The navigation data will not exceed a depth of 10 levels."
+        },
+        {
+            "constraint": "Each 'name' field in the navigation data must be a non-empty string."
+        },
+        {
+            "constraint": "The 'children' field is an array that may contain zero or more child objects, each potentially representing a nested navigation level."
+        },
+        {
+            "constraint": "The navigation menu will be rendered within a specified HTML element, which exists in the DOM at the time the `renderNav` function is called."
+        },
+        {
+            "constraint": "The function must handle cases where navigation items do not have any children, in which case they are rendered as a simple list item without a nested list."
+        },
+        {
+            "constraint": "The solution should not use any external libraries or frameworks; only vanilla JavaScript is allowed."
+        },
+        {
+            "constraint": "The `renderNav` function should be designed to be idempotent, meaning that calling it multiple times with the same arguments should produce the same result without side effects."
+        },
+        {
+            "constraint": "The navigation structure should be accessible and semantically correct, using appropriate HTML elements such as `\u003cul\u003e`, `\u003cli\u003e`, and possibly `\u003ca\u003e` tags for clickable links."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "window.navigationData = [\r\n\t{\r\n\t\tname: 'Home',\r\n\t\tchildren: [\r\n\t\t\t{\r\n\t\t\t\tname: 'Why Us', \r\n\t\t\t\tchildren: [\r\n\t\t\t\t\t{name: 'Just Because...', children: []}\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tname: 'More Info', \r\n\t\t\t\tchildren: [\r\n\t\t\t\t\t{name: 'Just Because...', children: []}\r\n\t\t\t\t]\r\n\t\t\t}\r\n\t\t]\r\n\t},\r\n\t{\r\n\t\tname: 'About',\r\n\t\tchildren: [\r\n\t\t\t{\r\n\t\t\t\tname: 'Why Us', \r\n\t\t\t\tchildren: [\r\n\t\t\t\t\t{name: 'Just Because...', children: []}\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tname: 'More Info', \r\n\t\t\t\tchildren: [\r\n\t\t\t\t\t{name: 'Just Because...', children: []}\r\n\t\t\t\t]\r\n\t\t\t}\r\n\t\t]\r\n\t},\r\n\t{\r\n\t\tname: 'Careers'\r\n\t}\r\n];\r\n\r\nfunction renderNav() {\r\n    // Write your code here\r\n}\r\n\r\nif(document.getElementById('sandbox')) {\r\n  // Call renderNav with the navigationData and a specific DOM element as the context\r\n  renderNav(navigationData, document.querySelector('.content'));\r\n}\r\n\r\n// Do not edit below this line\r\nexport default renderNav;",
+    "starterHTMLCode": "\u003cdiv id=\"sandbox\"\u003e\r\n  \u003cdiv class=\"content\"\u003e\u003c/div\u003e\r\n\u003c/div\u003e",
+    "starterCSSCode": null,
+    "solutionCode": "// Define the renderNav function to dynamically generate a navigation menu\r\nfunction renderNav(data, ctx = document.body) {\r\n    // Create a 'ul' element to represent a level of the navigation structure\r\n    let ul = document.createElement('ul');\r\n\r\n    // Variables for the title and children of each navigation item\r\n    let title;\r\n    let children;\r\n\r\n    // Iterate over each item in the navigation data\r\n    data.forEach(item =\u003e {\r\n        // Extract the 'name' property as the title, if present\r\n        title = item.name ? item.name : null;\r\n\r\n        // If a title exists, proceed to create the navigation item\r\n        if (title) {\r\n            // Create an 'li' element for the navigation item\r\n            let li = document.createElement('li');\r\n            // Create a text node with the title and append it to the 'li' element\r\n            let textNode = document.createTextNode(title);\r\n            li.appendChild(textNode);\r\n            // Append the 'li' element to the current 'ul' element\r\n            ul.appendChild(li);\r\n\r\n            // Check if the item has children and they are not empty\r\n            if (item.children \u0026\u0026 item.children.length) {\r\n                // Recursively call renderNav to render child navigation items, passing the current 'li' as the context\r\n                renderNav(item.children, li);\r\n            }\r\n        }\r\n    });\r\n\r\n    // Append the 'ul' element to the provided context, defaulting to document.body\r\n    ctx.appendChild(ul);\r\n}\r\n\r\nif(document.getElementById('sandbox')) {\r\n  // Call renderNav with the navigationData and a specific DOM element as the context\r\n  renderNav(navigationData, document.querySelector('.content'));\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eDynamic Navigation Menu Creation in JavaScript\u003c/h1\u003e\n\u003cp\u003eIn this guide, we delve into the intricacies of dynamically generating a navigation menu in JavaScript, leveraging a structured data model. This method is vital for creating adaptable and maintainable web interfaces, allowing for easy updates and scalability.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eUnderstanding the Data Structure\u003c/h2\u003e\n\u003cp\u003eThe foundation of our dynamic navigation menu is a nested data structure, represented as an array of objects. Each object signifies a navigation item, potentially encompassing a \u0026#8216;name\u0026#8217; and a \u0026#8216;children\u0026#8217; array. The \u0026#8216;children\u0026#8217; array, in turn, may contain further navigation items, allowing for a hierarchical menu structure.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e[\r\n    {\r\n        \"name\": \"Home\",\r\n        \"children\": [...]\r\n    },\r\n    {\r\n        \"name\": \"About\",\r\n        \"children\": [...]\r\n    }\r\n]\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis structure facilitates the representation of complex menu hierarchies in a straightforward, readable format.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eRendering the Menu with JavaScript\u003c/h2\u003e\n\u003cp\u003eThe \u0026#8216;renderNav\u0026#8217; function is at the heart of transforming our nested data structure into a functional HTML navigation menu. This function iteratively processes each item in the data array, creating corresponding HTML elements to represent the menu and its sub-menus.\u003c/p\u003e\n\u003cp\u003eKey steps in the \u0026#8216;renderNav\u0026#8217; function include:\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003eInitialization of a new \u0026#8216;ul\u0026#8217; element to serve as the current menu level.\u003c/li\u003e\n\u003cli\u003eIteration over each item in the provided data array, creating \u0026#8216;li\u0026#8217; elements for individual menu items.\u003c/li\u003e\n\u003cli\u003eRecursive invocation of \u0026#8216;renderNav\u0026#8217; for items with children, enabling the rendering of nested sub-menus.\u003c/li\u003e\n\u003c/ol\u003e\n\u003cp\u003eThrough this recursive approach, \u0026#8216;renderNav\u0026#8217; adeptly handles menu structures of arbitrary depth, ensuring each level is accurately represented in the final HTML output.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Implementation\u003c/h2\u003e\n\u003cp\u003eThe practical application of the \u0026#8216;renderNav\u0026#8217; function involves specifying the navigation data and the DOM element within which the menu should be rendered. For example, calling \u0026#8216;renderNav(navigationData, document.querySelector(\u0026#8216;.content\u0026#8217;))\u0026#8217; dynamically inserts the constructed menu into an element with the class \u0026#8216;content\u0026#8217;.\u003c/p\u003e\n\u003cp\u003eThis flexibility allows for the seamless integration of the navigation menu into various parts of a web application, adapting to diverse layout and styling requirements.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe dynamic generation of navigation menus in JavaScript, as demonstrated by the \u0026#8216;renderNav\u0026#8217; function, exemplifies a powerful approach to web development. It not only facilitates the creation of complex, hierarchical menus but also promotes code reusability and ease of maintenance. By harnessing such techniques, developers can significantly enhance the user interface and navigation experience of web applications.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "App Design"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Google"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Build Dynamic 21. Navigation - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Master the art of building dynamic navigation menus in JavaScript with our in-depth guide. Learn how to transform nested data structures into functional HTML menus, enhancing user navigation in your web projects.",
+        "pageURL": "navigation",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Build Dynamic  Navigation  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eThe given problem involves understanding and explaining a JavaScript function that dynamically generates a navigation menu based on a nested data structure. The data, represented in a JavaScript ar",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eDynamic Navigation Menu Creation in JavaScript\u003c/h1\u003e\n\u003cp\u003eIn this guide, we delve into the intricacies of dynamically generating a navigation menu in JavaScript, leveraging a stru",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

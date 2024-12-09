@@ -1,0 +1,144 @@
+{
+    "type": "coding",
+    "id": "build-your-own-json-stringify",
+    "title": "87. JSON.stringify",
+    "difficulty": [
+        "Hard"
+    ],
+    "link": "build-your-own-json-stringify",
+    "problemStatement": "\u003cp\u003eIn this challenge, your task is to create a custom implementation of the \u003ccode\u003eJSON.stringify()\u003c/code\u003e method, which we\u0026#8217;ll call \u003ccode\u003emyStringify\u003c/code\u003e. The \u003ccode\u003eJSON.stringify()\u003c/code\u003e method in JavaScript is used to convert JavaScript objects or values to a JSON string. However, for the sake of this exercise, you\u0026#8217;ll be building your own version to deepen your understanding of how data serialization works in JavaScript.\u003c/p\u003e\n\u003cp\u003eYour function should be able to handle the following data types:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003ePrimitive types: Number, String, Boolean, null\u003c/li\u003e\n\u003cli\u003eComplex types: Objects, Arrays\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eNote that unlike the native \u003ccode\u003eJSON.stringify()\u003c/code\u003e, your function does not need to worry about circular references, functions, or symbols.\u003c/p\u003e\n\u003cp\u003eHere are some examples to illustrate what your function should do:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\r\nInput: ['foo', 'bar']\r\nOutput: '[\"foo\", \"bar\"]'\r\n\r\nInput: { name: 'John', age: 30, isEmployed: true }\r\nOutput: '{\"name\": \"John\", \"age\": 30, \"isEmployed\": true}'\r\n\r\nInput: 42\r\nOutput: '42'\r\n\r\nInput: 'Hello, world!'\r\nOutput: '\"Hello, world!\"'\r\n\r\nInput: true\r\nOutput: 'true'\r\n\r\nInput: null\r\nOutput: 'null'\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eYour implementation should correctly convert arrays and objects to their string representations, ensuring to wrap string values in double quotes and separate object properties with commas. Pay close attention to handling edge cases, such as empty objects or arrays.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should correctly stringify an array",
+            "test": "it('should correctly stringify an array', (done) =\u003e {\r\n    const input = ['apple', 'banana', 'cherry'];\r\n    const result = myStringify(input);\r\n    const expected = '[\"apple\", \"banana\", \"cherry\"]';\r\n    expect(result).to.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should correctly stringify an object",
+            "test": "it('should correctly stringify an object', (done) =\u003e {\r\n    const input = { name: 'John', age: 30, isEmployed: true };\r\n    const result = myStringify(input);\r\n    const expected = '{\"name\": \"John\", \"age\": 30, \"isEmployed\": true}';\r\n    expect(result).to.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should correctly stringify nested arrays and objects",
+            "test": "it('should correctly stringify nested arrays and objects', (done) =\u003e {\r\n    const input = { fruits: ['apple', 'banana'], person: { name: 'Alice', age: 25 } };\r\n    const result = myStringify(input);\r\n    const expected = '{\"fruits\": [\"apple\", \"banana\"], \"person\": {\"name\": \"Alice\", \"age\": 25}}';\r\n    expect(result).to.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should handle primitive types",
+            "test": "it('should handle primitive types', (done) =\u003e {\r\n    expect(myStringify(42)).to.equal('42');\r\n    expect(myStringify('Hello')).to.equal('\"Hello\"');\r\n    expect(myStringify(true)).to.equal('true');\r\n    expect(myStringify(null)).to.equal('null');\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should correctly stringify an empty object and array",
+            "test": "it('should correctly stringify an empty object and array', (done) =\u003e {\r\n    expect(myStringify({})).to.equal('{}');\r\n    expect(myStringify([])).to.equal('[]');\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The function should support primitive data types: Number, String, Boolean, and null."
+        },
+        {
+            "constraint": "The function should support complex data types: Object (excluding functions, symbols, and circular references) and Array."
+        },
+        {
+            "constraint": "The output string should be formatted correctly according to JSON standards, with object keys and string values enclosed in double quotes."
+        },
+        {
+            "constraint": "Arrays and objects should be serialized recursively, with nested structures preserved in the output."
+        },
+        {
+            "constraint": "Empty objects and arrays should be represented as {} and [] respectively in the output string."
+        },
+        {
+            "constraint": "The function is expected to handle a nesting depth up to 5 levels for objects and arrays."
+        },
+        {
+            "constraint": "The function should not use the native JSON.stringify() method in its implementation."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function myStringify(input) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default myStringify;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function myStringify(input) {\r\n    // Initialize an empty string to build the JSON string\r\n    if(Array.isArray(input)) { // Check if the input is an array\r\n        let items = input.map(item =\u003e myStringify(item)).join(', '); // Recursively call myStringify for each item and join with comma\r\n        return '[' + items + ']'; // Wrap the items string with square brackets to form an array JSON string\r\n    } else if(typeof input === 'object' \u0026\u0026 input !== null) { // Check if the input is an object and not null\r\n        let keys = Object.keys(input); // Get all keys of the object\r\n        let items = keys.map(key =\u003e `\"${key}\": ${myStringify(input[key])}`); // Recursively call myStringify for each value and map to \"key\": value format\r\n        return '{' + items.join(', ') + '}'; // Join all \"key\": value strings with comma and wrap with curly braces to form an object JSON string\r\n    } else if(typeof input === 'string') { // Check if the input is a string\r\n        return `\"${input}\"`; // Wrap the string value with double quotes\r\n    } else { // For other primitive types (number, boolean, null)\r\n        return String(input); // Convert the primitive value to a string\r\n    }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eUnderstanding the Custom JSON.stringify Implementation\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eIn this article, we explore the intricacies of a custom implementation of the \u003ccode\u003eJSON.stringify\u003c/code\u003e method, named \u003ccode\u003emyStringify\u003c/code\u003e. This function aims to convert JavaScript values into a JSON-formatted string, handling various data types such as arrays, objects, and primitives (numbers, strings, booleans, and null).\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHandling Arrays\u003c/h2\u003e\n\u003cp\u003eFor arrays, \u003ccode\u003emyStringify\u003c/code\u003e iterates over each element, recursively calling itself to ensure nested arrays are properly stringified. The results are then joined with commas and enclosed in square brackets, mimicking the JSON array format.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003eInput: ['apple', 'banana']\r\nOutput: '[\"apple\", \"banana\"]'\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHandling Objects\u003c/h2\u003e\n\u003cp\u003eWhen dealing with objects, the function iterates through each key-value pair. Keys are retained as strings, and values are recursively processed by \u003ccode\u003emyStringify\u003c/code\u003e. The output is a comma-separated list of key-value pairs within curly braces, consistent with JSON object syntax.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003eInput: { name: 'John', age: 30 }\r\nOutput: '{\"name\": \"John\", \"age\": 30}'\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHandling Primitive Types\u003c/h2\u003e\n\u003cp\u003ePrimitive types like strings, numbers, booleans, and null are directly converted to their string representations. Strings are specially handled by enclosing them in double quotes to align with JSON standards.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003eInput: 'Hello, world!'\r\nOutput: '\"Hello, world!\"'\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eComplexities and Considerations\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003emyStringify\u003c/code\u003e function showcases the depth of understanding required to serialize JavaScript objects into JSON. While it doesn\u0026#8217;t cover edge cases like circular references, functions, or symbols (which are beyond JSON\u0026#8217;s scope), it provides a solid foundation in data serialization concepts.\u003c/p\u003e\n\u003cp\u003eOne must consider the recursive nature of this implementation, particularly for deeply nested objects or arrays, which could potentially lead to stack overflow errors in a more constrained environment. However, for the scope of this exercise, such considerations are secondary to understanding the core serialization process.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eBuilding a custom version of \u003ccode\u003eJSON.stringify\u003c/code\u003e not only demystifies how data is prepared for transmission or storage but also enhances one\u0026#8217;s grasp of JavaScript\u0026#8217;s data structures and recursion. This exercise serves as a practical application of these concepts, fostering a deeper appreciation for the built-in methods provided by JavaScript.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Algorithmic"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Snap"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Build JSON.stringify From Scratch - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Dive deep into JavaScript's serialization process by learning how to build your own JSON.stringify function. This guide covers handling arrays, objects, and primitives, perfect for enhancing your frontend skills.",
+        "pageURL": "build-your-own-json-stringify",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Build JSONstringify From Scratch  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eIn this challenge, your task is to create a custom implementation of the \u003ccode\u003eJSON.stringify()\u003c/code\u003e method, which we\u0026#8217;ll call \u003ccode\u003emyStringify\u003c/code\u003e. The \u003ccode\u003eJSON.stringify()\u003c/code\u003e met",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eUnderstanding the Custom JSON.stringify Implementation\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eIn this article, we explore the intricacies of a custom implementation of the \u003ccode\u003eJSON.stringify\u003c/code\u003e method,",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+to a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

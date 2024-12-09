@@ -1,0 +1,114 @@
+{
+    "type": "coding",
+    "id": "build-fake-timer",
+    "title": "80. Fake Timer",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "build-fake-timer",
+    "problemStatement": "\u003cp\u003eCreate a \u003ccode\u003eFakeTimer\u003c/code\u003e class that can be used to replace the native JavaScript timing functions (\u003ccode\u003esetTimeout\u003c/code\u003e, \u003ccode\u003eclearTimeout\u003c/code\u003e, and \u003ccode\u003eDate.now\u003c/code\u003e) with a controllable fake version. This allows for the simulation and testing of time-dependent code without the need for actual time to elapse, making it ideal for tests and simulations where precise timing control is required.\u003c/p\u003e\n\u003cp\u003eThe \u003ccode\u003eFakeTimer\u003c/code\u003e class should provide the following functionalities:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eInstall:\u003c/strong\u003e Replace the native timing functions with fake ones that queue callbacks instead of executing them after a real delay.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eUninstall:\u003c/strong\u003e Restore the original timing functions to their native implementations.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eTick:\u003c/strong\u003e Manually advance the fake timer, executing any callbacks that should be triggered up to the current simulated time.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e\u003cstrong\u003eUsage Example:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst timer = new FakeTimer();\r\ntimer.install();\r\n// Schedule a timeout\r\nconst id = setTimeout(() =\u003e console.log('Timeout called'), 100);\r\n// Advance the fake timer\r\ntimer.tick();\r\n// 'Timeout called' is logged to the console\r\ntimer.uninstall();  // Restore original functions\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis feature is particularly useful in unit testing, where real-time waiting is impractical. It allows for precise control over the execution timing of callbacks, enabling more deterministic and faster tests.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should correctly simulate setTimeout",
+            "test": "it('should correctly simulate setTimeout', (done) =\u003e {\r\n    const fakeTimer = new FakeTimer();\r\n    fakeTimer.install();\r\n\r\n    let called = false;\r\n    setTimeout(() =\u003e {\r\n      called = true;\r\n      // Verify the callback was called\r\n      expect(called).to.be.true;\r\n      // Cleanup\r\n      fakeTimer.uninstall();\r\n      done();\r\n    }, 100);\r\n\r\n    // Simulate time passing\r\n    fakeTimer.tick();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should simulate Date.now accurately",
+            "test": "it('should simulate Date.now accurately', (done) =\u003e {\r\n    const fakeTimer = new FakeTimer();\r\n    fakeTimer.install();\r\n\r\n    const startTime = Date.now();\r\n    setTimeout(() =\u003e {\r\n      const endTime = Date.now();\r\n      // Expect the simulated time to have advanced by 100ms\r\n      expect(endTime - startTime).to.equal(100);\r\n      // Cleanup\r\n      fakeTimer.uninstall();\r\n      done();\r\n    }, 100);\r\n\r\n    fakeTimer.tick();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The FakeTimer class should only affect the timing functions (setTimeout, clearTimeout, and Date.now) within the scope of its install and uninstall methods, ensuring that global behavior is only modified temporarily."
+        },
+        {
+            "constraint": "The internal queue of the FakeTimer should be maintained in such a way that the callbacks are executed in the correct order based on their scheduled execution times."
+        },
+        {
+            "constraint": "setTimeout should return a unique identifier for each scheduled callback, similar to the native behavior, which can be used with clearTimeout to cancel the callback before it is executed."
+        },
+        {
+            "constraint": "When tick is called, all scheduled callbacks up to the current simulated time should be executed. If multiple callbacks are scheduled for the same time, they should be executed in the order they were scheduled."
+        },
+        {
+            "constraint": "After uninstall is called, any scheduled timeouts that have not been ticked should not execute, reflecting the removal of the fake timers and the restoration of the native behavior."
+        },
+        {
+            "constraint": "The FakeTimer should accurately simulate the passage of time, as represented by Date.now, during the period it is installed, and this should be reflected in the callbacks that use Date.now to check the current time."
+        },
+        {
+            "constraint": "The solution must ensure that the use of FakeTimer does not lead to memory leaks, particularly by ensuring that callbacks are properly removed from the queue once they have been executed or cleared."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "class FakeTimer {\r\n\t// Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default FakeTimer;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "class FakeTimer {\r\n  constructor() {\r\n    // Store references to the original timing functions and Date.now\r\n    this.original = {\r\n      setTimeout: window.setTimeout,\r\n      clearTimeout: window.clearTimeout,\r\n      dateNow: Date.now\r\n    };\r\n    // Initialize the current simulated time and a unique ID for timers\r\n    this.currentTime = 0;\r\n    this.timerId = 1;\r\n    // Initialize an empty queue for scheduled callbacks\r\n    this.queue = [];\r\n  }\r\n\r\n  install() {\r\n    // Override the native setTimeout with a fake implementation\r\n    window.setTimeout = (cb, delay, ...args) =\u003e {\r\n      // Generate a unique ID for this timer\r\n      const id = this.timerId++;\r\n      // Schedule the callback in the queue with its execution time\r\n      this.queue.push({id, cb, time: this.currentTime + delay, args});\r\n      // Sort the queue in descending order of execution time\r\n      this.queue.sort((a, b) =\u003e b.time - a.time);\r\n      return id;\r\n    };\r\n\r\n    // Override the native clearTimeout with a fake implementation\r\n    window.clearTimeout = (removeId) =\u003e {\r\n      // Remove the timer from the queue by its ID\r\n      this.queue = this.queue.filter(({id}) =\u003e id !== removeId);\r\n    };\r\n\r\n    // Override Date.now to return the current simulated time\r\n    Date.now = () =\u003e this.currentTime;\r\n  }\r\n\r\n  uninstall() {\r\n    // Restore the original timing functions and Date.now\r\n    window.setTimeout = this.original.setTimeout;\r\n    window.clearTimeout = this.original.clearTimeout;\r\n    Date.now = this.original.dateNow;\r\n  }\r\n\r\n  tick() {\r\n    // Execute all scheduled callbacks up to the current simulated time\r\n    while (this.queue.length \u003e 0) {\r\n      // Pop the last callback from the queue (due to the descending sort)\r\n      const {cb, time, args} = this.queue.pop();\r\n      // Advance the current time to the callback's execution time\r\n      this.currentTime = time;\r\n      // Execute the callback with any additional arguments\r\n      cb(...args);\r\n    }\r\n  }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eSimulating Time in JavaScript Tests with Fake Timer\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eTesting time-dependent code in JavaScript can be challenging due to the reliance on real time for functions like \u003ccode\u003esetTimeout\u003c/code\u003e and \u003ccode\u003eDate.now\u003c/code\u003e. The Fake Timer class provides a solution by simulating these time functions, allowing for precise and controlled testing environments.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHow Fake Timer Works\u003c/h2\u003e\n\u003cp\u003eThe Fake Timer class overrides the global timing functions and \u003ccode\u003eDate.now\u003c/code\u003e with custom implementations. These implementations do not wait for actual time to pass but instead manage a queue of scheduled callbacks. The \u003ccode\u003etick\u003c/code\u003e method simulates the passage of time, executing callbacks in the order they were scheduled.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eKey Components\u003c/h2\u003e\n\u003cp\u003eThe class has several important components:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eInstall Method:\u003c/strong\u003e Overrides global timing functions with fake ones that queue callbacks instead of executing them after a delay.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eUninstall Method:\u003c/strong\u003e Restores the original timing functions, removing the fake timer\u0026#8217;s influence.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eTick Method:\u003c/strong\u003e Advances the fake timer, executing any callbacks that should be triggered up to the current simulated time.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eAdvantages of Using Fake Timer\u003c/h2\u003e\n\u003cp\u003eUsing the Fake Timer class in tests offers several advantages:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eSpeed:\u003c/strong\u003e Tests run faster since they don\u0026#8217;t have to wait for real time to pass.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eDeterminism:\u003c/strong\u003e Tests are more deterministic and less flaky, as they don\u0026#8217;t rely on the system clock or actual delays.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eControl:\u003c/strong\u003e Provides precise control over the timing of callbacks, making it easier to test edge cases and timing-related logic.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConsiderations\u003c/h2\u003e\n\u003cp\u003eWhile the Fake Timer class is powerful, it\u0026#8217;s important to use it carefully:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eAlways ensure that the fake timer is uninstalled after tests to avoid interference with other tests or the application itself.\u003c/li\u003e\n\u003cli\u003eBe mindful of the potential for tests to become less realistic if they rely too heavily on simulated time.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eUnit testing fake timer\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\r\n// Create an instance of FakeTimer and install it\r\nconst fakeTimer = new FakeTimer();\r\nfakeTimer.install();\r\n\r\n// Schedule a callback using setTimeout\r\nsetTimeout(() =\u003e {\r\n  console.log('Timeout callback executed');\r\n}, 1000);\r\n\r\n// Manually advance time using the 'tick' method\r\nfakeTimer.tick();\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "80. Fake Timer - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Elevate your JavaScript testing game by mastering the use of Fake Timer. Learn how to simulate and control time in your tests for faster, more reliable, and deterministic test outcomes.",
+        "pageURL": "build-fake-timer",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Fake Timer  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eCreate a \u003ccode\u003eFakeTimer\u003c/code\u003e class that can be used to replace the native JavaScript timing functions (\u003ccode\u003esetTimeout\u003c/code\u003e, \u003ccode\u003eclearTimeout\u003c/code\u003e, and \u003ccode\u003eDate.now\u003c/code\u003e) with a contr",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eSimulating Time in JavaScript Tests with Fake Timer\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eTesting time-dependent code in JavaScript can be challenging due to the reliance on real time for functions like \u003cco",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+cceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

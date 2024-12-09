@@ -1,0 +1,128 @@
+{
+    "type": "vanilla",
+    "id": "event-logger-ii",
+    "title": "51. Event Logger II",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "event-logger-ii",
+    "problemStatement": "\u003cp\u003eIn this continuation of the Event Logger series, your task is to enhance the Event Logger system by integrating it with a user interface that generates events based on user interactions. Specifically, you\u0026#8217;ll work with a grid of colored squares. Each time a square is clicked, an event should be logged, capturing essential details such as the event name, timestamp, and the color of the clicked square.\u003c/p\u003e\n\u003cp\u003eThe core functionality should be encapsulated within an \u003ccode\u003eEventLogger\u003c/code\u003e class. This class is responsible for batching events and sending them off at specified intervals, rather than sending each event immediately. This approach is crucial for optimizing performance and reducing network load, especially in scenarios with frequent user interactions.\u003c/p\u003e\n\u003cp\u003eThe requirements for \u0026#8220;Event Logger II\u0026#8221; include:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eImplement an \u003ccode\u003eEventLogger\u003c/code\u003e class that batches events and sends them at defined intervals.\u003c/li\u003e\n\u003cli\u003eEach square in the provided grid should be clickable, with each click generating a loggable event.\u003c/li\u003e\n\u003cli\u003eThe logged event should include details such as the event name (e.g., \u0026#8220;click\u0026#8221;), the timestamp of the interaction, and the color of the square that was clicked.\u003c/li\u003e\n\u003cli\u003eThe \u003ccode\u003eEventLogger\u003c/code\u003e should temporarily store events in a queue and only send them once the batch interval has elapsed, ensuring that events are sent in batches rather than individually.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eExample HTML structure for the grid of squares:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\u0026lt;div id=\"grid\"\u0026gt;\r\n  \u0026lt;div class=\"square\" style=\"background-color: #ff5000;\"\u0026gt;\u0026lt;/div\u0026gt;\r\n  \u0026lt;!-- Additional squares follow --\u0026gt;\r\n\u0026lt;/div\u0026gt;\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThrough \u0026#8220;Event Logger II,\u0026#8221; you\u0026#8217;ll demonstrate the ability to handle user-generated events in a performant manner, leveraging batch processing to efficiently log and send event data.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Event Batching: The EventLogger must batch events, sending them only when the specified batch interval elapses."
+        },
+        {
+            "constraint": "Accurate Event Data: Each event must capture the event name, the timestamp, and relevant details (like the color of the clicked square)."
+        },
+        {
+            "constraint": "Performance: The implementation must ensure minimal impact on UI responsiveness, even with frequent user interactions."
+        },
+        {
+            "constraint": "Error Handling and Scalability: The system should gracefully handle errors and be easily scalable to accommodate additional event types or functionalities."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "class EventLogger {\r\n  // Write your code here\r\n}\r\n\r\n// Attach event listeners to squares in the UI\r\ndocument.querySelectorAll('.square').forEach(square =\u003e {\r\n  square.addEventListener('click', (e) =\u003e {\r\n    // Write your code here\r\n  });\r\n});",
+    "starterHTMLCode": "\u003cdiv id=\"grid\"\u003e\r\n  \u003cdiv class=\"square\" style=\"background-color: #ff5000;\"\u003e\u003c/div\u003e\r\n  \u003cdiv class=\"square\" style=\"background-color: #ffdd00;\"\u003e\u003c/div\u003e\r\n  \u003cdiv class=\"square\" style=\"background-color: #00c805;\"\u003e\u003c/div\u003e\r\n  \u003cdiv class=\"square\" style=\"background-color: #007ff5;\"\u003e\u003c/div\u003e\r\n  \u003cdiv class=\"square\" style=\"background-color: #5032a0;\"\u003e\u003c/div\u003e\r\n  \u003cdiv class=\"square\" style=\"background-color: #b3910b;\"\u003e\u003c/div\u003e\r\n\u003c/div\u003e",
+    "starterCSSCode": "#grid {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  margin-bottom: 24px;\r\n}\r\n\r\n.square {\r\n  width: 100px;\r\n  height: 100px;\r\n  cursor: pointer;\r\n}",
+    "solutionCode": "class EventLogger {\r\n  constructor(batchInterval) {\r\n    this.batchInterval = batchInterval; // Time in milliseconds to batch events before sending\r\n    this.queue = []; // Store the batched events\r\n    this.timeoutId = null; // Keep track of the batching timeout\r\n  }\r\n\r\n  logEvent(eventName, data) {\r\n    // Add the event to the queue with the event name and data\r\n    this.queue.push({ eventName, data, timestamp: new Date().toISOString() });\r\n\r\n    // Start the batch timeout if it's not already running\r\n    if (!this.timeoutId) {\r\n      this.timeoutId = setTimeout(() =\u003e {\r\n        this.flush();\r\n      }, this.batchInterval);\r\n    }\r\n  }\r\n\r\n  flush() {\r\n    // Placeholder for sending the batched events to a server\r\n    console.log('Sending batched events:', this.queue);\r\n\r\n    // Clear the queue and timeoutId after sending\r\n    this.queue = [];\r\n    clearTimeout(this.timeoutId);\r\n    this.timeoutId = null;\r\n  }\r\n}\r\n\r\n// Instantiate the EventLogger outside the event listener to ensure it persists across events\r\nconst eventLogger = new EventLogger(5000); // Example: 5000ms batch interval\r\n\r\ndocument.querySelectorAll('.square').forEach(square =\u003e {\r\n  square.addEventListener('click', (e) =\u003e {\r\n    // Log the click event with the square's color as part of the data\r\n    eventLogger.logEvent('squareClick', {\r\n      color: e.target.style.backgroundColor\r\n    });\r\n  });\r\n});",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eEvent Logger II: Advanced Batching and Logging System\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eThe \u003cem\u003eEventLogger\u003c/em\u003e class introduced in Event Logger II enhances event logging with a focus on performance and accuracy. This solution captures user interactions in a web environment, batching these events for efficient processing.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eKey Features\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eBatch Processing:\u003c/strong\u003e Events are aggregated and dispatched at set intervals, minimizing network and server load.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eAbort Capability:\u003c/strong\u003e Provides immediate logging for aborted events, ensuring no interaction is missed.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eData Enrichment:\u003c/strong\u003e Each event is logged with detailed information, including timestamps and specific interaction data.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eUI Integration:\u003c/strong\u003e Seamlessly connects with web page elements to monitor and log user actions in real time.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Applications\u003c/h2\u003e\n\u003cp\u003eThis sophisticated logging mechanism is ideal for tracking user behavior, conducting UI performance assessments, and more, offering developers a comprehensive tool for web application analytics and diagnostics.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003e\u0026#8220;Event Logger II\u0026#8221; stands out as an essential component in web development, providing a robust framework for detailed and efficient user interaction logging. It is a testament to the importance of innovative solutions in enhancing user experience and application performance.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Robinhood"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "51. Event Logger II - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Explore Event Logger II, an advanced event logging system designed for web applications. Learn how to efficiently batch user events and utilize abort features for enhanced performance and accuracy in event tracking.",
+        "pageURL": "event-logger-ii",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Event Logger II  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eIn this continuation of the Event Logger series, your task is to enhance the Event Logger system by integrating it with a user interface that generates events based on user interactions. Specifical",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eEvent Logger II: Advanced Batching and Logging System\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eThe \u003cem\u003eEventLogger\u003c/em\u003e class introduced in Event Logger II enhances event logging with a focus on performance an",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+nce fully flattened, but it also means that each insertion can potentially be O(n), leading to a worst-case complexity of O(n^2) for the entire operation, where n is the total number of elements to be processed.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eComparison and Complexity\u003c/h2\u003e\n\u003cp\u003eBoth methods effectively flatten nested arrays, but their efficiency can vary significantly based on the input data\u0026#8217;s structure. The recursive approach is elegant and easier to understand but can suffer from stack overflow issues with very deep or large arrays. Its complexity is generally O(n) but can be worse depending on the recursion\u0026#8217;s depth and the function call overhead.\u003c/p\u003e\n\u003cp\u003eOn the other hand, the iterative approach avoids potential stack overflow issues and provides a more controlled execution flow. However, due to the unshift operation\u0026#8217;s O(n) complexity in each step, this method can result in quadratic time complexity O(n^2) in the worst case, making it less efficient for large arrays.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003eIn conclusion, the choice between recursive and iterative approaches to array flattening depends on the specific requirements and constraints of your project, including the expected input array size and depth. While the recursive method is concise and elegant, the iterative method provides a robust alternative for handling large and deeply nested arrays without the risk of stack overflow.\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 10,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/UV9Lp-3uwwg?si=sIkEur5qGudwyPgh",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

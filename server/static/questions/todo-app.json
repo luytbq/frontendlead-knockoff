@@ -1,0 +1,136 @@
+{
+    "type": "vanilla",
+    "id": "todo-app",
+    "title": "75. To-do App",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "todo-app",
+    "problemStatement": "\u003cp\u003eYou\u0026#8217;ve been tasked with building a basic ToDo app using HTML, CSS, and JavaScript. The goal of this project is to create a functional todo list that allows users to add, remove, complete, and update tasks. This exercise focuses on enhancing your skills with DOM manipulation, event handling, and dynamic content generation in Vanilla JavaScript.\u003c/p\u003e\n\u003cp\u003eThe application\u0026#8217;s UI is already set up with HTML and CSS. Your main task is to implement the JavaScript functionality to bring the ToDo app to life. Here are the key features your app should support:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eAdding a ToDo Item:\u003c/strong\u003e Users should be able to type in a task and add it to the list by submitting the form. The new task should appear at the top of the list.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eRemoving a ToDo Item:\u003c/strong\u003e Each task should have an associated \u0026#8216;Delete\u0026#8217; button. Clicking this button should remove the task from the list.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eCompleting a ToDo Item:\u003c/strong\u003e Each task should also have a \u0026#8216;Complete\u0026#8217; button. When clicked, the task should be visually marked as completed (e.g., strikethrough text).\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eUpdating a ToDo Item:\u003c/strong\u003e Tasks should be editable. An \u0026#8216;Update\u0026#8217; button should toggle the task between an editable state and a view state. Users can change the task text and save the changes.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e\u003cstrong\u003eExample:\u003c/strong\u003e Below is a visual and functional description of the app\u0026#8217;s intended behavior.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\u0026lt;!-- Initial State --\u0026gt;\r\n\u0026lt;div id=\"container\"\u0026gt;\r\n  \u0026lt;div class=\"wrapper\"\u0026gt;\r\n    \u0026lt;h1\u0026gt;ToDo App\u0026lt;/h1\u0026gt;\r\n    \u0026lt;form action=\"#\" class=\"addtodo-form\"\u0026gt;\r\n      \u0026lt;input class=\"input-todo\" type=\"text\" placeholder=\"Write your todo...\"\u0026gt;\r\n      \u0026lt;input type=\"submit\" value=\"Add Todo\"\u0026gt;\r\n    \u0026lt;/form\u0026gt;\r\n    \u0026lt;br/\u0026gt;\u0026lt;br/\u0026gt;\r\n    \u0026lt;h2\u0026gt;Items to be done\u0026lt;/h2\u0026gt;\r\n    \u0026lt;br/\u0026gt;----\u0026lt;br/\u0026gt;\r\n    \u0026lt;ul\u0026gt;\r\n      \u0026lt;div class=\"no-todos\"\u0026gt;No Todos Available Yet\u0026lt;/div\u0026gt;\r\n    \u0026lt;/ul\u0026gt;\r\n  \u0026lt;/div\u0026gt;\r\n\u0026lt;/div\u0026gt;\r\n\r\n\u0026lt;!-- After Adding a New Task 'Task 1' --\u0026gt;\r\n\u0026lt;ul\u0026gt;\r\n  \u0026lt;li\u0026gt;\r\n    \u0026lt;div class=\"text\"\u0026gt;Task 1\u0026lt;/div\u0026gt;\r\n    \u0026lt;input class=\"hidden\" type=\"text\" value=\"Task 1\"\u0026gt;\r\n    \u0026lt;div class=\"buttons\"\u0026gt;\r\n        \u0026lt;button class=\"update green\"\u0026gt;Update\u0026lt;/button\u0026gt;\r\n        \u0026lt;button class=\"delete\"\u0026gt;X\u0026lt;/button\u0026gt;\r\n        \u0026lt;button class=\"done\"\u0026gt;Complete\u0026lt;/button\u0026gt;\r\n    \u0026lt;/div\u0026gt;\r\n  \u0026lt;/li\u0026gt;\r\n  \u0026lt;div class=\"no-todos hidden\"\u0026gt;No Todos Available Yet\u0026lt;/div\u0026gt;\r\n\u0026lt;/ul\u0026gt;\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis project is an excellent opportunity to practice and showcase your ability to work with core web technologies and implement basic but crucial functionalities that are common in many web applications.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should add a new todo item to the list",
+            "test": "it('should add a new todo item to the list', (done) =\u003e {\r\n    document.body.innerHTML = `\r\n      \u003cdiv id=\"container\"\u003e\r\n          \u003cdiv class=\"wrapper\"\u003e\r\n              \u003ch1\u003eToDo App\u003c/h1\u003e\r\n              \u003cform action=\"#\" class=\"addtodo-form\"\u003e\r\n                  \u003cinput class=\"input-todo\" type=\"text\" placeholder=\"Write your todo...\"\u003e\r\n                  \u003cinput type=\"submit\" value=\"Add Todo\"\u003e\r\n              \u003c/form\u003e\r\n              \u003cbr/\u003e\u003cbr/\u003e\r\n              \u003ch2\u003eItems to be done\u003c/h2\u003e\r\n              \u003cbr/\u003e----\u003cbr/\u003e\r\n              \u003cul\u003e\r\n                  \u003cdiv class=\"no-todos\"\u003eNo Todos Available Yet\u003c/div\u003e\r\n              \u003c/ul\u003e\r\n          \u003c/div\u003e\r\n      \u003c/div\u003e\r\n    `;\r\n\r\n    // Simulate adding a todo item\r\n    initToDoApp();\r\n    const input = document.querySelector('.input-todo');\r\n    const form = document.querySelector('.addtodo-form');\r\n    input.value = 'New Task';\r\n    form.dispatchEvent(new Event('submit'));\r\n\r\n    // Check if the new task was added to the list\r\n    const todoList = document.querySelectorAll('ul li');\r\n    expect(todoList.length).to.be.above(0);\r\n    expect(todoList[0].textContent).to.include('New Task');\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should mark a new todo item as completed",
+            "test": "it('should mark a new todo item as completed', (done) =\u003e {\r\n    document.body.innerHTML = `\r\n      \u003cdiv id=\"container\"\u003e\r\n          \u003cdiv class=\"wrapper\"\u003e\r\n              \u003ch1\u003eToDo App\u003c/h1\u003e\r\n              \u003cform action=\"#\" class=\"addtodo-form\"\u003e\r\n                  \u003cinput class=\"input-todo\" type=\"text\" placeholder=\"Write your todo...\"\u003e\r\n                  \u003cinput type=\"submit\" value=\"Add Todo\"\u003e\r\n              \u003c/form\u003e\r\n              \u003cbr/\u003e\u003cbr/\u003e\r\n              \u003ch2\u003eItems to be done\u003c/h2\u003e\r\n              \u003cbr/\u003e----\u003cbr/\u003e\r\n              \u003cul\u003e\r\n                  \u003cdiv class=\"no-todos\"\u003eNo Todos Available Yet\u003c/div\u003e\r\n              \u003c/ul\u003e\r\n          \u003c/div\u003e\r\n      \u003c/div\u003e\r\n    `;\r\n\r\n    // Initialize the ToDo App and add a todo item\r\n    initToDoApp();\r\n    const input = document.querySelector('.input-todo');\r\n    const form = document.querySelector('.addtodo-form');\r\n    input.value = 'New Task';\r\n    form.dispatchEvent(new Event('submit'));\r\n\r\n    // Wait a bit for the DOM to update\r\n    setTimeout(() =\u003e {\r\n        const completeButton = document.querySelector('.done');\r\n        if (!completeButton) {\r\n            console.error('Complete button not found. Current DOM:', document.body.innerHTML);\r\n            done(new Error('Complete button not found'));\r\n            return;\r\n        }\r\n\r\n        completeButton.click();\r\n\r\n        // Check for the todo item and its 'completed' class after clicking 'Complete'\r\n        const firstTodo = document.querySelector('ul li');\r\n        if (!firstTodo) {\r\n            console.error('Todo item not found after marking as complete. Current DOM:', document.body.innerHTML);\r\n            done(new Error('Todo item not found after marking as complete'));\r\n            return;\r\n        }\r\n\r\n        expect(firstTodo.classList.contains('completed')).to.be.true;\r\n        done();\r\n    }, 1000); \r\n\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should not add an empty todo item to the list",
+            "test": "it('should not add an empty todo item to the list', (done) =\u003e {\r\n    document.body.innerHTML = `\r\n      \u003cdiv id=\"container\"\u003e\r\n        \u003cdiv class=\"wrapper\"\u003e\r\n          \u003ch1\u003eToDo App\u003c/h1\u003e\r\n          \u003cform action=\"#\" class=\"addtodo-form\"\u003e\r\n            \u003cinput class=\"input-todo\" type=\"text\" placeholder=\"Write your todo...\"\u003e\r\n            \u003cinput type=\"submit\" value=\"Add Todo\"\u003e\r\n          \u003c/form\u003e\r\n          \u003cbr/\u003e\u003cbr/\u003e\r\n          \u003ch2\u003eItems to be done\u003c/h2\u003e\r\n          \u003cbr/\u003e----\u003cbr/\u003e\r\n          \u003cul\u003e\u003c/ul\u003e\r\n        \u003c/div\u003e\r\n      \u003c/div\u003e\r\n    `;\r\n\r\n    initToDoApp();\r\n\r\n    const input = document.querySelector('.input-todo');\r\n    const form = document.querySelector('.addtodo-form');\r\n    input.value = ''; // Empty value\r\n    form.dispatchEvent(new Event('submit'));\r\n\r\n    const todoList = document.querySelectorAll('ul li');\r\n    expect(todoList.length).to.equal(0); // Expect no todo items to be added\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should update a todo item when the update button is clicked",
+            "test": "it('should update a todo item when the update button is clicked', (done) =\u003e {\r\n    document.body.innerHTML = `\r\n      \u003cdiv id=\"container\"\u003e\r\n        \u003cdiv class=\"wrapper\"\u003e\r\n          \u003ch1\u003eToDo App\u003c/h1\u003e\r\n          \u003cform action=\"#\" class=\"addtodo-form\"\u003e\r\n            \u003cinput class=\"input-todo\" type=\"text\" placeholder=\"Write your todo...\"\u003e\r\n            \u003cinput type=\"submit\" value=\"Add Todo\"\u003e\r\n          \u003c/form\u003e\r\n          \u003cbr/\u003e\u003cbr/\u003e\r\n          \u003ch2\u003eItems to be done\u003c/h2\u003e\r\n          \u003cbr/\u003e----\u003cbr/\u003e\r\n          \u003cul\u003e\r\n              \u003cdiv class=\"no-todos\"\u003eNo Todos Available Yet\u003c/div\u003e\r\n          \u003c/ul\u003e\r\n        \u003c/div\u003e\r\n      \u003c/div\u003e\r\n    `;\r\n\r\n    initToDoApp();\r\n\r\n    const input = document.querySelector('.input-todo');\r\n    const form = document.querySelector('.addtodo-form');\r\n    input.value = 'Initial Task';\r\n    form.dispatchEvent(new Event('submit'));\r\n\r\n    // Assuming your app has a way to enter update mode and save updates\r\n    // This part of the test might need to be adjusted based on your app's implementation\r\n    const updateButton = document.querySelector('.update');\r\n    updateButton.click(); // Enter update mode\r\n\r\n    const editInput = document.querySelector('ul li input[type=\"text\"]');\r\n    editInput.value = 'Updated Task';\r\n    updateButton.click(); // Save update\r\n\r\n    const updatedTodoText = document.querySelector('ul li .text').textContent;\r\n    expect(updatedTodoText).to.include('Updated Task');\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should display \"No Todos Available Yet\" when there are no todos",
+            "test": "it('should display \"No Todos Available Yet\" when there are no todos', (done) =\u003e {\r\n    document.body.innerHTML = `\r\n      \u003cdiv id=\"container\"\u003e\r\n        \u003cdiv class=\"wrapper\"\u003e\r\n          \u003ch1\u003eToDo App\u003c/h1\u003e\r\n          \u003cform action=\"#\" class=\"addtodo-form\"\u003e\r\n            \u003cinput class=\"input-todo\" type=\"text\" placeholder=\"Write your todo...\"\u003e\r\n            \u003cinput type=\"submit\" value=\"Add Todo\"\u003e\r\n          \u003c/form\u003e\r\n          \u003cbr/\u003e\u003cbr/\u003e\r\n          \u003ch2\u003eItems to be done\u003c/h2\u003e\r\n          \u003cbr/\u003e----\u003cbr/\u003e\r\n          \u003cul\u003e\r\n            \u003cdiv class=\"no-todos\"\u003eNo Todos Available Yet\u003c/div\u003e\r\n          \u003c/ul\u003e\r\n        \u003c/div\u003e\r\n      \u003c/div\u003e\r\n    `;\r\n\r\n    initToDoApp();\r\n\r\n    const noTodosMessage = document.querySelector('.no-todos');\r\n    expect(noTodosMessage).not.to.be.null;\r\n    expect(noTodosMessage.textContent).to.include('No Todos Available Yet');\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The app must be built using plain HTML, CSS, and Vanilla JavaScript without the use of any libraries or frameworks."
+        },
+        {
+            "constraint": "The maximum depth of nested tasks (sub-tasks) is not applicable as tasks are added at a single level."
+        },
+        {
+            "constraint": "Tasks can be strings of any standard character set, but should not exceed 256 characters each."
+        },
+        {
+            "constraint": "The application should be capable of handling at least 100 tasks without significant performance degradation."
+        },
+        {
+            "constraint": "The input field should clear after adding a task to the list."
+        },
+        {
+            "constraint": "Completed tasks should remain on the list but should be visually distinct from incomplete tasks (e.g., through a strikethrough effect or a change in text color)."
+        },
+        {
+            "constraint": "The 'Update' functionality should allow editing the text of the task directly within the list without needing a separate modal or input field outside of the list context."
+        },
+        {
+            "constraint": "All changes (add, remove, complete, update tasks) should be reflected immediately in the UI; no page refresh should be required."
+        },
+        {
+            "constraint": "Data persistence (saving tasks between page reloads) is not required."
+        },
+        {
+            "constraint": "The use of inline styles for dynamic content manipulation is discouraged; prefer adding or removing CSS classes."
+        },
+        {
+            "constraint": "Template literals are not supported yet."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function initToDoApp() {\r\n    // Write your code here\r\n}\r\n\r\n// To visually test in sandbox\r\nif(document.getElementById('sandbox')) {\r\n  initToDoApp()\r\n}\r\n\r\n// Do not edit below this line\r\nexport default initToDoApp;",
+    "starterHTMLCode": "\u003cdiv id=\"container\"\u003e\r\n  \u003cdiv class=\"wrapper\"\u003e\r\n    \u003ch1\u003eToDo App\u003c/h1\u003e\r\n    \u003cform action=\"#\" class=\"addtodo-form\"\u003e\r\n      \u003cinput class=\"input-todo\" type=\"text\" placeholder=\"Write your todo...\"\u003e\r\n      \u003cinput type=\"submit\" value=\"Add Todo\"\u003e\r\n    \u003c/form\u003e\r\n    \u003cbr/\u003e\u003cbr/\u003e\r\n    \u003ch2\u003eItems to be done\u003c/h2\u003e\r\n    \u003cbr/\u003e----\u003cbr/\u003e\r\n    \u003cul\u003e\r\n      \u003cdiv class=\"no-todos wefwe\"\u003e\r\n        No Todos Avaliable Yet\r\n      \u003c/div\u003e\r\n    \u003c/ul\u003e\r\n  \u003c/div\u003e\r\n\u003c/div\u003e",
+    "starterCSSCode": "#container {\r\n  width: 100%;\r\n  background: #efefef;\r\n  overflow: hidden;\r\n  min-height: 100vh;\r\n  .hidden {\r\n    display: none;\r\n  }\r\n  .wrapper {\r\n    width:  500px;\r\n    margin: 40px auto;\r\n  }\r\n  h1 {\r\n    text-align: center;\r\n    font-family: helvetica;\r\n    margin-bottom: 20px\r\n  }\r\n  .addtodo-form {\r\n    width: 100%;\r\n    overflow: hidden;\r\n    background: #fff;\r\n    border: 1px solid green;\r\n    input[type='text'] {\r\n      border: 0;\r\n      padding: 20px;\r\n      font-size: 12px;\r\n      width: 68%;\r\n      float: left;\r\n    }\r\n    input[type='submit'] {\r\n      border: 0;\r\n      padding: 20px;\r\n      font-size: 12px;\r\n      float: right;\r\n      background: green;\r\n      width: 23%;\r\n      cursor: pointer;\r\n    }\r\n  }\r\n  \r\n  ul {\r\n    li {\r\n      width: 100%;\r\n      position: relative;\r\n      \u0026.editing {\r\n        input[type=\"text\"] {\r\n          display: block !important;\r\n        }\r\n        .text {\r\n          display: none;\r\n        }\r\n        \r\n        .green {\r\n          background: green;\r\n        }\r\n      }\r\n      .buttons {\r\n        width: 50%;\r\n        position: absolute;\r\n        right: 0;\r\n        top:0;\r\n        button {\r\n          width: 50%;\r\n          float: left;\r\n        }\r\n      }\r\n    }\r\n  }\r\n}",
+    "solutionCode": "// Function to initialize the ToDo App\r\nfunction initToDoApp() {\r\n    // Define essential elements\r\n    const container = document.getElementById('container');\r\n    const todoInputForm = container.querySelector('.addtodo-form');\r\n    const todoItemsContainer = container.querySelector('ul');\r\n    const noTodosElement = container.querySelector('.no-todos');\r\n \r\n    // If any of the essential elements are missing, return\r\n    if (!container || !todoInputForm || !todoItemsContainer) return;\r\n\r\n    // Function to handle todo-related actions\r\n    function handleTodos() {\r\n        const addInput = todoInputForm.querySelector('.input-todo');\r\n        // Add event listener for form submission\r\n        todoInputForm.addEventListener('submit', function(e) {\r\n            e.preventDefault();\r\n            const val = addInput.value;\r\n            \r\n            if (!val.length) {\r\n                alert('Value must exist to add a todo item');\r\n                return;\r\n            }\r\n            \r\n            // Show/hide \"No Todos Available\" message\r\n            checkWhetherToShowOrHideNoTodosMessage(true);\r\n            \r\n            // Create a new todo item\r\n            createTodo(val);\r\n            addInput.value = '';\r\n        });\r\n    }\r\n\r\n    // Function to create a new todo item\r\n    function createTodo(val) {\r\n        const element = document.createElement('li');\r\n        \r\n        element.innerHTML = '\u003cdiv class=\"text\"\u003e' + val + '\u003c/div\u003e' +\r\n                    '\u003cinput class=\"hidden\" type=\"text\" value=\"' + val + '\"\u003e' +\r\n                    '\u003cdiv class=\"buttons\"\u003e' +\r\n                        '\u003cbutton class=\"update green\"\u003eUpdate\u003c/button\u003e' +\r\n                        '\u003cbutton class=\"delete\"\u003eX\u003c/button\u003e' +\r\n                        '\u003cbutton class=\"done\"\u003eComplete\u003c/button\u003e' +\r\n                    '\u003c/div\u003e';\r\n\r\n        \r\n        // Add the todo item to the top of the list\r\n        todoItemsContainer.prepend(element);\r\n\r\n        // Attach event listeners for delete and update buttons\r\n        const todoDeleteBtn = element.querySelector('.delete');\r\n        todoDeleteBtn.addEventListener('click', removeTodoItem(element));\r\n\r\n        const todoUpdateBtn = element.querySelector('.update');\r\n        todoUpdateBtn.addEventListener('click', updateTodoItem(element));\r\n        \r\n        const todoCompleteBtn = element.querySelector('.done');\r\n        todoCompleteBtn.addEventListener('click', completeTodoItem(element));\r\n    }\r\n\r\n\t\t// Function to complete a todo item(element)\r\n    function completeTodoItem(element) {\r\n    \treturn function(e) {\r\n      \te.preventDefault();\r\n        element.classList.add('completed');\r\n      }\r\n    }\r\n    \r\n    // Function to remove a todo item\r\n    function removeTodoItem(element) {\r\n        return function(e) {\r\n          element.remove();\r\n          checkWhetherToShowOrHideNoTodosMessage();\r\n        }\r\n    }\r\n\r\n    // Function to update a todo item\r\n    function updateTodoItem(element) {\r\n        return function(e) {\r\n        \te.preventDefault()\r\n          const inputField = element.querySelector('input[type=\"text\"]');\r\n          const textDisplay = element.querySelector('.text');\r\n\r\n          // Toggle between edit and update modes\r\n          if (inputField.classList.contains('hidden')) {\r\n              inputField.classList.remove('hidden');\r\n              textDisplay.classList.add('hidden');\r\n          } else {\r\n              const newValue = inputField.value;\r\n              inputField.classList.add('hidden');\r\n              textDisplay.classList.remove('hidden');\r\n\r\n              if (!newValue) {\r\n                  removeTodoItem(element);\r\n              } else {\r\n                  textDisplay.textContent = newValue;\r\n              }\r\n          }\r\n        }\r\n    }\r\n\r\n    // Function to check whether to show or hide \"No Todos Available\" message\r\n    function checkWhetherToShowOrHideNoTodosMessage(forceHide) {\r\n        const todoItems = todoItemsContainer.querySelectorAll('li');\r\n        const isNoTodosVisible = !forceHide \u0026\u0026 todoItems.length === 0;\r\n\r\n        noTodosElement.classList.toggle('hidden', !isNoTodosVisible);\r\n    }\r\n\r\n    // Call the method to handle todos\r\n    handleTodos();\r\n}\r\n\r\n// To visually test in sandbox\r\nif(document.getElementById('sandbox')) {\r\n  initToDoApp()\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eBuilding a Vanilla JavaScript ToDo App\u003c/h1\u003e\n\u003cp\u003eThe ToDo App project demonstrates essential frontend development skills, including DOM manipulation, event handling, and dynamic content update without page reloads. This solution explores implementing features such as adding, removing, updating, and completing tasks using Vanilla JavaScript.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eInitialization\u003c/h2\u003e\n\u003cp\u003eThe app initializes by calling \u003ccode\u003einitToDoApp\u003c/code\u003e, which sets up essential DOM elements and event listeners. It\u0026#8217;s crucial to check the existence of these elements to avoid errors in environments where the HTML structure might differ.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003efunction initToDoApp() {\r\n    // Essential DOM elements setup and validation\r\n}\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eAdding a ToDo Item\u003c/h2\u003e\n\u003cp\u003eAdding a new task involves listening for the form submission, preventing the default action, validating the input, and then creating a new list item with the task details. This demonstrates handling form events and dynamic element creation.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003etodoInputForm.addEventListener('submit', function(e) {\r\n    e.preventDefault();\r\n    // Task addition logic\r\n});\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eTask Representation\u003c/h2\u003e\n\u003cp\u003eEach task is represented as an \u003ccode\u003eli\u003c/code\u003e element containing the task text, an input field for updates, and buttons for task manipulation. This structure is fundamental for enabling task updates and actions within each task\u0026#8217;s context.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003efunction createTodo(val) {\r\n    const element = document.createElement('li');\r\n    // Task structure setup\r\n}\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eUpdating a ToDo Item\u003c/h2\u003e\n\u003cp\u003eThe update functionality toggles the visibility of the input field and text display, allowing in-place editing of the task. This pattern is an excellent example of conditional rendering and element state management in JavaScript.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003efunction updateTodoItem(element) {\r\n    // Update logic with visibility toggling\r\n}\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eCompleting and Removing Tasks\u003c/h2\u003e\n\u003cp\u003eCompleting a task alters its visual style, indicating its completion status, which is a common way to provide user feedback. Removing a task involves event handling and dynamic DOM manipulation to eliminate the task element.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003efunction completeTodoItem(element) {\r\n    // Completion logic\r\n}\r\n\r\nfunction removeTodoItem(element) {\r\n    // Removal logic\r\n}\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThis ToDo app showcases the versatility of Vanilla JavaScript in creating interactive web applications. Understanding these core concepts is crucial for any frontend developer and serves as a foundation for more advanced frameworks and libraries.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "App Design"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": null,
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Build ToDo App in Javascript - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Master the fundamentals of frontend development by building a ToDo App with Vanilla JavaScript. Learn about DOM manipulation, event handling, and dynamic content updates in our comprehensive guide.",
+        "pageURL": "todo-app",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Build ToDo App in Javascript  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eYou\u0026#8217;ve been tasked with building a basic ToDo app using HTML, CSS, and JavaScript. The goal of this project is to create a functional todo list that allows users to add, remove, complete, and",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eBuilding a Vanilla JavaScript ToDo App\u003c/h1\u003e\n\u003cp\u003eThe ToDo App project demonstrates essential frontend development skills, including DOM manipulation, event handling, and dynamic ",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

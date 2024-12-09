@@ -1,0 +1,124 @@
+{
+    "type": "coding",
+    "id": "build-your-own-queryselectorall-javascript-guide",
+    "title": "67. querySelectorAll",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "build-your-own-queryselectorall-javascript-guide",
+    "problemStatement": "\u003cp\u003eThe \u003ccode\u003equerySelectorAll\u003c/code\u003e method is an essential tool in web development, enabling developers to select elements from the DOM (Document Object Model) that match specific CSS selectors. This method simplifies the process of manipulating HTML documents by allowing for the selection of elements based on class names, IDs, attributes, and more, mirroring the flexibility of CSS.\u003c/p\u003e\n\u003cp\u003eIn this exercise, we aim to create a simplified version of \u003ccode\u003equerySelectorAll\u003c/code\u003e. This custom function, \u003ccode\u003equerySelectorAll\u003c/code\u003e, will be designed to traverse the DOM tree and collect elements that match a given CSS selector. The function will begin its search from a specified node (defaulting to the document\u0026#8217;s root) and explore child nodes recursively to find matches.\u003c/p\u003e\n\u003ch3\u003eFunction Signature\u003c/h3\u003e\n\u003cp\u003eOur simplified \u003ccode\u003equerySelectorAll\u003c/code\u003e function has the following signature:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003efunction querySelectorAll(selector, node = document)\u003c/code\u003e\u003c/pre\u003e\n\u003cul\u003e\n\u003cli\u003e\u003ccode\u003eselector\u003c/code\u003e: A string representing the CSS selector to match against.\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003enode\u003c/code\u003e: The root node from where the search should start. It defaults to the document if not provided.\u003c/li\u003e\n\u003c/ul\u003e\n\u003ch3\u003eImplementation Details\u003c/h3\u003e\n\u003cp\u003eThe function works by recursively traversing the DOM tree from the given node, checking each node against the provided CSS selector. If a node matches the selector, it is added to an array of elements. This array is eventually returned, containing all elements that matched the selector.\u003c/p\u003e\n\u003cp\u003eHere\u0026#8217;s a step-by-step breakdown of the function\u0026#8217;s logic:\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003eInitialize an empty array \u003ccode\u003eelements\u003c/code\u003e to store the matching elements.\u003c/li\u003e\n\u003cli\u003eDefine a \u003ccode\u003etraverse\u003c/code\u003e function that will recursively explore each node in the DOM tree.\n\u003cul\u003e\n\u003cli\u003eIf the current node matches the provided CSS selector (using the \u003ccode\u003ematches\u003c/code\u003e method), it is added to the \u003ccode\u003eelements\u003c/code\u003e array.\u003c/li\u003e\n\u003cli\u003eThe \u003ccode\u003etraverse\u003c/code\u003e function is then called on each child node of the current node, allowing the function to search deeper into the DOM tree.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eThe \u003ccode\u003etraverse\u003c/code\u003e function is initially called with the starting node, kicking off the recursive search.\u003c/li\u003e\n\u003cli\u003eOnce the entire tree has been explored, the \u003ccode\u003eelements\u003c/code\u003e array, now potentially populated with matching elements, is returned.\u003c/li\u003e\n\u003c/ol\u003e\n\u003ch3\u003eUsage Examples\u003c/h3\u003e\n\u003cp\u003eThe custom \u003ccode\u003equerySelectorAll\u003c/code\u003e function can be used in various scenarios, similar to the native method. Here are some examples:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eTo select all paragraph (\u003ccode\u003e\u0026lt;p\u0026gt;\u003c/code\u003e) elements within the document:\n\u003cpre\u003e\u003ccode\u003econst paragraphs = querySelectorAll('p');\u003c/code\u003e\u003c/pre\u003e\n\u003c/li\u003e\n\u003cli\u003eTo find all \u003ccode\u003e\u0026lt;div\u0026gt;\u003c/code\u003e elements within a specific container:\n\u003cpre\u003e\u003ccode\u003econst container = document.getElementById('container');\r\nconst divsInContainer = querySelectorAll('div', container);\u003c/code\u003e\u003c/pre\u003e\n\u003c/li\u003e\n\u003cli\u003eTo locate elements with a specific class within a container:\n\u003cpre\u003e\u003ccode\u003econst elementsWithClass = querySelectorAll('.my-class', container);\u003c/code\u003e\u003c/pre\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003ch3\u003eLimitations and Considerations\u003c/h3\u003e\n\u003cp\u003eWhile our simplified \u003ccode\u003equerySelectorAll\u003c/code\u003e function demonstrates the core concept of DOM traversal and element selection, it is not as optimized or feature-rich as the native implementation. The actual \u003ccode\u003equerySelectorAll\u003c/code\u003e method provided by browsers supports a wide range of CSS selectors and includes optimizations for performance. Therefore, our function serves as an educational tool to understand the underlying principles rather than a replacement for the native method.\u003c/p\u003e\n\u003cp\u003eBy building and understanding this simplified version of \u003ccode\u003equerySelectorAll\u003c/code\u003e, developers can gain insights into how DOM traversal works and how elements are programmatically selected and manipulated in web development.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should select elements by tag name",
+            "test": "it('should select elements by tag name', (done) =\u003e {\r\n    const divs = querySelectorAll('div');\r\n    expect(divs.every(div =\u003e div.tagName === 'DIV')).to.be.true;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should select elements by class name",
+            "test": "it('should select elements by class name', (done) =\u003e {\r\n    const elements = querySelectorAll('.test-class');\r\n    expect(elements.every(el =\u003e el.classList.contains('test-class'))).to.be.true;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should select elements by id",
+            "test": "it('should select elements by id', () =\u003e {\r\n    // Create a test element with the id 'test-id'\r\n    const testElement = document.createElement('div');\r\n    testElement.id = 'test-id';\r\n\r\n    // Append the test element to the document body\r\n    document.body.appendChild(testElement);\r\n\r\n    // Call querySelectorAll with the id selector\r\n    const element = querySelectorAll('#test-id');\r\n\r\n    // Assert that the element was found and has the correct id\r\n    expect(element.length).to.equal(1);\r\n    expect(element[0].id).to.equal('test-id');\r\n\r\n    // Remove the test element from the document body\r\n    document.body.removeChild(testElement);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should handle complex selectors (if supported)",
+            "test": "it('should handle complex selectors (if supported)', (done) =\u003e {\r\n    const elements = querySelectorAll('div.test-class[data-attr=\"value\"]');\r\n    elements.forEach(el =\u003e {\r\n      expect(el.tagName).to.equal('DIV');\r\n      expect(el.classList.contains('test-class')).to.be.true;\r\n      expect(el.getAttribute('data-attr')).to.equal('value');\r\n    });\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should return an empty array for unmatched selectors",
+            "test": "it('should return an empty array for unmatched selectors', (done) =\u003e {\r\n    const unmatched = querySelectorAll('.unmatched-class');\r\n    expect(unmatched).to.be.an('array').that.is.empty;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The function should work for basic CSS selectors like tag names, class names, and IDs."
+        },
+        {
+            "constraint": "Only consider direct children for simplicity; descendant or sibling selectors are not required."
+        },
+        {
+            "constraint": "Assume that the input CSS selector is always valid."
+        },
+        {
+            "constraint": "The function should be able to handle a reasonable number of DOM elements without significant performance degradation."
+        },
+        {
+            "constraint": "DOM manipulation methods like `appendChild` or `removeChild` are not necessary for this simplified version."
+        },
+        {
+            "constraint": "Attributes and pseudo-classes (like `:hover`, `:active`, etc.) are out of scope for this simplified version."
+        },
+        {
+            "constraint": "The `node` parameter is optional; if not provided, the search should start from the `document` object."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function querySelectorAll(selector, node = document) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default querySelectorAll;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function querySelectorAll(selector, node = document) {\r\n  const elements = []; // Initialize an empty array to store elements that match the selector\r\n\r\n  function traverse(node) {\r\n    if (!node || !node.tagName) return; // Base case: if the node is null or doesn't have a tagName, return\r\n\r\n    // Check if the current node matches the selector\r\n    if (node.matches(selector)) {\r\n      elements.push(node); // If the node matches the selector, add it to the elements array\r\n    }\r\n\r\n    // Recursively traverse each child node\r\n    node.childNodes.forEach(child =\u003e {\r\n      traverse(child); // Call traverse function on each child node to search deeper in the DOM tree\r\n    });\r\n  }\r\n\r\n  traverse(node); // Start traversing the DOM tree from the given node or document\r\n  return elements; // Return the array of elements that matched the selector\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eUnderstanding the Simplified querySelectorAll Function\u003c/h1\u003e\n\u003cp\u003eIn this section, we delve into the intricacies of a JavaScript function designed to mimic the behavior of the native \u003ccode\u003equerySelectorAll\u003c/code\u003e method, albeit in a simplified manner. This function, named \u003ccode\u003equerySelectorAll\u003c/code\u003e, allows developers to select DOM elements based on a given CSS selector, starting from a specific node or from the document\u0026#8217;s root if no starting node is provided.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eFunction Overview\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003equerySelectorAll\u003c/code\u003e function is defined with two parameters: \u003ccode\u003eselector\u003c/code\u003e, which represents the CSS selector string, and \u003ccode\u003enode\u003c/code\u003e, which denotes the starting point of the search in the DOM tree. The \u003ccode\u003enode\u003c/code\u003e parameter is optional and defaults to the document\u0026#8217;s root.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003efunction querySelectorAll(selector, node = document) { ... }\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis function primarily relies on recursive traversal of the DOM tree and the \u003ccode\u003eElement.matches()\u003c/code\u003e method to identify elements that correspond to the specified selector.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eTraversing the DOM Tree\u003c/h2\u003e\n\u003cp\u003eThe core logic of the function involves a recursive traversal mechanism encapsulated within an inner function named \u003ccode\u003etraverse\u003c/code\u003e. This approach enables the function to explore each node and its descendants in the DOM tree, checking for matches against the provided CSS selector.\u003c/p\u003e\n\u003cp\u003eFor each node encountered during the traversal, the function utilizes the \u003ccode\u003ematches\u003c/code\u003e method to determine if the node\u0026#8217;s structure aligns with the specified selector criteria. Matching nodes are then aggregated into an array named \u003ccode\u003eelements\u003c/code\u003e, which is ultimately returned as the function\u0026#8217;s output.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eRecursive Depth and Performance\u003c/h2\u003e\n\u003cp\u003eThe function\u0026#8217;s recursive nature allows for an elegant and straightforward implementation but also necessitates consideration of performance implications. Particularly, the depth of recursion correlates directly with the DOM tree\u0026#8217;s complexity and depth, potentially impacting performance on deeply nested structures or large documents.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Usage Examples\u003c/h2\u003e\n\u003cp\u003eThe simplified \u003ccode\u003equerySelectorAll\u003c/code\u003e function can be utilized in various scenarios to select DOM elements efficiently. Examples include selecting all elements of a specific class within a container or finding all elements matching a tag name across the document.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst elementsWithClass = querySelectorAll('.my-class', container);\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eLimitations and Considerations\u003c/h2\u003e\n\u003cp\u003eWhile this simplified version serves as a foundational tool for understanding DOM selection and traversal, it lacks the full spectrum of features and optimizations present in the native \u003ccode\u003equerySelectorAll\u003c/code\u003e method. Developers should be cognizant of these limitations when considering its application in production environments.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThrough the development and analysis of this simplified \u003ccode\u003equerySelectorAll\u003c/code\u003e function, developers gain valuable insights into DOM manipulation and the underlying mechanics of element selection. This knowledge is instrumental in both practical application and the broader context of web development proficiency.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": null,
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Build Your Own querySelectorAll in JavaScript: A Beginner's Guide - FrontendLead",
+        "pageDescription": "Dive into this beginner-friendly guide to creating your own version of the querySelectorAll method in JavaScript. Learn how to traverse the DOM, select elements with CSS selectors, and understand the core concepts behind one of web development's most powerful tools.",
+        "pageURL": "build-your-own-queryselectorall-javascript-guide",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Build Your Own querySelectorAll in JavaScript A Beginners Guide  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eThe \u003ccode\u003equerySelectorAll\u003c/code\u003e method is an essential tool in web development, enabling developers to select elements from the DOM (Document Object Model) that match specific CSS selectors. This",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eUnderstanding the Simplified querySelectorAll Function\u003c/h1\u003e\n\u003cp\u003eIn this section, we delve into the intricacies of a JavaScript function designed to mimic the behavior of the nat",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

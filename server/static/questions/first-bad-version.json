@@ -1,0 +1,162 @@
+{
+    "type": "coding",
+    "id": "first-bad-version",
+    "title": "82. First Bad Version",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "first-bad-version",
+    "problemStatement": "\u003cp\u003eSuppose you have \u003ccode\u003en\u003c/code\u003e versions of a product, and you want to find the first version that introduced a bug, causing all the following versions to also be bad. Given a function \u003ccode\u003eisBad\u003c/code\u003e that takes a version number and returns \u003ccode\u003etrue\u003c/code\u003e if the version is bad and \u003ccode\u003efalse\u003c/code\u003e otherwise, implement a function \u003ccode\u003efirstBadVersion\u003c/code\u003e that utilizes a binary search algorithm to efficiently find and return the first bad version.\u003c/p\u003e\n\u003cp\u003eYour function should minimize the number of calls to the \u003ccode\u003eisBad\u003c/code\u003e function. Implement \u003ccode\u003efirstBadVersion\u003c/code\u003e such that it returns a closure which accepts a single integer parameter \u003ccode\u003eversion\u003c/code\u003e, representing the total number of versions, and returns the first bad version number, or \u003ccode\u003e-1\u003c/code\u003e if no bad version is found.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eFunction Signature:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003efunction firstBadVersion(isBad: (version: number) =\u003e boolean): (version: number) =\u003e number\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e\u003cstrong\u003eExample Usage:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst isBad = (version) =\u003e version \u003e= 4;\r\nconst findFirstBad = firstBadVersion(isBad);\r\nconsole.log(findFirstBad(5));  // Output: 4\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis problem tests your ability to apply binary search in a practical scenario, optimizing for efficiency in terms of time complexity and minimizing the use of resources such as network or database calls.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should correctly identify the first bad version when it is in the middle",
+            "test": "it('should correctly identify the first bad version when it is in the middle', () =\u003e {\r\n        const isBadVersion = (version) =\u003e version \u003e= 4;\r\n        const findFirstBad = firstBadVersion(isBadVersion);\r\n        const firstBad = findFirstBad(7); // Assuming there are 7 versions and version 4 is the first bad version\r\n        expect(firstBad).to.equal(4);\r\n    });\r\n    ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should return the total number of versions + 1 if all versions are good",
+            "test": "it('should return the total number of versions + 1 if all versions are good', () =\u003e {\r\n        const isBadVersion = (version) =\u003e false; // No version is bad\r\n        const findFirstBad = firstBadVersion(isBadVersion);\r\n        const firstBad = findFirstBad(5); // Assuming there are 5 versions\r\n        expect(firstBad).to.equal(6); // Expecting 6, indicating no bad version found within 1 to 5\r\n    });\r\n    ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should return 1 if all versions are bad",
+            "test": "it('should return 1 if all versions are bad', () =\u003e {\r\n        const isBadVersion = (version) =\u003e true; // All versions are bad\r\n        const findFirstBad = firstBadVersion(isBadVersion);\r\n        const firstBad = findFirstBad(5); // Assuming there are 5 versions\r\n        expect(firstBad).to.equal(1); // The first version is bad\r\n    });\r\n    ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The versions are numbered sequentially from 1 to n."
+        },
+        {
+            "constraint": "You should assume that at least one bad version exists."
+        },
+        {
+            "constraint": "The isBad function is already defined and will return true for any bad version and false for any good version."
+        },
+        {
+            "constraint": "The time complexity of the firstBadVersion function should be O(log n) to ensure efficiency, leveraging the binary search algorithm."
+        },
+        {
+            "constraint": "The solution should minimize the number of calls to the isBad function to reduce expensive operations, such as network requests or database queries."
+        },
+        {
+            "constraint": "If no bad version is found within the range of versions provided (though at least one bad version is assumed to exist), the function should return -1. However, given the assumption that at least one bad version exists, this scenario should not occur."
+        },
+        {
+            "constraint": "The firstBadVersion function returns a closure that accepts the total number of versions as its parameter and returns the first bad version number."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function firstBadVersion(isBad) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default firstBadVersion;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function firstBadVersion(isBad) {\r\n    return function(version) {\r\n        let left = 1; // Start from the first version\r\n        let right = version; // End at the given version number\r\n        while (left \u003c= right) {\r\n            const mid = Math.floor((left + right) / 2); // Find the midpoint\r\n            if (isBad(mid)) {\r\n                // If mid is bad, the first bad version is at mid or to the left of mid\r\n                right = mid - 1;\r\n            } else {\r\n                // If mid is not bad, the first bad version is to the right of mid\r\n                left = mid + 1;\r\n            }\r\n        }\r\n        // Left will be the first bad version when the loop ends\r\n        return left;\r\n    };\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eEfficiently Identifying the First Bad Version\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eIn software development, identifying the version where a bug was first introduced is crucial for debugging and ensuring product quality. The \u003ccode\u003efirstBadVersion\u003c/code\u003e function leverages a binary search algorithm to efficiently pinpoint the initial occurrence of a bug within a series of versioned items.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eUnderstanding the Binary Search Approach\u003c/h2\u003e\n\u003cp\u003eThe core of this solution lies in its use of binary search, a time-honored algorithm known for its efficiency in sorted data sets. By repeatedly dividing the search interval in half, the algorithm minimizes the number of comparisons needed to find the target value, dramatically reducing the time complexity to O(log n).\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eImplementation Details\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003efirstBadVersion\u003c/code\u003e function accepts a predicate function, \u003ccode\u003eisBad\u003c/code\u003e, which it uses to check each version. It returns a closure that takes the highest version number as an argument and initiates the binary search process:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eThe search starts with the full range of versions, progressively narrowing down the window where the first bad version could be located.\u003c/li\u003e\n\u003cli\u003eBy checking the middle version in the current range and adjusting the search bounds based on whether it\u0026#8217;s bad, the algorithm efficiently homes in on the first bad version.\u003c/li\u003e\n\u003cli\u003eThe search concludes when the lower bound of the search range surpasses the upper bound, at which point the lower bound indicates the first bad version.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Applications\u003c/h2\u003e\n\u003cp\u003eThis approach is not just limited to finding bad software versions but can be applied to any scenario where a \u0026#8220;good\u0026#8221; to \u0026#8220;bad\u0026#8221; transition needs to be identified within a sorted sequence, showcasing the versatility and power of binary search in problem-solving.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003efirstBadVersion\u003c/code\u003e function exemplifies how binary search can be adapted to address specific problems, providing a blueprint for tackling similar challenges in software development and beyond.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Algorithmic"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "82. First Bad Version - Meta Frontend Interview Question - FrontendLead",
+        "pageDescription": "Discover how to quickly identify the first bad version in your software versions using the binary search algorithm. Learn this efficient debugging technique to enhance your software quality and development process.",
+        "pageURL": "first-bad-version",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  First Bad Version  Meta Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eSuppose you have \u003ccode\u003en\u003c/code\u003e versions of a product, and you want to find the first version that introduced a bug, causing all the following versions to also be bad. Given a function \u003ccode\u003eisBad\u003c",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eEfficiently Identifying the First Bad Version\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eIn software development, identifying the version where a bug was first introduced is crucial for debugging and ensuring pr",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+ys.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003eIn conclusion, the choice between recursive and iterative approaches to array flattening depends on the specific requirements and constraints of your project, including the expected input array size and depth. While the recursive method is concise and elegant, the iterative method provides a robust alternative for handling large and deeply nested arrays without the risk of stack overflow.\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 10,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/UV9Lp-3uwwg?si=sIkEur5qGudwyPgh",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

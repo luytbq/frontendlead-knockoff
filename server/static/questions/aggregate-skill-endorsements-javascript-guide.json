@@ -1,0 +1,142 @@
+{
+    "type": "coding",
+    "id": "aggregate-skill-endorsements-javascript-guide",
+    "title": "26. Skill Endorsements",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "aggregate-skill-endorsements-javascript-guide",
+    "problemStatement": "\u003cp\u003eYou are given an array of skill endorsements, where each endorsement is represented by an object that includes a skill and the user who endorsed it. Your task is to write a function, \u003ccode\u003eaggregateSkillEndorsements\u003c/code\u003e, that processes this array and produces a summary for each skill.\u003c/p\u003e\n\u003cp\u003eThis summary should include the skill name, an array of users who have endorsed the skill, and the total count of endorsements the skill has received. The primary challenge lies in efficiently aggregating this information from a potentially large and unorganized list of endorsements.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eInput:\u003c/strong\u003e An array of endorsement objects, where each object has \u003ccode\u003eskill\u003c/code\u003e and \u003ccode\u003euser\u003c/code\u003e properties.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eOutput:\u003c/strong\u003e An array of objects, each representing a skill summary that contains the skill name, an array of unique users who endorsed it, and the total count of endorsements for that skill.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eExample:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst endorsements = [\r\n  { skill: 'css', user: 'Bill' },\r\n  { skill: 'javascript', user: 'Chad' },\r\n  { skill: 'javascript', user: 'Bill' },\r\n  { skill: 'css', user: 'Sue' },\r\n  { skill: 'javascript', user: 'Sue' },\r\n  { skill: 'html', user: 'Sue' }\r\n];\r\n\r\nconst skillSummaries = aggregateSkillEndorsements(endorsements);\r\n\r\n// Output:\r\n// [\r\n//   { skill: 'javascript', users: ['Chad', 'Bill', 'Sue'], count: 3 },\r\n//   { skill: 'css', users: ['Bill', 'Sue'], count: 2 },\r\n//   { skill: 'html', users: ['Sue'], count: 1 }\r\n// ]\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe function must efficiently traverse the endorsements array, grouping endorsements by skill while keeping track of the unique users and total count for each skill. This task tests your ability to manipulate and aggregate data from complex data structures, a common requirement in software development.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should handle empty endorsements array",
+            "test": "it('should handle empty endorsements array', (done) =\u003e {\r\n    const endorsements = [];\r\n    const expected = [];\r\n    const result = aggregateSkillEndorsements(endorsements);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should avoid duplicate users for the same skill",
+            "test": "it('should avoid duplicate users for the same skill', (done) =\u003e {\r\n    const endorsements = [\r\n      { skill: 'css', user: 'Bill' },\r\n      { skill: 'css', user: 'Foo' }\r\n    ];\r\n    const expected = [\r\n      { skill: 'css', users: ['Bill', 'Foo'], count: 2 }\r\n    ];\r\n    const result = aggregateSkillEndorsements(endorsements);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Each endorsement in the input array is an object with exactly two properties: \u003ccode\u003eskill\u003c/code\u003e and \u003ccode\u003euser\u003c/code\u003e."
+        },
+        {
+            "constraint": "The \u003ccode\u003eskill\u003c/code\u003e property is a string representing the name of the skill."
+        },
+        {
+            "constraint": "The \u003ccode\u003euser\u003c/code\u003e property is a string representing the name of the user who endorsed the skill."
+        },
+        {
+            "constraint": "The input array can contain multiple endorsements for the same skill by different users as well as multiple endorsements by the same user for different skills."
+        },
+        {
+            "constraint": "The output should be an array of skill summaries, where each summary is an object containing the \u003ccode\u003eskill\u003c/code\u003e name, an array of \u003ccode\u003eusers\u003c/code\u003e who endorsed the skill (with no duplicates), and the \u003ccode\u003ecount\u003c/code\u003e of total endorsements for that skill."
+        },
+        {
+            "constraint": "Skills in the output array should not be duplicated."
+        },
+        {
+            "constraint": "The order of skills in the output array does not matter, but the users array for each skill should not contain duplicate entries."
+        },
+        {
+            "constraint": "The function should handle an empty input array and return an empty array as the output."
+        },
+        {
+            "constraint": "The solution should aim for a time complexity that is efficient with respect to the size of the input array."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function aggregateSkillEndorsements(endorsements) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default aggregateSkillEndorsements;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// Define a function to aggregate skill endorsements from an array of endorsements\r\nfunction aggregateSkillEndorsements(endorsements) {\r\n  // Initialize an empty object to store the mapping of skills to a set of unique users\r\n  const resultMap = {};\r\n\r\n  // Iterate over each endorsement in the endorsements array\r\n  endorsements.forEach(endorsement =\u003e {\r\n    // Check if the current skill from the endorsement is not yet a key in resultMap\r\n    if (!resultMap[endorsement.skill]) {\r\n      // If not, create a new Set for this skill in resultMap to store unique users\r\n      resultMap[endorsement.skill] = new Set();\r\n    }\r\n    // Add the user from the current endorsement to the Set of users for this skill\r\n    // The Set ensures each user is only added once for each skill, avoiding duplicates\r\n    resultMap[endorsement.skill].add(endorsement.user);\r\n  });\r\n\r\n  // Initialize an empty array to store the final aggregated results\r\n  const results = [];\r\n  // Iterate over each skill in the resultMap\r\n  for (const skill in resultMap) {\r\n    // Retrieve the Set of unique users for the current skill\r\n    const usersSet = resultMap[skill];\r\n    // Convert the Set of users to an array for easier manipulation and storage in the final result\r\n    const usersArray = Array.from(usersSet);\r\n    // Push an object representing the aggregated data for this skill into the results array\r\n    // This object includes the skill name, an array of unique users, and the count of unique endorsements\r\n    results.push({\r\n      skill: skill,          // The name of the skill\r\n      users: usersArray,     // The array of unique users who endorsed this skill\r\n      count: usersArray.length  // The number of unique endorsements for this skill\r\n    });\r\n  }\r\n\r\n  // Return the array of aggregated skill endorsements\r\n  return results;\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003eThe \u003ccode\u003eaggregateSkillEndorsements\u003c/code\u003e function addresses the task of transforming an array of individual skill endorsements into a summarized format. This summary includes each skill, the users who endorsed it, and the total count of endorsements per skill.\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eFunction Overview\u003c/h2\u003e\n\u003cp\u003eThe function accepts an array of endorsement objects, where each object contains a \u003ccode\u003eskill\u003c/code\u003e and a \u003ccode\u003euser\u003c/code\u003e. It aims to produce an array of objects, each representing a skill summary.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eAggregation Logic\u003c/h2\u003e\n\u003cp\u003eInitially, a \u003ccode\u003eresultMap\u003c/code\u003e object is created to hold the users grouped by their endorsed skills. The function iterates over the endorsements, populating this map. If a skill does not exist in the map, it is added with an empty array, which is then filled with the endorsing users.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eCreating Skill Summaries\u003c/h2\u003e\n\u003cp\u003eAfter grouping, the \u003ccode\u003eresultMap\u003c/code\u003e is transformed into the final array of skill summaries. Each entry in the \u003ccode\u003eresults\u003c/code\u003e array is an object containing the skill, an array of unique users, and the endorsement count. This conversion utilizes the map\u0026#8217;s keys (skills) and values (user arrays).\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eEnsuring Unique Users\u003c/h2\u003e\n\u003cp\u003eTo guarantee that the users array in each summary contains unique entries, the code converts the user arrays into a \u003ccode\u003eSet\u003c/code\u003e and then back into an array. This process removes any duplicate user entries for each skill.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eOutput and Efficiency\u003c/h2\u003e\n\u003cp\u003eThe function returns the \u003ccode\u003eresults\u003c/code\u003e array, providing a comprehensive summary of skill endorsements. The approach is efficient, scalable, and effectively handles varying numbers of endorsements and skills within the input array.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "JSON"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "LinkedIn"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "26. Skill Endorsements - FrontendLead",
+        "pageDescription": "Discover how to elegantly aggregate skill endorsements into concise summaries using JavaScript. Our guide walks you through a step-by-step approach to transform an array of individual endorsements into a structured summary, highlighting the power of data manipulation and aggregation in JavaScript.",
+        "pageURL": "aggregate-skill-endorsements-javascript-guide",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Skill Endorsements  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eYou are given an array of skill endorsements, where each endorsement is represented by an object that includes a skill and the user who endorsed it. Your task is to write a function, \u003ccode\u003eaggregat",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eThe \u003ccode\u003eaggregateSkillEndorsements\u003c/code\u003e function addresses the task of transforming an array of individual skill endorsements into a summarized format. This summary includes eac",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+: null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,130 @@
+{
+    "type": "coding",
+    "id": "gym-sessions",
+    "title": "53. Gym Sessions",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "gym-sessions",
+    "problemStatement": "\u003cp\u003eYou are tasked with developing a function capable of selecting and filtering gym session data based on specific options. Each session is detailed within an array of objects, highlighting the user, duration of the exercise, and the equipment utilized. A crucial feature of this function is its ability to consolidate sessions by the same user, thereby amalgamating their total exercise duration and equipment used.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eInput:\u003c/strong\u003e\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003ccode\u003esessions\u003c/code\u003e: An array of session objects, each containing \u003ccode\u003euser\u003c/code\u003e, \u003ccode\u003eduration\u003c/code\u003e, and \u003ccode\u003eequipment\u003c/code\u003e properties.\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003eoptions\u003c/code\u003e: An object hosting filtering and merging preferences.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e\u003cstrong\u003eOutput:\u003c/strong\u003e\u003c/p\u003e\n\u003cp\u003eAn array of session objects tailored according to the specified options, inclusive of user-merged data if indicated.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eExample:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst input = [\r\n  { user: 'User1', duration: 30, equipment: ['treadmill'] },\r\n  { user: 'User2', duration: 45, equipment: ['bike', 'dumbbell'] },\r\n  // additional session objects\r\n];\r\nconst options = { merge: true, equipment: ['bike'] };\r\nconst selectedSessions = selectData(input, options);\r\nconsole.log(selectedSessions);\r\n// Output might resemble:\r\n// [\r\n// { user: 'User2', duration: 45, equipment: ['bike', 'dumbbell'] }\r\n// ]\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis function not only demands adeptness in data filtering based on criteria but also challenges you to thoughtfully combine data from multiple entries pertaining to the same individual, ensuring a seamless and informative summary of gym sessions.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should merge sessions for the same user when merge option is true",
+            "test": "it('should merge sessions for the same user when merge option is true', (done) =\u003e {\r\n    const sessions = [\r\n      { user: 'User1', duration: 30, equipment: ['treadmill'] },\r\n      { user: 'User1', duration: 45, equipment: ['bike'] }\r\n    ];\r\n    const options = { merge: true };\r\n    const expected = [\r\n      { user: 'User1', duration: 75, equipment: ['treadmill', 'bike'] }\r\n    ];\r\n    const result = selectData(sessions, options);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should filter sessions based on equipment",
+            "test": "it('should filter sessions based on equipment', (done) =\u003e {\r\n    const sessions = [\r\n      { user: 'User1', duration: 30, equipment: ['treadmill'] },\r\n      { user: 'User2', duration: 45, equipment: ['bike', 'dumbbell'] }\r\n    ];\r\n    const options = { equipment: ['bike'] };\r\n    const expected = [\r\n      { user: 'User2', duration: 45, equipment: ['bike', 'dumbbell'] }\r\n    ];\r\n    const result = selectData(sessions, options);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should handle empty sessions array",
+            "test": "it('should handle empty sessions array', (done) =\u003e {\r\n    const sessions = [];\r\n    const options = { merge: true };\r\n    const expected = [];\r\n    const result = selectData(sessions, options);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Each session object includes user, duration, and equipment properties."
+        },
+        {
+            "constraint": "The user property is a unique identifier for the user."
+        },
+        {
+            "constraint": "The duration property is a number representing the session length in minutes."
+        },
+        {
+            "constraint": "The equipment property is an array of strings, each representing a piece of equipment used."
+        },
+        {
+            "constraint": "If merge is true, sessions for the same user should have their durations added together, and their equipment lists merged."
+        },
+        {
+            "constraint": "The function should return a new array of session objects based on the provided options, without modifying the original sessions array."
+        },
+        {
+            "constraint": "Aim for efficiency in processing large arrays of session data."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function selectData(sessions, options) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default selectData;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// Define the main function to select and filter session data\r\nfunction selectData(sessions, options) {\r\n  let results = [];\r\n\r\n  // Return all sessions if no options are provided\r\n  if (!options) return sessions;\r\n\r\n  // Merge sessions by the same user if the 'merge' option is true\r\n  if (options.merge === true) {\r\n    let map = {};\r\n    let indexTracker = 0;\r\n\r\n    // Iterate through each session\r\n    sessions.forEach(session =\u003e {\r\n      let userID = session.user;\r\n      // Initialize a new session for a new user in the map\r\n      if (!map[userID]) {\r\n        session.index = indexTracker;\r\n        map[userID] = session;\r\n        indexTracker++;\r\n      } else {\r\n        // Merge the current session with the existing session for the same user\r\n        let prevSession = map[userID];\r\n        prevSession.duration += session.duration; // Sum up the durations\r\n\r\n        // Merge equipment arrays, ensuring unique entries\r\n        let equipmentSet = new Set([...prevSession.equipment, ...session.equipment]);\r\n        prevSession.equipment = Array.from(equipmentSet);\r\n      }\r\n    });\r\n\r\n    // Populate the results array with merged sessions\r\n    results = Object.values(map).map(session =\u003e {\r\n      delete session.index; // Remove the index property used for tracking\r\n      return session;\r\n    });\r\n  } else {\r\n    // Use the original sessions if no merging is needed\r\n    results = sessions.slice();\r\n  }\r\n\r\n  // Apply filters based on other options\r\n  if (options.user) {\r\n    results = results.filter(session =\u003e session.user === options.user);\r\n  }\r\n\r\n  if (options.minDuration) {\r\n    results = results.filter(session =\u003e session.duration \u003e= options.minDuration);\r\n  }\r\n\r\n  if (options.equipment) {\r\n    results = results.filter(session =\u003e session.equipment.some(equipment =\u003e options.equipment.includes(equipment)));\r\n  }\r\n\r\n  return results;\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003cp\u003e\u0026lt;article\u0026gt;\u003cbr /\u003e\n\u0026lt;section\u0026gt;\u003cbr /\u003e\n\u0026lt;p\u0026gt;The \u0026#8220;Gym Sessions\u0026#8221; solution is designed to process an array of gym session data, filtering and potentially merging sessions based on specific criteria provided in an options object. This comprehensive solution caters to various requirements, such as session duration, used equipment, and user-specific data aggregation.\u0026lt;/p\u0026gt;\u003cbr /\u003e\n\u0026lt;/section\u0026gt;\u003cbr /\u003e\n\u0026lt;section\u0026gt;\u003cbr /\u003e\n\u0026lt;h2\u0026gt;Initial Data Processing\u0026lt;/h2\u0026gt;\u003cbr /\u003e\n\u0026lt;p\u0026gt;The function \u0026lt;code\u0026gt;selectData\u0026lt;/code\u0026gt; initiates by checking the presence and validity of the options object. In the absence of filtering or merging criteria, the original session data is returned without modifications.\u0026lt;/p\u0026gt;\u003cbr /\u003e\n\u0026lt;/section\u0026gt;\u003cbr /\u003e\n\u0026lt;section\u0026gt;\u003cbr /\u003e\n\u0026lt;h2\u0026gt;Session Merging\u0026lt;/h2\u0026gt;\u003cbr /\u003e\n\u0026lt;p\u0026gt;If the merge option is enabled, the function aggregates sessions by the same user. This involves summing up durations and consolidating equipment lists, ensuring no duplicate entries for the same equipment in merged sessions. A temporary mapping object facilitates efficient user-based session aggregation.\u0026lt;/p\u0026gt;\u003cbr /\u003e\n\u0026lt;/section\u0026gt;\u003cbr /\u003e\n\u0026lt;section\u0026gt;\u003cbr /\u003e\n\u0026lt;h2\u0026gt;Applying Filters\u0026lt;/h2\u0026gt;\u003cbr /\u003e\n\u0026lt;p\u0026gt;Post-merging, the function applies filters based on the provided options. These filters may include:\u0026lt;/p\u0026gt;\u003cbr /\u003e\n\u0026lt;ul\u0026gt;\u003cbr /\u003e\n\u0026lt;li\u0026gt;User-specific session selection\u0026lt;/li\u0026gt;\u003cbr /\u003e\n\u0026lt;li\u0026gt;Minimum session duration requirement\u0026lt;/li\u0026gt;\u003cbr /\u003e\n\u0026lt;li\u0026gt;Equipment-based filtering, where only sessions involving certain equipment are selected\u0026lt;/li\u0026gt;\u003cbr /\u003e\n\u0026lt;/ul\u0026gt;\u003cbr /\u003e\n\u0026lt;/section\u0026gt;\u003cbr /\u003e\n\u0026lt;section\u0026gt;\u003cbr /\u003e\n\u0026lt;h2\u0026gt;Generating the Output\u0026lt;/h2\u0026gt;\u003cbr /\u003e\n\u0026lt;p\u0026gt;The final output is a refined array of session objects that meet all specified criteria. This array is constructed by iteratively applying the defined filters to either the merged session data or the original data, depending on the merging option\u0026#8217;s state.\u0026lt;/p\u0026gt;\u003cbr /\u003e\n\u0026lt;/section\u0026gt;\u003cbr /\u003e\n\u0026lt;section\u0026gt;\u003cbr /\u003e\n\u0026lt;h2\u0026gt;Conclusion\u0026lt;/h2\u0026gt;\u003cbr /\u003e\n\u0026lt;p\u0026gt;This solution showcases the versatility of JavaScript for data manipulation, allowing for complex operations such as merging and filtering based on dynamic criteria. It exemplifies a practical approach to handling real-world data processing tasks.\u0026lt;/p\u0026gt;\u003cbr /\u003e\n\u0026lt;/section\u0026gt;\u003cbr /\u003e\n\u0026lt;/article\u0026gt;\u003c/p\u003e\n",
+    "category": [
+        "JSON"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": null,
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "53. Gym Sessions - FrontendLead",
+        "pageDescription": "",
+        "pageURL": "gym-sessions",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Gym Sessions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eYou are tasked with developing a function capable of selecting and filtering gym session data based on specific options. Each session is detailed within an array of objects, highlighting the user, ",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003cp\u003e\u0026lt;article\u0026gt;\u003cbr /\u003e\n\u0026lt;section\u0026gt;\u003cbr /\u003e\n\u0026lt;p\u0026gt;The \u0026#8220;Gym Sessions\u0026#8221; solution is designed to process an array of gym session data, filtering and potentially merging sessions based on",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+uredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,159 @@
+{
+    "type": "coding",
+    "id": "node-store",
+    "title": "23. Node Store",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "node-store",
+    "problemStatement": "\u003cp\u003eCreate a class called \u003ccode\u003eNodeStore\u003c/code\u003e that allows you to store values associated with DOM nodes. The class should provide the following methods:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eset(node, value):\u003c/strong\u003e Sets the value for a given DOM node.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eget(node):\u003c/strong\u003e Retrieves the value associated with a given DOM node.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003ehas(node):\u003c/strong\u003e Checks if a given DOM node exists in the store.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eRemember, we will be storing DOM nodes, so each retrieval might have the same node item, so we want keys to be unique.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eExample:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst node1 = document.createElement('p');\r\nconst node2 = document.createElement('p');\r\nconst store = new NodeStore();\r\nstore.set(node1, 1);\r\nstore.set(node2, 2);\r\nconsole.log(store.get(node1)); // Expected output: 1\r\nconsole.log(store.get(node2)); // Expected output: 2\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis task tests your understanding of JavaScript classes, DOM manipulation, and associative arrays or objects. It\u0026#8217;s a practical scenario for frontend developers who need to manage state or metadata associated with specific DOM elements dynamically.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should set and get values for nodes correctly",
+            "test": "it('should set and get values for nodes correctly', (done) =\u003e {\r\n    const store = new NodeStore();\r\n    const node1 = document.createElement('p');\r\n    const node2 = document.createElement('p');\r\n\r\n    store.set(node1, 'Test value 1');\r\n    store.set(node2, 'Test value 2');\r\n\r\n    const value1 = store.get(node1);\r\n    const value2 = store.get(node2);\r\n\r\n    expect(value1).to.equal('Test value 1');\r\n    expect(value2).to.equal('Test value 2');\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should return undefined for nodes not in the store",
+            "test": "it('should return undefined for nodes not in the store', (done) =\u003e {\r\n    const store = new NodeStore();\r\n    const node = document.createElement('p'); // Node not set in the store\r\n\r\n    const value = store.get(node);\r\n    expect(value).to.be.undefined;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should correctly report if a node exists in the store",
+            "test": "it('should correctly report if a node exists in the store', (done) =\u003e {\r\n    const store = new NodeStore();\r\n    const node1 = document.createElement('p');\r\n    const node2 = document.createElement('p'); // Node2 not set in the store\r\n\r\n    store.set(node1, 'Test value 1');\r\n\r\n    const hasNode1 = store.has(node1);\r\n    const hasNode2 = store.has(node2);\r\n\r\n    expect(hasNode1).to.be.true;\r\n    expect(hasNode2).to.be.false;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "https://www.youtube.com/embed/oNYXqbwaQHI"
+        },
+        {
+            "constraint": "The NodeStore should be capable of handling any valid DOM node, including but not limited to elements, text nodes, and comments."
+        },
+        {
+            "constraint": "There is no limit to the number of nodes that can be stored in the NodeStore, but practical browser memory limits apply."
+        },
+        {
+            "constraint": "The get and has methods should return undefined and false, respectively, for nodes that have not been added to the NodeStore."
+        },
+        {
+            "constraint": "The NodeStore should not modify the DOM nodes in any way that affects their behavior or appearance in the DOM tree."
+        },
+        {
+            "constraint": "The implementation should prioritize efficiency, particularly in the retrieval (get and has methods) of node-value pairs."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "class NodeStore {\r\n    constructor() {\r\n        // Initialize your store structure here\r\n    }\r\n\r\n    set(node, value) {\r\n        // Write your code here to associate the node with the value\r\n    }\r\n\r\n    get(node) {\r\n        // Implement the logic to retrieve the value associated with the node\r\n    }\r\n\r\n    has(node) {\r\n        // Determine if the node exists in the store\r\n    }\r\n}\r\n\r\n// Do not edit below this line\r\nexport default NodeStore;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "class NodeStore {\r\n  constructor() {\r\n    this._cache = new WeakMap(); // Use WeakMap to associate nodes with values without preventing garbage collection\r\n  }\r\n\r\n  set(node, value) {\r\n    // Set the value for the given DOM node in the WeakMap\r\n    this._cache.set(node, value);\r\n  }\r\n\r\n  get(node) {\r\n    // Retrieve the value associated with the given DOM node from the WeakMap\r\n    return this._cache.get(node);\r\n  }\r\n\r\n  has(node) {\r\n    // Check if the given DOM node exists in the WeakMap\r\n    return this._cache.has(node);\r\n  }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eExploring the NodeStore Class\u003c/h1\u003e\n\u003cp\u003eThe \u003ccode\u003eNodeStore\u003c/code\u003e class provides a robust way to associate data with DOM nodes without affecting their behavior or structure within the document. Utilizing a \u003ccode\u003eWeakMap\u003c/code\u003e for storage, it ensures that node-value pairs do not prevent garbage collection of DOM nodes, thereby avoiding potential memory leaks.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eKey Components\u003c/h2\u003e\n\u003cp\u003eThe class is built around a few key methods: \u003ccode\u003eset\u003c/code\u003e, \u003ccode\u003eget\u003c/code\u003e, and \u003ccode\u003ehas\u003c/code\u003e. The \u003ccode\u003eset\u003c/code\u003e method allows associating a value with a given DOM node, which is stored in the \u003ccode\u003eWeakMap\u003c/code\u003e. The \u003ccode\u003eget\u003c/code\u003e method retrieves the value associated with a node, and the \u003ccode\u003ehas\u003c/code\u003e method checks for the presence of a node in the store.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eUsing WeakMap for Storage\u003c/h2\u003e\n\u003cp\u003eThe choice of \u003ccode\u003eWeakMap\u003c/code\u003e as the underlying storage mechanism is critical for the design of the \u003ccode\u003eNodeStore\u003c/code\u003e. Unlike a regular \u003ccode\u003eMap\u003c/code\u003e, \u003ccode\u003eWeakMap\u003c/code\u003e allows its keys, the DOM nodes in this case, to be garbage collected if there are no other references to them. This feature is particularly important for dynamic web applications where DOM nodes are frequently created and removed.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eMethod Implementation Details\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eset\u003c/code\u003e method utilizes \u003ccode\u003eWeakMap\u003c/code\u003e\u0026#8216;s \u003ccode\u003eset\u003c/code\u003e function to associate a given value with a DOM node. The \u003ccode\u003eget\u003c/code\u003e method uses \u003ccode\u003eWeakMap\u003c/code\u003e\u0026#8216;s \u003ccode\u003eget\u003c/code\u003e function to retrieve the value associated with a node. The \u003ccode\u003ehas\u003c/code\u003e method, similarly, uses \u003ccode\u003eWeakMap\u003c/code\u003e\u0026#8216;s \u003ccode\u003ehas\u003c/code\u003e function to determine if a node is present in the store.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Applications\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eNodeStore\u003c/code\u003e class can be used in a variety of web development scenarios, such as associating metadata with elements for dynamic behavior, storing temporary state information for components, or caching computed values for performance optimization.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eIn summary, the \u003ccode\u003eNodeStore\u003c/code\u003e class is an elegant solution for associating data with DOM nodes in a memory-efficient manner. Its implementation showcases the effective use of \u003ccode\u003eWeakMap\u003c/code\u003e to manage node-value associations without compromising garbage collection, making it a valuable tool for frontend developers.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/oNYXqbwaQHI",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "23. Node Store - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Discover how the NodeStore class leverages WeakMap to efficiently manage data associated with DOM nodes, preventing memory leaks and enhancing web application performance.",
+        "pageURL": "node-store",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Node Store  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eCreate a class called \u003ccode\u003eNodeStore\u003c/code\u003e that allows you to store values associated with DOM nodes. The class should provide the following methods:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eset(node, value):\u003c/stron",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eExploring the NodeStore Class\u003c/h1\u003e\n\u003cp\u003eThe \u003ccode\u003eNodeStore\u003c/code\u003e class provides a robust way to associate data with DOM nodes without affecting their behavior or structure with",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+d input array size and depth. While the recursive method is concise and elegant, the iterative method provides a robust alternative for handling large and deeply nested arrays without the risk of stack overflow.\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 10,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/UV9Lp-3uwwg?si=sIkEur5qGudwyPgh",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

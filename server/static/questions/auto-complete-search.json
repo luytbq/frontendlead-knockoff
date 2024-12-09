@@ -1,0 +1,113 @@
+{
+    "type": "vanilla",
+    "id": "auto-complete-search",
+    "title": "39. Auto Suggest Search List",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "auto-complete-search",
+    "problemStatement": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eImplement an autocomplete feature that enhances user experience by suggesting possible completions for a search term as it is being typed into an HTML input field. This functionality should dynamically filter and display a list of suggestions based on the current input value, offering keyboard navigation to select from the filtered results.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eTask Overview\u003c/h2\u003e\n\u003cp\u003eYour task is to write a JavaScript function that integrates with an HTML input field, monitoring the user\u0026#8217;s input. As the user types, the function should interact with a predefined endpoint (simulated by an object in this case) that returns a list of potential matches. These matches should then be displayed as a list of suggestions beneath the input field, updating in real time with each keystroke to reflect the current query.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eFeatures and Behavior\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003eThe autocomplete should dynamically filter search results to include only items matching the current input, disregarding case sensitivity.\u003c/li\u003e\n\u003cli\u003eThe displayed results should update as the user types, with each keystroke refining the list of suggestions.\u003c/li\u003e\n\u003cli\u003eKeyboard navigation (e.g., using the arrow keys) should allow the user to browse through the list of suggestions and select a result to fill in the search field.\u003c/li\u003e\n\u003cli\u003eEach suggestion in the list should be selectable, and clicking on a suggestion or pressing \u0026#8216;Enter\u0026#8217; when highlighted should populate the input field with that value.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eExample\u003c/h2\u003e\n\u003cp\u003eConsider an input field where a user starts typing \u0026#8220;Al\u0026#8221;. The autocomplete feature should filter the list of names to show only those that contain \u0026#8220;Al\u0026#8221;, such as \u0026#8220;Alex\u0026#8221; and \u0026#8220;Aleksandra\u0026#8221;, beneath the input field as selectable suggestions.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should clear results when input is cleared",
+            "test": "it('should clear results when input is cleared', (done) =\u003e {\r\n    // Set up the DOM elements for this test\r\n    document.body.innerHTML = `\r\n      \u003cinput type=\"text\" id=\"target\"\u003e\r\n      \u003cdiv id=\"results\"\u003e\u003c/div\u003e\r\n    `;\r\n\r\n    const input = document.getElementById('target');\r\n    const resultsContainer = document.getElementById('results');\r\n\r\n    // Initialize the event listeners for the input field\r\n    input.addEventListener('keyup', onChangeHandler);\r\n    \r\n    // First, simulate user typing 'Al'\r\n    input.value = 'Al';\r\n    input.dispatchEvent(new Event('keyup'));\r\n\r\n    // Then, clear the input\r\n    input.value = '';\r\n    input.dispatchEvent(new Event('keyup'));\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(resultsContainer.children.length).to.equal(0);\r\n      done();\r\n    }, 0);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The autocomplete functionality must support a minimum of 1,000 items in the list without performance degradation."
+        },
+        {
+            "constraint": "Suggestions should be filtered based on the current input value, disregarding case sensitivity."
+        },
+        {
+            "constraint": "The autocomplete should handle keyboard navigation using the arrow keys for selection and enter key to select the highlighted item."
+        },
+        {
+            "constraint": "The solution must be implemented in plain JavaScript without relying on external libraries or frameworks."
+        },
+        {
+            "constraint": "The input delay or debounce time should be optimized to balance between responsiveness and minimizing unnecessary processing."
+        },
+        {
+            "constraint": "The maximum number of suggestions displayed at any given time should not exceed 10 items for usability."
+        },
+        {
+            "constraint": "HTML and JavaScript should be kept separate to maintain code cleanliness and readability."
+        },
+        {
+            "constraint": "The solution should ensure cross-browser compatibility and handle edge cases, such as empty input or no matching results gracefully."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "// Simulated API with a list of names\r\nlet api = {\r\n  list: [\r\n    'Alex',\r\n    'David',\r\n    'Aleksandra',\r\n    'Sarah',\r\n    'John',\r\n    'Matt',\r\n    'Mike'\r\n  ]\r\n};\r\n\r\n// Function to return the list of names from the simulated API\r\nfunction fetchResults(data) {\r\n  return data.list;\r\n}\r\n\r\n// Reference to the input field and the container for displaying autocomplete results\r\nconst input = document.getElementById('target');\r\nconst resultsContainer = document.getElementById('results');\r\n\r\n// Handler for input changes to implement autocomplete functionality\r\nconst onChangeHandler = (e) =\u003e {\r\n  // Write your code here\r\n};\r\n\r\n\r\n// Do not edit below this line\r\nexport default onChangeHandler",
+    "starterHTMLCode": "\u003cinput type=\"text\" id=\"target\"\u003e\r\n\u003cdiv id=\"results\"\u003e\u003c/div\u003e",
+    "starterCSSCode": null,
+    "solutionCode": "// Handler for input changes to implement autocomplete functionality\r\nconst onChangeHandler = (e) =\u003e {\r\n  if (!input || !resultsContainer) return;\r\n  \r\n  // Clear previous suggestions\r\n  resultsContainer.innerHTML = '';\r\n\r\n  // Get the current input value and convert it to lowercase for case-insensitive comparison\r\n  const inputValue = e.target.value.toLowerCase();\r\n\r\n  // Use the fetchResults function to get the full list of names and then filter it\r\n  // based on the current input value\r\n  const filteredResults = fetchResults(api).filter(name =\u003e\r\n    name.toLowerCase().includes(inputValue)\r\n  );\r\n\r\n  // Iterate over the filtered results to create and display suggestion elements\r\n  filteredResults.forEach(name =\u003e {\r\n    // Create a new div element for each matching result\r\n    const resultElement = document.createElement('div');\r\n    // Set the text content of the div to the name\r\n    resultElement.textContent = name;\r\n    // Append the div to the results container, making it visible as a suggestion\r\n    resultsContainer.appendChild(resultElement);\r\n\r\n    // Add an event listener to each suggestion for click interaction\r\n    resultElement.addEventListener('click', () =\u003e {\r\n      // On click, update the input field with the selected name\r\n      input.value = name;\r\n      // Clear the suggestions\r\n      resultsContainer.innerHTML = '';\r\n    });\r\n  });\r\n};",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch2\u003eExploring the Autocomplete Feature with onChangeHandler\u003c/h2\u003e\n\u003cp\u003eThe autocomplete feature significantly enhances user experience by suggesting possible matches from a list as the user types in an input field. This functionality is primarily driven by the \u003ccode\u003eonChangeHandler\u003c/code\u003e function. Let\u0026#8217;s dive into its workings.\u003c/p\u003e\n\u003csection\u003e\n\u003ch3\u003eSetup and Initial Checks\u003c/h3\u003e\n\u003cp\u003eThe function begins by ensuring that both the input field and the results container are present. This is a crucial step to prevent any errors when attempting to access or modify these elements.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003eif (!input || !resultsContainer) return;\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch3\u003eClearing Previous Suggestions\u003c/h3\u003e\n\u003cp\u003eEvery time a user types or alters the input, the function clears the existing suggestions. This ensures that the suggestions are always relevant to the current input.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003eresultsContainer.innerHTML = '';\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch3\u003eFiltering Results\u003c/h3\u003e\n\u003cp\u003eThe core of the autocomplete functionality lies in filtering the list of names based on the user\u0026#8217;s input. The function converts both the input and the names to lowercase to ensure case-insensitive matching.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst inputValue = e.target.value.toLowerCase();\r\nconst filteredResults = fetchResults(api).filter(name =\u003e \r\n  name.toLowerCase().includes(inputValue)\r\n);\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch3\u003eDisplaying Suggestions\u003c/h3\u003e\n\u003cp\u003eFor each name in the filtered results, the function creates a new \u003ccode\u003ediv\u003c/code\u003e element, sets its content to the name, and appends it to the results container. These elements serve as the clickable suggestions displayed to the user.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003efilteredResults.forEach(name =\u003e {\r\n  const resultElement = document.createElement('div');\r\n  resultElement.textContent = name;\r\n  resultsContainer.appendChild(resultElement);\r\n});\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch3\u003eEnhancing Interaction with Click Events\u003c/h3\u003e\n\u003cp\u003eTo improve user interaction, each suggestion is equipped with a click event listener. Clicking on a suggestion updates the input field with the selected name and clears the suggestions, streamlining the selection process.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003eresultElement.addEventListener('click', () =\u003e {\r\n  input.value = name;\r\n  resultsContainer.innerHTML = '';\r\n});\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003cp\u003eThis detailed breakdown of the \u003ccode\u003eonChangeHandler\u003c/code\u003e function sheds light on how each part contributes to the seamless operation of the autocomplete feature, showcasing the thoughtful integration of JavaScript with HTML elements to create a dynamic and user-friendly interface.\u003c/p\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "App Design"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": null,
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Auto Suggest Search List - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Discover how to enhance user experience by implementing autocomplete functionality in JavaScript. This guide covers the essential steps, from filtering results to improving user interaction.",
+        "pageURL": "auto-complete-search",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Auto Suggest Search List  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eImplement an autocomplete feature that enhances user experience by suggesting possible completions for a search term as it is being typed into an HTML input field. This function",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch2\u003eExploring the Autocomplete Feature with onChangeHandler\u003c/h2\u003e\n\u003cp\u003eThe autocomplete feature significantly enhances user experience by suggesting possible matches from a list as the user typ",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

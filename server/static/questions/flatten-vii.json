@@ -1,0 +1,141 @@
+{
+    "type": "coding",
+    "id": "flatten-vii",
+    "title": "58. Flatten VII",
+    "difficulty": [
+        "Hard"
+    ],
+    "link": "flatten-vii",
+    "problemStatement": "\u003cp\u003eWrite a function named \u003ccode\u003eflatten\u003c/code\u003e that is capable of taking an input which may be an arbitrarily nested object or array, and return a flattened version of it. In the flattened output, all elements from nested arrays should be in a single-level array, and all nested object properties should be brought to the top level of a single object.\u003c/p\u003e\n\u003cp\u003eThe challenge involves creating a versatile function that can handle various types of nested structures, including combinations of arrays and objects, without losing any data in the process. The function should be able to distinguish between objects and arrays and treat them accordingly, ensuring that arrays are merged into a single array and object properties are collated into a single object.\u003c/p\u003e\n\u003cp\u003eConsider the following examples to understand the expected behavior of the function:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eGiven an array like \u003ccode\u003e[1, [2, 3], [[4, 5], 6]]\u003c/code\u003e, the function should produce \u003ccode\u003e[1, 2, 3, 4, 5, 6]\u003c/code\u003e.\u003c/li\u003e\n\u003cli\u003eFor an object such as \u003ccode\u003e{ a: 1, b: { c: 2, d: { e: 3 } } }\u003c/code\u003e, the expected output is \u003ccode\u003e{ a: 1, c: 2, e: 3 }\u003c/code\u003e.\u003c/li\u003e\n\u003cli\u003eWhen the input is a mix of arrays and objects like \u003ccode\u003e[1, { a: 2, b: [3, 4] }, [5, { c: 6 }]]\u003c/code\u003e, the function should return \u003ccode\u003e[1, 2, 3, 4, 5, 6]\u003c/code\u003e.\u003c/li\u003e\n\u003cli\u003eFor deeply nested arrays such as \u003ccode\u003e[[[[[[[[[[1]]]]]]]]]]\u003c/code\u003e, the output should simply be \u003ccode\u003e[1]\u003c/code\u003e.\u003c/li\u003e\n\u003cli\u003eWhen the input is \u003ccode\u003enull\u003c/code\u003e, the function should return \u003ccode\u003enull\u003c/code\u003e.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eYour task is to implement the \u003ccode\u003eflatten\u003c/code\u003e function in such a way that it fulfills the above requirements, providing a simple and efficient solution to the problem of dealing with complex, nested data structures. This is a common challenge that developers face, making it a valuable exercise for enhancing your problem-solving skills and understanding of data manipulation.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should flatten nested arrays correctly",
+            "test": "it('should flatten nested arrays correctly', (done) =\u003e {\r\n    const input = [1, [2, 3], [[4, 5], 6]];\r\n    const expected = [1, 2, 3, 4, 5, 6];\r\n    const result = flatten(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should flatten nested objects correctly",
+            "test": "it('should flatten nested objects correctly', (done) =\u003e {\r\n    const input = { a: 1, b: { c: 2, d: { e: 3 } } };\r\n    const expected = { a: 1, c: 2, e: 3 };\r\n    const result = flatten(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should handle mixed nested arrays and objects",
+            "test": "it('should handle mixed nested arrays and objects', (done) =\u003e {\r\n    const input = [1, { a: 2, b: [3, 4] }, [5, { c: 6 }]];\r\n    const expected = [1, 2, 3, 4, 5, 6];\r\n    const result = flatten(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should handle deeply nested arrays",
+            "test": "it('should handle deeply nested arrays', (done) =\u003e {\r\n    const input = [[[[[[[[[[1]]]]]]]]]];\r\n    const expected = [1];\r\n    const result = flatten(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should return null for null input",
+            "test": "it('should return null for null input', (done) =\u003e {\r\n    const input = null;\r\n    const expected = null;\r\n    const result = flatten(input);\r\n    expect(result).to.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 5,
+            "description": "should return the input as is for non-object and non-array inputs",
+            "test": "it('should return the input as is for non-object and non-array inputs', (done) =\u003e {\r\n    const input = 42;\r\n    const expected = 42;\r\n    const result = flatten(input);\r\n    expect(result).to.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The input can be any arbitrarily nested object or array, or even a combination of both."
+        },
+        {
+            "constraint": "The function should gracefully handle null inputs by returning null."
+        },
+        {
+            "constraint": "The input object may contain various data types, including integers, strings, and other objects or arrays."
+        },
+        {
+            "constraint": "The function should not modify the original input object or array."
+        },
+        {
+            "constraint": "There is no limit to the depth of nesting in the input object or array, but the function should be able to handle at least 10 levels of nesting efficiently."
+        },
+        {
+            "constraint": "The function must return a new object or array, depending on the input type, without any nested structures."
+        },
+        {
+            "constraint": "The solution should aim for a time complexity of no worse than O(n), where n is the total number of elements or properties in the input, including nested ones."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function flatten(value) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default flatten;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function flatten(value) {\r\n  // Check if the input value is not an object or is null, return the value as is\r\n  if (typeof value !== 'object' || value === null) {\r\n    return value;\r\n  }\r\n\r\n  // If value is an array, delegate to flattenArray function\r\n  if (Array.isArray(value)) {\r\n    return flattenArray(value);\r\n  }\r\n\r\n  // If value is an object, delegate to flattenObject function\r\n  return flattenObject(value);\r\n}\r\n\r\nfunction flattenArray(input, flattened = []) {\r\n  input.forEach(item =\u003e {\r\n    if (Array.isArray(item)) {\r\n      // If item is an array, recursively call flattenArray\r\n      flattenArray(item, flattened);\r\n    } else if (typeof item === 'object' \u0026\u0026 item !== null) {\r\n      // If item is an object, recursively call flatten on each of its values and concatenate the results\r\n      Object.values(item).forEach(value =\u003e {\r\n        flattenArray([value], flattened);  // Wrap value in an array to handle both arrays and single values consistently\r\n      });\r\n    } else {\r\n      // If item is neither an array nor an object, push it directly\r\n      flattened.push(item);\r\n    }\r\n  });\r\n  return flattened;  // Return the flattened array\r\n}\r\n\r\nfunction flattenObject(input) {\r\n  let flattenedObj = {}; // Initialize an empty object for the result\r\n  for (let key in input) { // Iterate over each key in the object\r\n    let value = input[key]; // Get the value for the current key\r\n    let flattenedValue = flatten(value); // Recursively flatten the value\r\n\r\n    // If the flattened value is an object, merge it with the result object\r\n    if (typeof flattenedValue === 'object' \u0026\u0026 flattenedValue !== null \u0026\u0026 !Array.isArray(flattenedValue)) {\r\n      Object.assign(flattenedObj, flattenedValue);\r\n    } else {\r\n      // If the flattened value is not an object, set it directly on the result object\r\n      flattenedObj[key] = flattenedValue;\r\n    }\r\n  }\r\n  return flattenedObj; // Return the flattened object\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe \u003ccode\u003eflatten\u003c/code\u003e function is ingeniously crafted to simplify complex, nested data structures into a single level, making it an essential tool in data manipulation and processing. The function is capable of handling both arrays and objects, adeptly navigating through their nested layers to produce a flattened output.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eFlattening Arrays with \u003ccode\u003eflattenArray\u003c/code\u003e\u003c/h2\u003e\n\u003cp\u003eArrays are processed recursively by \u003ccode\u003eflattenArray\u003c/code\u003e. Each element is examined: if it\u0026#8217;s an array, the function delves deeper, unfolding the layers; if it\u0026#8217;s an object, it gets flattened separately and its results merged; and if it\u0026#8217;s a standalone element, it\u0026#8217;s directly appended to the result array. This methodical recursion ensures a thorough traversal and flattening of nested arrays.\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eRecursive exploration of nested arrays.\u003c/li\u003e\n\u003cli\u003eSeparate flattening of objects within arrays, followed by integration.\u003c/li\u003e\n\u003cli\u003eDirect inclusion of non-array, non-object elements in the flat array.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eFlattening Objects with \u003ccode\u003eflattenObject\u003c/code\u003e\u003c/h2\u003e\n\u003cp\u003eWhen encountering objects, \u003ccode\u003eflattenObject\u003c/code\u003e iterates over each key-value pair, flattening any nested objects or arrays encountered. This iterative flattening ensures all properties are elevated to the top level, maintaining a singular depth.\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eIterative processing of object properties for deep access and flattening.\u003c/li\u003e\n\u003cli\u003eUse of the spread operator or \u003ccode\u003eObject.assign\u003c/code\u003e for merging flattened structures.\u003c/li\u003e\n\u003cli\u003eRecursive handling of nested properties to achieve a fully flattened object.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eComputational Complexity\u003c/h2\u003e\n\u003cp\u003eThe efficiency of the \u003ccode\u003eflatten\u003c/code\u003e function hinges on the structure\u0026#8217;s depth and complexity. Although its performance is generally linear (O(n)), where n represents the total number of elements or properties, deeply nested structures may introduce additional computational overhead due to recursion and data copying.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Applications\u003c/h2\u003e\n\u003cp\u003eThe application of the \u003ccode\u003eflatten\u003c/code\u003e function extends beyond theoretical exercises, proving invaluable in real-world data processing scenarios where simplification of data structures is paramount.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eflatten\u003c/code\u003e function, alongside its auxiliary functions \u003ccode\u003eflattenArray\u003c/code\u003e and \u003ccode\u003eflattenObject\u003c/code\u003e, offers a comprehensive solution for unboxing nested data structures. This deep dive into its mechanism and implementation sheds light on the intricate process of data flattening, equipping developers with the knowledge to tackle similar challenges with finesse.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/Kt7V9-ls-38",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Airbnb",
+        "Netflix",
+        "Apple",
+        "Vimeo",
+        "Adobe"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "58. Flatten VII - Flatten Any Input - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Master the art of simplifying complex nested data structures in JavaScript with our detailed guide on creating a versatile flatten function. Perfect for developers looking to enhance their data manipulation skills.",
+        "pageURL": "flatten-vii",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Flatten VII  Flatten Any Input  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function named \u003ccode\u003eflatten\u003c/code\u003e that is capable of taking an input which may be an arbitrarily nested object or array, and return a flattened version of it. In the flattened output, all",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe \u003ccode\u003eflatten\u003c/code\u003e function is ingeniously crafted to simplify complex, nested data structures into a single level, making it an essential tool in data manipulation and pr",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

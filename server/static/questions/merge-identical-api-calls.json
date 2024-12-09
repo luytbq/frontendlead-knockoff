@@ -1,0 +1,102 @@
+{
+    "type": "coding",
+    "id": "merge-identical-api-calls",
+    "title": "79. Merge Identical API Calls",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "merge-identical-api-calls",
+    "problemStatement": "\u003cp\u003eImplement a function that enhances a given API call function by merging identical calls and caching their responses to optimize network usage. This approach should prevent multiple identical requests from being sent to the server simultaneously, reducing unnecessary network traffic and load on the server.\u003c/p\u003e\n\u003cp\u003eThe function, \u003ccode\u003ecreateGetAPIWithMerging\u003c/code\u003e, takes an API call function \u003ccode\u003egetAPI\u003c/code\u003e as an argument and returns a new function. This new function behaves like \u003ccode\u003egetAPI\u003c/code\u003e but with added capabilities:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eMerging identical API calls made within a short timeframe.\u003c/li\u003e\n\u003cli\u003eCaching the responses of these calls to serve future identical requests without contacting the server.\u003c/li\u003e\n\u003cli\u003eLimiting the cache size to maintain only the most recent responses, thus managing memory usage effectively.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e\u003cstrong\u003eUsage Example:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst mergedGetAPI = createGetAPIWithMerging(getAPI);\r\nconst response1 = await mergedGetAPI('/data', { params: { id: 123 } });\r\nconst response2 = await mergedGetAPI('/data', { params: { id: 123 } });  // This call will be merged with the first one if made within 1 second.\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eHere, \u003ccode\u003egetAPI\u003c/code\u003e is the original function for making GET requests. \u003ccode\u003ecreateGetAPIWithMerging\u003c/code\u003e enhances it by caching and merging, ensuring that if multiple identical requests are made in rapid succession, only one will be sent to the server, and its response will be used for all of them.\u003c/p\u003e\n\u003cp\u003eThe cache is automatically managed to contain only a limited number of recent responses and to expire entries after a short period, ensuring the data\u0026#8217;s freshness and limiting memory usage.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should merge identical calls made in quick succession",
+            "test": "it('should merge identical calls made in quick succession', (done) =\u003e {\r\n    const mockAPI = async (path, config) =\u003e {\r\n      return new Promise(resolve =\u003e {\r\n        setTimeout(() =\u003e {\r\n          resolve(`Response for ${path} with config ${JSON.stringify(config)}`);\r\n        }, 100); // Simulate network delay\r\n      });\r\n    };\r\n    const mergedGetAPI = createGetAPIWithMerging(mockAPI);\r\n    const startTime = Date.now();\r\n\r\n    const call1 = mergedGetAPI('/test', { param: 1 });\r\n    const call2 = mergedGetAPI('/test', { param: 1 });\r\n\r\n    Promise.all([call1, call2]).then(responses =\u003e {\r\n      const endTime = Date.now();\r\n      expect(responses[0]).to.equal(responses[1]);\r\n      expect(endTime - startTime).to.be.lessThan(200); // Ensure calls were merged and not made separately\r\n      done();\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should not merge identical calls made after the cache expires",
+            "test": "it('should not merge identical calls made after the cache expires', (done) =\u003e {\r\n    const mockAPI = async (path, config) =\u003e {\r\n      return new Promise(resolve =\u003e {\r\n        setTimeout(() =\u003e {\r\n          resolve(`Response for ${path} with config ${JSON.stringify(config)}`);\r\n        }, 100); // Simulate network delay\r\n      });\r\n    };\r\n    const mergedGetAPI = createGetAPIWithMerging(mockAPI);\r\n    const startTime = Date.now();\r\n\r\n    mergedGetAPI('/test', { param: 2 }).then(firstResponse =\u003e {\r\n      setTimeout(() =\u003e {\r\n        const secondCallStartTime = Date.now();\r\n        mergedGetAPI('/test', { param: 2 }).then(secondResponse =\u003e {\r\n          const endTime = Date.now();\r\n          expect(firstResponse).to.equal(secondResponse);\r\n          expect(secondCallStartTime - startTime).to.be.at.least(1000); // Ensure second call was made after cache expiry\r\n          expect(endTime - secondCallStartTime).to.be.lessThan(200); // Ensure second call was not delayed significantly\r\n          done();\r\n        });\r\n      }, 1100); // Wait for cache to expire\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The cache should hold a maximum of 5 entries at any time to limit memory usage."
+        },
+        {
+            "constraint": "Cached responses are considered valid for 1000 milliseconds (1 second) after which they should be removed from the cache, ensuring data freshness."
+        },
+        {
+            "constraint": "The config argument in the API call function can be an object with an arbitrary structure, and identical config objects should produce the same cache key."
+        },
+        {
+            "constraint": "The function must handle concurrent identical requests by serving them from a single outgoing request to avoid unnecessary network calls."
+        },
+        {
+            "constraint": "The solution should be resilient to different data types and structures within the config object, ensuring consistent cache keys through serialization or other means."
+        },
+        {
+            "constraint": "Error handling: In case of API call failures, the cache entry for that request should be cleared to allow for retries."
+        },
+        {
+            "constraint": "The caching mechanism should be transparent to the end-users of the createGetAPIWithMerging function, requiring no changes in how they make API calls."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "async function createGetAPIWithMerging(getAPI) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default createGetAPIWithMerging;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function createGetAPIWithMerging(getAPI) {\r\n  // Create a cache using a Map to store ongoing or recent API calls\r\n  const cache = new Map();\r\n\r\n  // Expose the cache as a property of the function for transparency and potential testing purposes\r\n  createGetAPIWithMerging.cache = cache;\r\n\r\n  // Define the function that will be returned and used for API calls\r\n  return async (path, config) =\u003e {\r\n    // Sort the properties of the config object to ensure consistent cache keys,\r\n    // as the order of properties in an object is not guaranteed in JavaScript\r\n    const sortedConfig = {};\r\n    Object.keys(config)\r\n      .sort()\r\n      .forEach((key) =\u003e {\r\n        sortedConfig[key] = config[key];\r\n      });\r\n\r\n    // Create a unique cache key by combining the path and the sorted configuration\r\n    const key = JSON.stringify([path, sortedConfig]);\r\n\r\n    // Check if the cache already has an ongoing or recent request for this key\r\n    if (cache.has(key)) {\r\n      // Return the cached response (or promise of a response) for identical requests\r\n      return await cache.get(key);\r\n    }\r\n\r\n    // If not found in the cache, make the API request\r\n    const promise = getAPI(path, config);\r\n\r\n    // Store the promise in the cache with the calculated key,\r\n    // so subsequent identical requests can reuse the promise of the initial request\r\n    cache.set(key, promise);\r\n\r\n    // Ensure the cache size is limited to 5 to prevent memory leaks\r\n    if (cache.size \u003e 5) {\r\n      // Get the key of the first item in the cache (oldest entry)\r\n      const firstKey = cache.keys().next().value;\r\n      // Delete the oldest entry to maintain the cache limit\r\n      cache.delete(firstKey);\r\n    }\r\n\r\n    // Set a timer to remove the cache entry after 1000ms (1 second)\r\n    // to ensure data freshness and cache turnover\r\n    setTimeout(() =\u003e {\r\n      cache.delete(key);\r\n    }, 1000);\r\n\r\n    // Return the promise, resolving with the API response\r\n    return await promise;\r\n  };\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eEfficiently Merging Identical API Calls in JavaScript\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eIn modern web applications, optimizing network usage is crucial for enhancing user experience and reducing server load. One effective optimization technique is merging identical API calls made within a short timeframe. This approach ensures that instead of sending multiple requests for the same data, only one request is made, and its response is shared among all callers.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eUnderstanding the Challenge\u003c/h2\u003e\n\u003cp\u003eAPI calls are a fundamental part of interacting with server-side data. However, redundant requests for the same data can lead to unnecessary network traffic and increased load on the server. By merging identical requests, we can minimize these issues.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eThe Solution: \u003ccode\u003ecreateGetAPIWithMerging\u003c/code\u003e\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003ecreateGetAPIWithMerging\u003c/code\u003e function takes an existing API function and returns a new version of it with added capabilities for merging and caching identical calls. Here\u0026#8217;s how it works:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eCaching:\u003c/strong\u003e It uses a cache to store the results of recent API calls. When a new request is made, the cache is checked for a matching request. If found, the cached result is returned instead of making a new network call.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eMerging:\u003c/strong\u003e If a request is made while an identical request is still pending, the new request is merged with the pending one. Both callers receive the same response once the request completes.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eCache Management:\u003c/strong\u003e The cache is limited to 5 entries to prevent memory leaks. Entries are also expired after 1 second to ensure data freshness.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eImplementation Details\u003c/h2\u003e\n\u003cp\u003eThe implementation involves sorting the properties of the request configuration to ensure consistent cache keys, regardless of property order in the request object. This is crucial for identifying identical requests. The cache is implemented using a \u003ccode\u003eMap\u003c/code\u003e object for efficient key-value storage.\u003c/p\u003e\n\u003cp\u003eHere\u0026#8217;s a snippet showing the key parts of the function:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst key = JSON.stringify([path, sortedConfig]);\r\nif (cache.has(key)) {\r\n  return await cache.get(key);\r\n}\r\nconst promise = getAPI(path, config);\r\ncache.set(key, promise);\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis code checks for existing cache entries and merges requests by using promises stored in the cache. It ensures that identical requests share the same promise, thus sharing the same response.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eBenefits and Considerations\u003c/h2\u003e\n\u003cp\u003eThis solution offers several benefits, including reduced network traffic, improved application performance, and decreased load on the server. However, it\u0026#8217;s essential to consider the cache expiry and size limits to balance performance with data freshness and memory usage.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "79. Merge Identical API Calls - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Discover how to optimize your web applications by merging identical API calls. Learn the strategy to reduce network traffic, enhance performance, and decrease server load with our guide.",
+        "pageURL": "merge-identical-api-calls",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Merge Identical API Calls  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eImplement a function that enhances a given API call function by merging identical calls and caching their responses to optimize network usage. This approach should prevent multiple identical reques",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eEfficiently Merging Identical API Calls in JavaScript\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eIn modern web applications, optimizing network usage is crucial for enhancing user experience and reducing server ",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,162 @@
+{
+    "type": "coding",
+    "id": "rate-limiter",
+    "title": "68. Rate Limiter",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "rate-limiter",
+    "problemStatement": "\u003cp\u003eYou are tasked with safeguarding a web service or an API endpoint from potential abuse, such as denial-of-service (DOS) attacks, by implementing a rate limiter. Build a function called \u003ccode\u003eisAllowed\u003c/code\u003e within a \u003ccode\u003eRateLimiter\u003c/code\u003e class. This function should deny any request from a unique client that exceeds the threshold of 100 requests within the last second.\u003c/p\u003e\n\u003cp\u003eConsider the following examples to understand the functionality of the \u003ccode\u003eisAllowed\u003c/code\u003e function:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eIf Client A has initiated 99 requests in the preceding second and makes another request, \u003ccode\u003eisAllowed\u003c/code\u003e should \u003cstrong\u003eAllow\u003c/strong\u003e this request.\u003c/li\u003e\n\u003cli\u003eIf Client B has sent 101 requests within the same timeframe, \u003ccode\u003eisAllowed\u003c/code\u003e should \u003cstrong\u003eDeny\u003c/strong\u003e any subsequent requests from Client B.\u003c/li\u003e\n\u003cli\u003eIf Client C has made 50 requests in the past second, the next request from Client C should also be \u003cstrong\u003eAllowed\u003c/strong\u003e by \u003ccode\u003eisAllowed\u003c/code\u003e.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThis rate limiting mechanism serves as a defensive measure against excessive usage or attacks, ensuring that the web service remains available and performs optimally for all users.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should allow the request if under the limit",
+            "test": "it('should allow the request if under the limit', (done) =\u003e {\r\n    const rateLimiter = new RateLimiter();\r\n    let allowed = true;\r\n    for (let i = 0; i \u003c 100; i++) {\r\n      if (!rateLimiter.isAllowed('ClientA')) {\r\n        allowed = false;\r\n        break;\r\n      }\r\n    }\r\n    expect(allowed).to.be.true;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should deny the request if over the limit",
+            "test": "it('should deny the request if over the limit', (done) =\u003e {\r\n    const rateLimiter = new RateLimiter();\r\n    let allowed = true;\r\n    for (let i = 0; i \u003c 101; i++) { // 101st request should be denied\r\n      if (!rateLimiter.isAllowed('ClientB')) {\r\n        allowed = false;\r\n        break;\r\n      }\r\n    }\r\n    expect(allowed).to.be.false;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should allow new requests after 1 second has passed",
+            "test": "it('should allow new requests after 1 second has passed', (done) =\u003e {\r\n    const rateLimiter = new RateLimiter();\r\n    // Simulate 100 requests at the start\r\n    for (let i = 0; i \u003c 100; i++) {\r\n      rateLimiter.isAllowed('ClientC');\r\n    }\r\n\r\n    // Wait for more than 1 second before making a new request\r\n    setTimeout(() =\u003e {\r\n      const allowed = rateLimiter.isAllowed('ClientC');\r\n      expect(allowed).to.be.true; // The new request should be allowed\r\n      done();\r\n    }, 1100); // Slightly over 1 second to account for any timing discrepancies\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The rate limiter should track requests per unique client ID."
+        },
+        {
+            "constraint": "A request is considered within the rate limit if the client has made 100 or fewer requests in the last second."
+        },
+        {
+            "constraint": "Requests exceeding this limit within the specified timeframe must be denied."
+        },
+        {
+            "constraint": "The tracking of requests should be efficient, both in terms of time and space, to handle high traffic scenarios."
+        },
+        {
+            "constraint": "The rate limiter must accurately maintain request counts within a rolling one-second window, ensuring that only requests within the last second are considered."
+        },
+        {
+            "constraint": "The implementation should ideally handle the potential issue of timestamp rollover and ensure accuracy across time boundaries."
+        },
+        {
+            "constraint": "The rate limiter should be thread-safe if implemented in a multi-threaded environment, ensuring consistent behavior under concurrent access."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "class RateLimiter {\r\n  // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default RateLimiter;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "class RateLimiter {\r\n  constructor() {\r\n    this.requests = new Map(); // Map to store client requests with timestamps\r\n  }\r\n\r\n  isAllowed(clientID) {\r\n    const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds\r\n    const windowStart = currentTime - 1; // Define the start of the 1-second window\r\n\r\n    // Retrieve or initialize the list of requests for the client\r\n    const requestsInWindow = this.requests.get(clientID) || [];\r\n\r\n    // Filter out requests outside the current 1-second window\r\n    const updatedRequests = requestsInWindow.filter(timestamp =\u003e timestamp \u003e windowStart);\r\n\r\n    // Check if the number of requests in the current window exceeds the limit\r\n    if (updatedRequests.length \u003e= 100) {\r\n      return false; // Deny the request if the limit is exceeded\r\n    }\r\n\r\n    // Add the current request's timestamp and update the map\r\n    updatedRequests.push(currentTime);\r\n    this.requests.set(clientID, updatedRequests);\r\n\r\n    return true; // Allow the request\r\n  }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eUnderstanding the RateLimiter Implementation\u003c/h1\u003e\n\u003csection\u003eThe \u003ccode\u003eRateLimiter\u003c/code\u003e class plays a critical role in safeguarding web services and APIs from excessive use or potential DOS attacks by limiting the number of requests a client can make within a specified timeframe. In this case, the limit is set to 100 requests per second per client.\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eCore Components\u003c/h2\u003e\n\u003cp\u003eAt the heart of the \u003ccode\u003eRateLimiter\u003c/code\u003e is a \u003ccode\u003eMap\u003c/code\u003e object that tracks the timestamps of each request made by individual clients. This map allows the rate limiter to quickly access and update the request history for any given client.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eRate Limiting Logic\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eisAllowed\u003c/code\u003e method is responsible for the main rate limiting logic. It first calculates the current time in seconds and defines a 1-second window to evaluate the client\u0026#8217;s request against. It then filters the client\u0026#8217;s request history to include only those requests made within this window.\u003c/p\u003e\n\u003cp\u003eIf the number of requests in the window exceeds 100, the method returns \u003ccode\u003efalse\u003c/code\u003e, effectively denying the request. Otherwise, it updates the client\u0026#8217;s request history with the current timestamp and allows the request by returning \u003ccode\u003etrue\u003c/code\u003e.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eEfficiency Considerations\u003c/h2\u003e\n\u003cp\u003eEfficiency is key in the \u003ccode\u003eRateLimiter's\u003c/code\u003e design, especially regarding time and space complexity. By using a sliding window approach and only storing relevant timestamps, the rate limiter ensures minimal memory usage and fast access to the client\u0026#8217;s request history.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eReal-world Applications\u003c/h2\u003e\n\u003cp\u003eIn practice, such a rate limiter can be crucial for maintaining the performance and availability of web services, especially those exposed to the internet where the risk of abuse is higher. It ensures fair usage among clients and helps prevent service degradation or unavailability due to excessive requests.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Algorithmic"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Google"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "68. Rate Limiter - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Discover how to safeguard your web services and API endpoints with a robust Rate Limiter in JavaScript. Prevent DOS attacks and ensure fair usage by limiting client requests to 100 per second. Dive into our comprehensive guide for implementing this crucial security measure.",
+        "pageURL": "rate-limiter",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Rate Limiter  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eYou are tasked with safeguarding a web service or an API endpoint from potential abuse, such as denial-of-service (DOS) attacks, by implementing a rate limiter. Build a function called \u003ccode\u003eisAllo",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eUnderstanding the RateLimiter Implementation\u003c/h1\u003e\n\u003csection\u003eThe \u003ccode\u003eRateLimiter\u003c/code\u003e class plays a critical role in safeguarding web services and APIs from excessive use or potential ",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+er, due to the unshift operation\u0026#8217;s O(n) complexity in each step, this method can result in quadratic time complexity O(n^2) in the worst case, making it less efficient for large arrays.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003eIn conclusion, the choice between recursive and iterative approaches to array flattening depends on the specific requirements and constraints of your project, including the expected input array size and depth. While the recursive method is concise and elegant, the iterative method provides a robust alternative for handling large and deeply nested arrays without the risk of stack overflow.\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 10,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/UV9Lp-3uwwg?si=sIkEur5qGudwyPgh",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

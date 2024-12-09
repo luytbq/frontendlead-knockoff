@@ -1,0 +1,143 @@
+{
+    "type": "coding",
+    "id": "debounce-i",
+    "title": "74. Debounce I",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "debounce-i",
+    "problemStatement": "\u003cp\u003eYou are tasked with implementing a \u003ccode\u003edebounce\u003c/code\u003e function in JavaScript, an essential technique in improving the performance of web applications by limiting the rate at which a function is executed. This function is particularly useful in scenarios where some code should not run until after a certain amount of time has elapsed since the last time it was invoked, such as during window resizing, scrolling, or real-time form validation.\u003c/p\u003e\n\u003ch3\u003eFunctionality Requirements:\u003c/h3\u003e\n\u003cp\u003eThe \u003ccode\u003edebounce\u003c/code\u003e function should accept a callback function, a delay in milliseconds, and an optional boolean parameter \u003ccode\u003eimmediate\u003c/code\u003e. It returns a new function that, when invoked repeatedly, will only execute the callback after the specified delay has passed since the last invocation. If the \u003ccode\u003eimmediate\u003c/code\u003e parameter is set to \u003ccode\u003etrue\u003c/code\u003e, the callback should be executed immediately on the first call, but subsequent calls should be debounced until there is a pause in invocation for at least the delay period.\u003c/p\u003e\n\u003ch3\u003eBehavioral Specifications:\u003c/h3\u003e\n\u003cul\u003e\n\u003cli\u003eIf \u003ccode\u003eimmediate\u003c/code\u003e is \u003ccode\u003efalse\u003c/code\u003e (default), the callback is executed after the delay period if no subsequent calls are made within that delay.\u003c/li\u003e\n\u003cli\u003eIf \u003ccode\u003eimmediate\u003c/code\u003e is \u003ccode\u003etrue\u003c/code\u003e, the callback is executed immediately on the first call, but subsequent calls are debounced until the delay period has elapsed without any new calls.\u003c/li\u003e\n\u003c/ul\u003e\n\u003ch3\u003eTechnical Considerations:\u003c/h3\u003e\n\u003cp\u003eUse a timer to track the delay period and ensure that the callback function\u0026#8217;s execution is postponed until the delay passes without any new invocation of the returned function. Carefully manage the timer to handle immediate execution logic and reset the timer as needed to ensure correct function behavior.\u003c/p\u003e\n\u003cp\u003eThis implementation of the \u003ccode\u003edebounce\u003c/code\u003e function will enhance your application\u0026#8217;s responsiveness and efficiency by preventing code from executing too frequently under rapid event firing, such as typing in a search input or resizing a window.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should only execute the function once within the specified delay",
+            "test": "it('should only execute the function once within the specified delay', (done) =\u003e {\r\n    let counter = 0;\r\n    const incrementCounter = () =\u003e counter++;\r\n    const debouncedIncrement = debounce(incrementCounter, 100);\r\n\r\n    debouncedIncrement();\r\n    debouncedIncrement();\r\n    debouncedIncrement();\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(counter).to.equal(1);\r\n      done();\r\n    }, 150); // slightly longer than the debounce delay to ensure the function has time to execute\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should execute the function immediately if \"immediate\" is set to true",
+            "test": "it('should execute the function immediately if \"immediate\" is set to true', (done) =\u003e {\r\n    let counter = 0;\r\n    const incrementCounter = () =\u003e counter++;\r\n    const debouncedIncrementImmediate = debounce(incrementCounter, 100, true);\r\n\r\n    debouncedIncrementImmediate();\r\n    expect(counter).to.equal(1);\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(counter).to.equal(1); // Ensure no further calls were made\r\n      done();\r\n    }, 150);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should not call the function before the delay period has passed",
+            "test": "it('should not call the function before the delay period has passed', (done) =\u003e {\r\n    let counter = 0;\r\n    const incrementCounter = () =\u003e counter++;\r\n    const debouncedIncrement = debounce(incrementCounter, 100);\r\n\r\n    debouncedIncrement();\r\n    expect(counter).to.equal(0); // Function should not have been called immediately\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(counter).to.equal(1); // Function should have been called after the delay\r\n      done();\r\n    }, 150);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should call the function immediately and then debounce if \"immediate\" is set to true",
+            "test": "it('should call the function immediately and then debounce if \"immediate\" is set to true', (done) =\u003e {\r\n    let counter = 0;\r\n    const incrementCounter = () =\u003e counter++;\r\n    const debouncedIncrementImmediate = debounce(incrementCounter, 100, true);\r\n\r\n    debouncedIncrementImmediate();\r\n    expect(counter).to.equal(1); // Function should be called immediately\r\n\r\n    // Attempt to call the function again before the delay has passed\r\n    setTimeout(debouncedIncrementImmediate, 50);\r\n    expect(counter).to.equal(1); // Counter should not have incremented\r\n\r\n    // Check after the delay has passed\r\n    setTimeout(() =\u003e {\r\n      expect(counter).to.equal(1); // Counter should still be 1 as subsequent calls were debounced\r\n      done();\r\n    }, 150);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should handle multiple instances of debounced functions independently",
+            "test": "it('should handle multiple instances of debounced functions independently', (done) =\u003e {\r\n    let counterA = 0;\r\n    let counterB = 0;\r\n    const incrementA = () =\u003e counterA++;\r\n    const incrementB = () =\u003e counterB++;\r\n\r\n    const debouncedA = debounce(incrementA, 100);\r\n    const debouncedB = debounce(incrementB, 200);\r\n\r\n    debouncedA();\r\n    debouncedB();\r\n\r\n    // After a short delay, only A should have been called\r\n    setTimeout(() =\u003e {\r\n      expect(counterA).to.equal(1);\r\n      expect(counterB).to.equal(0);\r\n    }, 150);\r\n\r\n    // After a longer delay, both should have been called\r\n    setTimeout(() =\u003e {\r\n      expect(counterA).to.equal(1);\r\n      expect(counterB).to.equal(1);\r\n      done();\r\n    }, 250);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The \u003ccode\u003edebounce\u003c/code\u003e function should be able to handle any type of callback function, regardless of its parameters or return value."
+        },
+        {
+            "constraint": "The delay parameter must be a positive integer, representing the time in milliseconds to wait before invoking the callback function after the last call."
+        },
+        {
+            "constraint": "The immediate flag, if set to true, will trigger the function to execute the callback immediately on the first call, instead of waiting for the delay."
+        },
+        {
+            "constraint": "The function must ensure that the callback is not called more frequently than the specified delay time."
+        },
+        {
+            "constraint": "Subsequent calls to the debounced function within the delay period should reset the delay timer."
+        },
+        {
+            "constraint": "The debounced function should maintain the context (\u003ccode\u003ethis\u003c/code\u003e) and arguments of the original callback function when it is eventually called."
+        },
+        {
+            "constraint": "Multiple instances of the debounced function should operate independently. Setting a delay on one instance should not affect the timing or behavior of another instance."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function debounce(callback, delay, immediate = false) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default debounce;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function debounce(callback, delay, immediate = false) {\r\n  // Initialize a variable \"timer\" to keep track of the debounce timer\r\n  let timer = null;\r\n  \r\n  // Return a new function that captures arguments and context for the callback\r\n  return function(...args) {\r\n    // Determine if the function should be called immediately and not already waiting\r\n    let shouldCallImmediately = !timer \u0026\u0026 immediate;\r\n    \r\n    // If the function is to be called immediately and it's the first call, invoke the callback\r\n    if (shouldCallImmediately) callback.apply(this, args);\r\n    \r\n    // Clear any existing timer, effectively resetting the debounce timer\r\n    if (timer) clearTimeout(timer);\r\n    \r\n    // Set a new timer that delays the execution of the callback function\r\n    timer = setTimeout(() =\u003e {\r\n      // If immediate is false, invoke the callback after the delay\r\n      if (!immediate) callback.apply(this, args);\r\n      // Once the callback is executed, reset the timer to allow for a new debounce cycle\r\n      timer = null;\r\n    }, delay);\r\n  };\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003eThe debounce function is a high-order function widely used in JavaScript to improve performance and enhance user experience by limiting the rate at which a function is executed. This is particularly useful for events that fire frequently, such as scrolling, resizing, typing in a text field, or mouse movements.\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHow Debounce Works\u003c/h2\u003e\n\u003cp\u003eDebouncing enforces that a function not be called again until a certain amount of time has passed without it being called. In essence, it ensures that the function is called only once after the specified delay, each time the debounced function is invoked.\u003c/p\u003e\n\u003cp\u003eWhen the debounced function is called, it resets a timer to the delay specified. If the function is called again before the delay has elapsed, the timer starts over. Only when the delay time has passed without any further calls will the original function be executed.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eImplementation Details\u003c/h2\u003e\n\u003cp\u003eThe provided implementation accepts three parameters: a callback function, a delay time in milliseconds, and an optional immediate flag. The function returns a new function that, when executed, will either call the callback immediately and then throttle subsequent calls (if the immediate flag is true), or delay the initial and subsequent calls until the delay time has passed since the last call.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003efunction debounce(callback, delay, immediate = false) {\r\n  let timer = null;\r\n  return function(...args) {\r\n    let shouldCallImmediately = !timer \u0026amp;\u0026amp; immediate;\r\n    if (shouldCallImmediately) callback.apply(this, args);\r\n    if (timer) clearTimeout(timer);\r\n    timer = setTimeout(() =\u0026gt; {\r\n      if (!immediate) callback.apply(this, args);\r\n      timer = null;\r\n    }, delay);\r\n  };\r\n}\u003c/code\u003e\u003c/pre\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Applications\u003c/h2\u003e\n\u003cp\u003eDebouncing is incredibly useful in scenarios where you want to control the rate of function execution without sacrificing user experience. Common use cases include:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eAutocomplete text inputs, where you want to wait for the user to stop typing before making an API request.\u003c/li\u003e\n\u003cli\u003eButtons that should not be pressed repeatedly within a short timeframe.\u003c/li\u003e\n\u003cli\u003eHandling scroll events in a performant manner.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eBenefits and Considerations\u003c/h2\u003e\n\u003cp\u003eImplementing a debounce function can significantly improve the performance of web applications by reducing the number of expensive operations performed, such as DOM manipulations or API calls. However, it\u0026#8217;s important to choose the delay time wisely to balance responsiveness and efficiency.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 2,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/6uB4a7igDP4",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix",
+        "Apple",
+        "LinkedIn",
+        "Stripe",
+        "ClickUp",
+        "PayPal",
+        "Snap",
+        "Vimeo",
+        "Adobe",
+        "TikTok"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "74. Debounce I - How to Build Debounce from Scratch in Javascript - FrontendLead",
+        "pageDescription": "Learn the ins and outs of the JavaScript debounce with our in-depth guide. Discover how it optimizes web performance by rate limiting.",
+        "pageURL": "debounce-i",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Debounce I  How to Build Debounce from Scratch in Javascript  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eYou are tasked with implementing a \u003ccode\u003edebounce\u003c/code\u003e function in JavaScript, an essential technique in improving the performance of web applications by limiting the rate at which a function is ",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eThe debounce function is a high-order function widely used in JavaScript to improve performance and enhance user experience by limiting the rate at which a function is executed. Thi",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

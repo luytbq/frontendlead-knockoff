@@ -1,0 +1,132 @@
+{
+    "type": "react",
+    "id": "tic-tac-toe",
+    "title": "30. Tic Tac Toe",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "tic-tac-toe",
+    "problemStatement": "\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" class=\"alignnone size-full wp-image-370\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-2.44.10-PM.png\" alt=\"\" width=\"200\" height=\"216\" /\u003e\u003c/p\u003e\n\u003cp\u003eYou are tasked with building a Tic-Tac-Toe game in React. The game allows two players to take turns marking squares on a 3\u0026#215;3 grid. The objective is to be the first player to place three of their marks in a horizontal, vertical, or diagonal row to win the game. Implement the game logic, handle player turns, and declare a winner appropriately.\u003c/p\u003e\n\u003cp\u003eInput Examples:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003ePlayer X clicks on square 0: \u003ccode\u003e['X', null, null, null, null, null, null, null, null]\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003ePlayer O clicks on square 4: \u003ccode\u003e['X', null, null, null, 'O', null, null, null, null]\u003c/code\u003e\u003c/li\u003e\n\u003cli\u003ePlayer X wins: \u003ccode\u003e['X', null, null, null, 'O', null, 'X', null, null]\u003c/code\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eExpected Output Examples:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eDisplay \u003cstrong\u003e\u0026#8220;Next Player: X\u0026#8221;\u003c/strong\u003e when it\u0026#8217;s Player X\u0026#8217;s turn.\u003c/li\u003e\n\u003cli\u003eDisplay \u003cstrong\u003e\u0026#8220;Next Player: O\u0026#8221;\u003c/strong\u003e when it\u0026#8217;s Player O\u0026#8217;s turn.\u003c/li\u003e\n\u003cli\u003eDisplay \u003cstrong\u003e\u0026#8220;Winner: X\u0026#8221;\u003c/strong\u003e when Player X wins.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThis game requires understanding React state management to track the game board and current player, implementing game logic to determine the winner, and rendering the UI based on the game\u0026#8217;s state.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The game board is a 3x3 grid, represented by an array of 9 elements."
+        },
+        {
+            "constraint": "Each square can contain an 'X', an 'O', or be null (indicating an empty square)."
+        },
+        {
+            "constraint": "Players take turns to play, starting with Player X."
+        },
+        {
+            "constraint": "A player can only mark an empty square."
+        },
+        {
+            "constraint": "The game ends when one player has three of their marks in a horizontal, vertical, or diagonal line, or when all squares are filled (resulting in a draw)."
+        },
+        {
+            "constraint": "Once a winner is determined or the game is a draw, no further marks can be made on the board."
+        },
+        {
+            "constraint": "The game should visually indicate whose turn it is (X or O)."
+        },
+        {
+            "constraint": "When the game is over, the UI should display the winner or indicate a draw."
+        },
+        {
+            "constraint": "The game should be implemented using functional components and React hooks for state management."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "// React hooks are already imported. \r\nfunction TicTacToe() {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default TicTacToe;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// Square component represents each square on the board\r\nfunction Square({ onClick, value }) {\r\n    return (\r\n        \u003cbutton \r\n            onClick={onClick} \r\n            style={{ width: '60px', height: '60px', float: 'left', margin: '1px', fontSize: '24px' }}\r\n        \u003e\r\n            {value}\r\n        \u003c/button\u003e\r\n    );\r\n}\r\n\r\nfunction Board() {\r\n    // State to hold the current state of the board\r\n    const [squares, setSquares] = useState(Array(9).fill(null));\r\n    // State to determine which player's turn it is\r\n    const [isXNext, setIsXNext] = useState(true);\r\n\r\n    // Function to be called when a square is clicked\r\n    function handleClick(i) {\r\n        const squaresCopy = squares.slice(); // Create a copy of the squares array to modify\r\n        if (calculateWinner(squares) || squaresCopy[i]) {\r\n            // If there's already a winner or the square is filled, ignore the click\r\n            return;\r\n        }\r\n        squaresCopy[i] = isXNext ? 'X' : 'O'; // Set the square to X or O based on the current player\r\n        setSquares(squaresCopy); // Update the state with the new board\r\n        setIsXNext(!isXNext); // Switch turns\r\n    }\r\n\r\n    // Function to calculate the winner\r\n    function calculateWinner(squares) {\r\n        const lines = [\r\n            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows\r\n            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns\r\n            [0, 4, 8], [2, 4, 6]             // Diagonals\r\n        ];\r\n        for (let i = 0; i \u003c lines.length; i++) {\r\n            const [a, b, c] = lines[i];\r\n            if (squares[a] \u0026\u0026 squares[a] === squares[b] \u0026\u0026 squares[a] === squares[c]) {\r\n                return squares[a]; // Return 'X' or 'O' as the winner\r\n            }\r\n        }\r\n        return null; // No winner yet\r\n    }\r\n\r\n    const winner = calculateWinner(squares); // Check for a winner\r\n    const status = winner ? 'Winner: ' + winner : 'Next Player: ' + (isXNext ? 'X' : 'O');\r\n\r\n    return (\r\n        \u003cdiv style={{ maxWidth: '200px' }}\u003e\r\n            \u003cdiv style={{ clear: 'both' }}\u003e\r\n                {Array.from({ length: 9 }).map((_, i) =\u003e (\r\n                    \u003cSquare \r\n                        key={i} \r\n                        value={squares[i]} \r\n                        onClick={() =\u003e handleClick(i)} \r\n                    /\u003e\r\n                ))}\r\n            \u003c/div\u003e\r\n            \u003cdiv style={{ clear: 'both', marginTop: '20px' }}\u003e\r\n                {status} {/* Display the current game status */}\r\n            \u003c/div\u003e\r\n        \u003c/div\u003e\r\n    );\r\n}\r\n\r\nfunction TicTacToe() {\r\n    return (\r\n        \u003cdiv className=\"tic-tac-toe\"\u003e\r\n            \u003cBoard /\u003e\r\n        \u003c/div\u003e\r\n    );\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eBuilding a Tic Tac Toe Game in React\u003c/h1\u003e\n\u003cp\u003eThis guide explores the implementation of a classic Tic Tac Toe game using React, demonstrating key concepts like component structure, state management, and conditional rendering.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eComponent Architecture\u003c/h2\u003e\n\u003cp\u003eThe game is structured into two main components: \u003ccode\u003eSquare\u003c/code\u003e and \u003ccode\u003eBoard\u003c/code\u003e. The \u003ccode\u003eSquare\u003c/code\u003e component represents each clickable square on the game board, while the \u003ccode\u003eBoard\u003c/code\u003e component manages the game\u0026#8217;s state and logic.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eState Management\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eBoard\u003c/code\u003e component uses React\u0026#8217;s \u003ccode\u003euseState\u003c/code\u003e hook to maintain the state of the game board and the current player. The game board\u0026#8217;s state is an array of 9 elements, corresponding to the 9 squares of the Tic Tac Toe grid, and each element can be \u0026#8216;X\u0026#8217;, \u0026#8216;O\u0026#8217;, or \u003ccode\u003enull\u003c/code\u003e if the square is empty.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eGameplay Logic\u003c/h2\u003e\n\u003cp\u003ePlayers take turns clicking on squares. When a square is clicked, the \u003ccode\u003ehandleClick\u003c/code\u003e function checks if the square is empty and if there\u0026#8217;s no winner yet. If both conditions are met, the square is marked with the current player\u0026#8217;s symbol (\u0026#8216;X\u0026#8217; or \u0026#8216;O\u0026#8217;), the game board\u0026#8217;s state is updated, and the turn switches to the other player.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eDetermining the Winner\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003ecalculateWinner\u003c/code\u003e function checks the current state of the board for a winning combination. If a player has successfully placed three of their symbols in a horizontal, vertical, or diagonal line, the function returns the winning symbol. Otherwise, it returns \u003ccode\u003enull\u003c/code\u003e.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eRendering the Game\u003c/h2\u003e\n\u003cp\u003eThe game board is rendered as a grid of \u003ccode\u003eSquare\u003c/code\u003e components. A status message displays the current player\u0026#8217;s turn or the game\u0026#8217;s winner. This dynamic rendering ensures the game interface reflects the current state of the game, providing an interactive and engaging user experience.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThis implementation of Tic Tac Toe in React showcases the power of React components and state management for building interactive web applications. Through this project, developers can gain a deeper understanding of React\u0026#8217;s capabilities and apply these concepts to more complex applications.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "App Design"
+    ],
+    "likes": 1,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Atlassian"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "React Tic Tac Toe Game - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Dive into this interactive tutorial to build a Tic Tac Toe game using React. Learn about component architecture, state management, and gameplay logic while enhancing your React skills.",
+        "pageURL": "tic-tac-toe",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement React Tic Tac Toe Game  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" class=\"alignnone size-full wp-image-370\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-2.44.10-PM.png\" alt=\"\" width=\"200",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eBuilding a Tic Tac Toe Game in React\u003c/h1\u003e\n\u003cp\u003eThis guide explores the implementation of a classic Tic Tac Toe game using React, demonstrating key concepts like component structu",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+ood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

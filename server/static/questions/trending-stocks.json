@@ -1,0 +1,145 @@
+{
+    "type": "coding",
+    "id": "trending-stocks",
+    "title": "77. Trending Stocks",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "trending-stocks",
+    "problemStatement": "\u003cp\u003eYou are tasked with creating a function that retrieves information about trending stocks based on their market capitalization and prices. The goal is to identify the top \u003ccode\u003en\u003c/code\u003e trending stocks, where \u003ccode\u003en\u003c/code\u003e is a specified number, and return details about these stocks in a structured format. The function should return an array of objects, each encapsulating the symbol, name, market capitalization, and current price of these trending stocks.\u003c/p\u003e\n\u003cp\u003eThe challenge involves fetching data from three different APIs: one for stock symbols and names, another for market capitalizations, and the last one for current stock prices. The process is to first fetch the symbols and market caps, sort the stocks by market cap in descending order, pick the top \u003ccode\u003en\u003c/code\u003e stocks, and then fetch their current prices. Finally, the information is aggregated into a single array of objects that contain all the necessary details for each selected stock.\u003c/p\u003e\n\u003ch3\u003eExample:\u003c/h3\u003e\n\u003cp\u003eConsider you want to find the top 2 trending stocks. The function will sort all available stocks based on their market capitalization and return the details for the top 2.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003eInput: n = 2\r\n\r\nOutput:\r\n[\r\n  { \"symbol\": \"MMM\", \"name\": \"3M Company\", \"market-cap\": 138721055226, \"price\": 1001.52 },\r\n  { \"symbol\": \"ABT\", \"name\": \"Abbott Laboratories\", \"market-cap\": 102121042306, \"price\": 1001.52 }\r\n]\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe function encapsulates a complex process of asynchronous API calls, data sorting, and aggregation, presenting a streamlined solution to the user. This task not only tests your proficiency with asynchronous JavaScript operations but also your ability to work with external data sources and transform data to fit specific requirements.\u003c/p\u003e\n\u003cp\u003eThis challenge serves as an excellent real-world scenario for frontend developers, especially for those interested in financial technologies or stock market applications, providing both a technical challenge and an insight into financial data manipulation.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should verify the result is an array of objects",
+            "test": "it('should verify the result is an array of objects', (done) =\u003e {\r\n    fetchMock.mock('api_1', [{ symbol: 'AAPL', name: 'Apple Inc.' }]);\r\n    fetchMock.mock('api_2', [{ symbol: 'AAPL', 'market-cap': 2500000 }]);\r\n    fetchMock.mock('api_3?symbols=[\"AAPL\"]', [{ symbol: 'AAPL', price: 150 }]);\r\n\r\n    trendingStocks(2).then(result =\u003e {\r\n      expect(result).to.be.an('array');\r\n      result.forEach(stock =\u003e {\r\n        expect(stock).to.be.an('object');\r\n        expect(stock).to.have.all.keys('symbol', 'name', 'market-cap', 'price');\r\n      });\r\n      done();\r\n    }).catch(done).finally(() =\u003e fetchMock.restore());\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should handle cases where n is greater than available stocks",
+            "test": "it('should handle cases where n is greater than available stocks', (done) =\u003e {\r\n    fetchMock.mock('api_1', new Array(100).fill({}).map((_, index) =\u003e ({ symbol: `SYM${index}`, name: `Company ${index}` })));\r\n    fetchMock.mock('api_2', new Array(100).fill({}).map((_, index) =\u003e ({ symbol: `SYM${index}`, 'market-cap': 1000 - index })));\r\n    \r\n    // RegExp to match any URL starting with 'api_3?symbols='\r\n    fetchMock.mock(/api_3\\?symbols=\\[.*\\]/, new Array(100).fill({}).map((_, index) =\u003e ({ symbol: `SYM${index}`, price: 100 - index })));\r\n\r\n    const n = 100;\r\n    trendingStocks(n).then(result =\u003e {\r\n      expect(result.length).to.be.at.most(n);\r\n      done();\r\n    }).catch(done).finally(() =\u003e fetchMock.restore());\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should return stocks sorted by market-cap in descending order",
+            "test": "it('should return stocks sorted by market-cap in descending order', (done) =\u003e {\r\n    fetchMock.mock('api_1', [{ symbol: 'A', name: 'A Co' }, { symbol: 'B', name: 'B Co' }]);\r\n    fetchMock.mock('api_2', [{ symbol: 'A', 'market-cap': 2000 }, { symbol: 'B', 'market-cap': 1000 }]);\r\n    fetchMock.mock('api_3?symbols=[\"A\",\"B\"]', [{ symbol: 'A', price: 10 }, { symbol: 'B', price: 5 }]);\r\n\r\n    trendingStocks(2).then(result =\u003e {\r\n      let isSorted = true;\r\n      for(let i = 0; i \u003c result.length - 1; i++) {\r\n        if (result[i]['market-cap'] \u003c result[i + 1]['market-cap']) {\r\n          isSorted = false;\r\n          break;\r\n        }\r\n      }\r\n      expect(isSorted).to.be.true;\r\n      done();\r\n    }).catch(done).finally(() =\u003e fetchMock.restore());\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should return an empty array for n = 0",
+            "test": "it('should return an empty array for n = 0', (done) =\u003e {\r\n    fetchMock.mock('api_1', []);\r\n    fetchMock.mock('api_2', []);\r\n\r\n    // Match the URL for 'api_3' with an empty 'symbols' array\r\n    fetchMock.mock('api_3?symbols=[]', []);\r\n\r\n    trendingStocks(0).then(result =\u003e {\r\n      expect(result).to.be.an('array').that.is.empty;\r\n      done();\r\n    }).catch(done).finally(() =\u003e fetchMock.restore());\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should handle API fetch errors gracefully",
+            "test": "it('should handle API fetch errors gracefully', (done) =\u003e {\r\n    fetchMock.mock('api_1', 500);\r\n    fetchMock.mock('api_2', 500);\r\n    fetchMock.mock('api_3', 500);\r\n\r\n    trendingStocks(2).then(result =\u003e {\r\n      done(new Error(\"Expected method to reject due to API errors.\"));\r\n    }).catch(error =\u003e {\r\n      expect(error).to.exist;\r\n      done();\r\n    }).finally(() =\u003e fetchMock.restore());\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 5,
+            "description": "should ensure names and market caps match for each stock",
+            "test": "it('should ensure names and market caps match for each stock', (done) =\u003e {\r\n    // Mock data for symbols and market caps\r\n    const symbolsData = [\r\n      { symbol: 'AAPL', name: 'Apple Inc.' },\r\n      { symbol: 'MSFT', name: 'Microsoft Corporation' }\r\n    ];\r\n    const marketCapsData = [\r\n      { symbol: 'AAPL', 'market-cap': 2500000 },\r\n      { symbol: 'MSFT', 'market-cap': 2000000 }\r\n    ];\r\n\r\n    // Mock responses for symbols and market caps\r\n    fetchMock.mock('api_1', symbolsData);\r\n    fetchMock.mock('api_2', marketCapsData);\r\n\r\n    // Mock response for prices (the specific prices are not important for this test)\r\n    fetchMock.mock(/api_3\\?symbols=\\[.*\\]/, symbolsData.map(s =\u003e ({ symbol: s.symbol, price: Math.random() * 1000 })));\r\n\r\n    // Fetch the trending stocks and verify the result\r\n    trendingStocks(2).then(result =\u003e {\r\n      expect(result).to.be.an('array').and.to.have.lengthOf(symbolsData.length);\r\n      result.forEach(stock =\u003e {\r\n        // Verify that the stock object includes the correct name and market cap\r\n        const matchingSymbolData = symbolsData.find(s =\u003e s.symbol === stock.symbol);\r\n        const matchingMarketCapData = marketCapsData.find(m =\u003e m.symbol === stock.symbol);\r\n        expect(stock).to.include({ name: matchingSymbolData.name });\r\n        expect(stock).to.include({ 'market-cap': matchingMarketCapData['market-cap'] });\r\n      });\r\n      done();\r\n    }).catch(done).finally(() =\u003e fetchMock.restore());\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The function must accept a single integer \u003ccode\u003en\u003c/code\u003e as an argument, representing the number of trending stocks to retrieve."
+        },
+        {
+            "constraint": "Data is retrieved from three separate APIs for symbols, market capitalizations, and prices. Ensure each API is accessible and responses are in the expected format."
+        },
+        {
+            "constraint": "Market capitalization data should be used to determine the \"trendiness\" of a stock, with higher market capitalizations indicating higher trends."
+        },
+        {
+            "constraint": "The function should return an array of objects, with each object containing the \u003ccode\u003esymbol\u003c/code\u003e, \u003ccode\u003ename\u003c/code\u003e, \u003ccode\u003emarket-cap\u003c/code\u003e, and \u003ccode\u003eprice\u003c/code\u003e for each trending stock."
+        },
+        {
+            "constraint": "Ensure error handling for API requests, including network errors or unexpected response formats."
+        },
+        {
+            "constraint": "The stock data returned should be current, consider adding a timestamp or ensuring the API provides the most recent data."
+        },
+        {
+            "constraint": "The solution should handle cases where fewer than \u003ccode\u003en\u003c/code\u003e stocks are available."
+        },
+        {
+            "constraint": "Assume the APIs respond within a reasonable time frame, but implement timeout handling as a best practice."
+        },
+        {
+            "constraint": "The solution's time complexity should be optimized for efficiency, considering the sorting and data retrieval operations."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "async function trendingStocks(n) {\r\n    // Define API endpoints for different types of stock information\r\n    // Do not modify\r\n    const SYMBOLS_API_BASE_URL = 'api_1';\r\n    const MARKET_CAPS_API_BASE_URL = 'api_2';\r\n    const PRICES_API_BASE_URL = 'api_3';\r\n\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default trendingStocks;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// Define the main function to retrieve trending stocks\r\nasync function trendingStocks(n) {\r\n  // Define API endpoints for different types of stock information\r\n  const SYMBOLS_API_BASE_URL = 'api_1'; // URL to fetch stock symbols and names\r\n  const MARKET_CAPS_API_BASE_URL = 'api_2'; // URL to fetch market capitalizations\r\n  const PRICES_API_BASE_URL = 'api_3'; // URL to fetch current stock prices\r\n  \r\n  // Fetch symbols and market caps data concurrently to optimize performance\r\n  const [symbolsResponse, marketCapsResponse] = await Promise.all([\r\n    fetch(SYMBOLS_API_BASE_URL),\r\n    fetch(MARKET_CAPS_API_BASE_URL)\r\n  ]);\r\n\r\n  // Parse JSON data for symbols and market caps\r\n  const [symbols, marketcaps] = await Promise.all([\r\n    symbolsResponse.json(),\r\n    marketCapsResponse.json()\r\n  ]);\r\n\r\n  // Sort stocks by market cap in descending order to identify top 'n' trending stocks\r\n  const rankedSymbolsByMarketCap = marketcaps\r\n    .sort((stockA, stockB) =\u003e stockB['market-cap'] - stockA['market-cap'])\r\n    .slice(0, n) // Select the top 'n' stocks\r\n    .map(marketCapObj =\u003e marketCapObj.symbol); // Extract the symbols of top stocks\r\n  \r\n  // Build the URL for fetching prices by appending the symbols of the top 'n' stocks\r\n  let pricesUrl = PRICES_API_BASE_URL;\r\n  pricesUrl += `?symbols=${JSON.stringify(rankedSymbolsByMarketCap)}`;\r\n\r\n  // Fetch price data for the selected stocks\r\n  const priceResponse = await fetch(pricesUrl);\r\n  const pricesJSON = await priceResponse.json();\r\n\r\n  // Match stock symbols with their names and market caps\r\n  pricesJSON.forEach(obj =\u003e {\r\n    // Find and assign the name and market cap to each stock object in the prices array\r\n    let name = symbols.find(item =\u003e item['symbol'] === obj['symbol']).name;\r\n    let marketCap = marketcaps.find(item =\u003e item['symbol'] === obj['symbol'])['market-cap'];\r\n    obj.name = name;\r\n    obj['market-cap'] = marketCap;\r\n  });\r\n\r\n  // Return the final array of trending stocks with symbol, name, market-cap, and price\r\n  return pricesJSON;\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe \u0026#8220;Trending Stocks\u0026#8221; function is devised to identify and present the top \u0026#8216;n\u0026#8217; trending stocks based on their market capitalization and current prices. This task involves fetching data from three distinct APIs for stock symbols, market caps, and prices, followed by processing this data to compile a structured array of stock information.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eAPI Overview\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eSymbols API:\u003c/strong\u003e Provides stock symbols and names, crucial for identifying stocks and linking them with their respective market cap and price data.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eMarket Caps API:\u003c/strong\u003e Delivers data on market capitalization, a key indicator of stock value, used to rank and determine the trending stocks.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003ePrices API:\u003c/strong\u003e Offers the latest prices for stocks, essential for assessing the current valuation of the trending stocks.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eSolution Steps\u003c/h2\u003e\n\u003col\u003e\n\u003cli\u003e\u003cstrong\u003eFetching Data:\u003c/strong\u003e Concurrent API calls are made to the Symbols and Market Caps APIs to optimize efficiency and reduce waiting time.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eProcessing Market Caps:\u003c/strong\u003e The fetched market cap data is sorted in descending order to prioritize stocks by their market value.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eSelecting Top Stocks:\u003c/strong\u003e The top \u0026#8216;n\u0026#8217; stocks are selected based on their market caps by slicing the sorted array.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eFetching Prices:\u003c/strong\u003e A subsequent API call fetches the current prices for the selected top \u0026#8216;n\u0026#8217; stocks.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eAggregating Data:\u003c/strong\u003e The final step involves compiling the symbols, names, market caps, and prices into a cohesive structured output.\u003c/li\u003e\n\u003c/ol\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eDetailed Breakdown\u003c/h2\u003e\n\u003cp\u003eThe function initiates by defining the APIs\u0026#8217; base URLs. Utilizing \u003ccode\u003ePromise.all\u003c/code\u003e, it fetches data from the Symbols and Market Caps APIs concurrently, which is more efficient than sequential requests. After parsing the responses, the market caps data is sorted, and the top \u0026#8216;n\u0026#8217; stocks are identified. These stocks\u0026#8217; symbols are then used to construct a URL for the Prices API call. The retrieved price data is merged with the symbols and market caps data, resulting in a comprehensive array of stock information.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThis solution highlights asynchronous JavaScript\u0026#8217;s utility in handling API calls, data processing using array manipulation methods, and efficient data aggregation techniques. It exemplifies handling complex data integration from multiple sources in web applications, particularly valuable in financial technology contexts.\u003c/p\u003e\n\u003cp\u003eThe time complexity is influenced by API response times and the sorting operation, generally O(n log n) for sorting. The space complexity is O(n), where \u0026#8216;n\u0026#8217; represents the number of top trending stocks returned.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "JSON"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Microsoft",
+        "Netflix",
+        "Apple"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "77. Trending Stocks - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Explore our in-depth guide on a frontend interview question involving the 'Trending Stocks' function. Learn how to fetch and process data from multiple APIs, sort and select top stocks based on market cap, and aggregate data for a comprehensive output. This guide enhances your understanding of asynchronous JavaScript, array manipulation, and data integration techniques, crucial for web application development.",
+        "pageURL": "trending-stocks",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Trending Stocks  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eYou are tasked with creating a function that retrieves information about trending stocks based on their market capitalization and prices. The goal is to identify the top \u003ccode\u003en\u003c/code\u003e trending sto",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe \u0026#8220;Trending Stocks\u0026#8221; function is devised to identify and present the top \u0026#8216;n\u0026#8217; trending stocks based on their market capitalization and current prices. Th",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

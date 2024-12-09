@@ -1,0 +1,127 @@
+{
+    "type": "coding",
+    "id": "flatten-nested-objects-2",
+    "title": "56. Flatten V",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "flatten-nested-objects-2",
+    "problemStatement": "\u003cp\u003eDeveloping a frontend application often involves dealing with complex data structures, particularly when displaying hierarchical lists of items where each item can potentially have children, forming a nested structure. However, for certain UI components or data processing tasks, a flat list representation of these items, preserving their inherent relationships, is more desirable.\u003c/p\u003e\n\u003cp\u003eYour challenge is to implement a function that accepts a nested structure of items as input and returns a flattened array of objects. Each object in the output array should represent an item from the nested structure, stripped of its nesting but retaining the original order of items.\u003c/p\u003e\n\u003cp\u003eConsider the following input examples to understand the expected behavior:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eInput Example 1:\u003c/strong\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003cpre\u003e\u003ccode\u003econst input1 = [\r\n  {\r\n    \"value\": \"value0\",\r\n    \"children\": []\r\n  },\r\n  // ... other items ...\r\n];\u003c/code\u003e\u003c/pre\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eExpected Output for Example 1:\u003c/strong\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003cpre\u003e\u003ccode\u003econst output1 = [\r\n  { \"value\": \"value0\" },\r\n  // ... other items ...\r\n];\u003c/code\u003e\u003c/pre\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eInput Example 2:\u003c/strong\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003cpre\u003e\u003ccode\u003econst input2 = [\r\n  {\r\n    \"value\": \"value1\",\r\n    \"children\": [\r\n      {\r\n        \"value\": \"value2\",\r\n        \"children\": [\r\n          {\r\n            \"value\": \"value3\",\r\n            \"children\": []\r\n          }\r\n        ]\r\n      },\r\n      {\r\n        \"value\": \"value4\",\r\n        \"children\": []\r\n      }\r\n    ]\r\n  },\r\n  // ... other items ...\r\n];\u003c/code\u003e\u003c/pre\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eExpected Output for Example 2:\u003c/strong\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003cpre\u003e\u003ccode\u003econst output2 = [\r\n  { \"value\": \"value1\" },\r\n  { \"value\": \"value2\" },\r\n  { \"value\": \"value3\" },\r\n  { \"value\": \"value4\" },\r\n  // ... other items ...\r\n];\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis task assesses your ability to manipulate complex data structures and simplify them for practical usage in frontend applications. Successfully implementing this function will enhance your skills in data manipulation, recursion (if applicable), and algorithmic thinking.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should flatten a deeply nested structure",
+            "test": "it('should flatten a deeply nested structure', (done) =\u003e {\r\n    const input = [\r\n      {\r\n        \"value\": \"value1\",\r\n        \"children\": [\r\n          {\r\n            \"value\": \"value2\",\r\n            \"children\": [\r\n              {\r\n                \"value\": \"value3\",\r\n                \"children\": []\r\n              }\r\n            ]\r\n          },\r\n          {\r\n            \"value\": \"value4\",\r\n            \"children\": []\r\n          }\r\n        ]\r\n      }\r\n    ];\r\n    const expected = [\r\n      { \"value\": \"value1\" },\r\n      { \"value\": \"value2\" },\r\n      { \"value\": \"value3\" },\r\n      { \"value\": \"value4\" }\r\n    ];\r\n    const result = flattenNestedStructure(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should handle empty children arrays without adding extra items",
+            "test": "it('should handle empty children arrays without adding extra items', (done) =\u003e {\r\n    const input = [\r\n      { \"value\": \"value1\", \"children\": [] },\r\n      { \"value\": \"value2\", \"children\": [] }\r\n    ];\r\n    const expected = [\r\n      { \"value\": \"value1\" },\r\n      { \"value\": \"value2\" }\r\n    ];\r\n    const result = flattenNestedStructure(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should return an empty array when the input is an empty array",
+            "test": "it('should return an empty array when the input is an empty array', (done) =\u003e {\r\n    const input = [];\r\n    const expected = [];\r\n    const result = flattenNestedStructure(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should preserve the original order of items in the flattened array",
+            "test": "it('should preserve the original order of items in the flattened array', (done) =\u003e {\r\n    const input = [\r\n      { \"value\": \"value1\", \"children\": [{ \"value\": \"value2\", \"children\": [] }] },\r\n      { \"value\": \"value3\", \"children\": [] }\r\n    ];\r\n    const expected = [\r\n      { \"value\": \"value1\" },\r\n      { \"value\": \"value2\" },\r\n      { \"value\": \"value3\" }\r\n    ];\r\n    const result = flattenNestedStructure(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The input will be an array of objects, where each object represents an item with a \u003ccode\u003evalue\u003c/code\u003e and a \u003ccode\u003echildren\u003c/code\u003e property."
+        },
+        {
+            "constraint": "The \u003ccode\u003evalue\u003c/code\u003e property will be a string, and the \u003ccode\u003echildren\u003c/code\u003e property will be an array of similar objects, forming a nested structure."
+        },
+        {
+            "constraint": "The nesting can be of any depth, i.e., an item can have children, which in turn can have their own children, and so on."
+        },
+        {
+            "constraint": "The function should return an array of objects, each containing only the \u003ccode\u003evalue\u003c/code\u003e property from the original structure.\u003c/li\u003e"
+        },
+        {
+            "constraint": "Nested items should be flattened in such a way that the order of items is preserved as per the original nested structure."
+        },
+        {
+            "constraint": "The original input structure should not be modified; the function should return a new array."
+        },
+        {
+            "constraint": "Empty children arrays should not result in any additional items in the output array."
+        },
+        {
+            "constraint": "Performance considerations should be taken into account for deeply nested structures to avoid excessive recursion or stack overflow errors."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function flattenNestedStructure(input) {\r\n    // Write your code here\r\n\r\n}\r\n\r\n// Do not edit below this line\r\nexport default flattenNestedStructure;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// Function to recursively flatten the nested structure\r\nfunction flattenRecursive(input, flattened = []) {\r\n  // Check if the input is an array to avoid processing non-array inputs\r\n  if (Array.isArray(input)) {\r\n    // Loop through each item in the input array\r\n    input.forEach(item =\u003e {\r\n      // Create an object with the \"value\" property from the current item\r\n      const result = { value: item.value };\r\n      // Push the object to the flattened array\r\n      flattened.push(result);\r\n\r\n      // If the current item has children, recursively call this function to flatten them\r\n      if (Array.isArray(item.children) \u0026\u0026 item.children.length \u003e 0) {\r\n        flattenRecursive(item.children, flattened);\r\n      }\r\n    });\r\n  }\r\n  \r\n  // Return the flattened array after all items have been processed\r\n  return flattened;\r\n}\r\n\r\n// Function to flatten the nested structure using Depth-First Search (DFS)\r\nfunction flattenDFS(input) {\r\n  // Initialize a stack with the input array to manage the DFS iteration\r\n  const stack = [...input];\r\n  // Initialize an array to store the flattened structure\r\n  const output = [];\r\n\r\n  // Continue processing while there are items in the stack\r\n  while (stack.length \u003e 0) {\r\n    // Pop a node from the stack\r\n    const node = stack.pop();\r\n    // Add the node's value to the output array\r\n    output.push({ value: node.value });\r\n\r\n    // Add the children of the node to the stack in reverse order\r\n    // This ensures that the children are processed in the original order\r\n    for (let i = node.children.length - 1; i \u003e= 0; i--) {\r\n      stack.push(node.children[i]);\r\n    }\r\n  }\r\n\r\n  // Return the flattened output array\r\n  return output;\r\n}\r\n",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eTechniques for Flattening Nested Object Structures in JavaScript\u003c/h1\u003e\n\u003cp\u003eHandling nested object structures is a common challenge in JavaScript, especially in frontend development where hierarchical data needs to be simplified. We explore three distinct approaches to tackle this problem, each with its unique strategy and advantages.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003e1. Recursive Flattening Method (flattenRecursive)\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eflattenRecursive\u003c/code\u003e method uses a straightforward recursive approach to navigate through the nested structure. For each item, it creates a new object with only the \u003ccode\u003evalue\u003c/code\u003e property and adds it to a flat array. When encountering children, the method calls itself with these children, ensuring that the entire structure is traversed and flattened. This method is intuitive and preserves the original item order.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003e2. Iterative Depth-First Search (flattenDFS)\u003c/h2\u003e\n\u003cp\u003eIn contrast to the recursive method, the \u003ccode\u003eflattenDFS\u003c/code\u003e method implements an iterative approach inspired by the Depth-First Search algorithm. It utilizes a stack to keep track of nodes to be visited, ensuring that children are processed in their original order by adding them to the stack in reverse order. This method is particularly efficient for deeply nested structures, avoiding the potential stack overflow issues inherent in recursive solutions.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003e3. Enhanced Recursive Flattening (flattenRecursiveV2)\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eflattenRecursiveV2\u003c/code\u003e function refines the recursive approach by incorporating a nested function that processes each item. This design simplifies the recursion, making the code more readable and easier to follow. It combines the clarity of recursive solutions with an optimized structure that minimizes the need for additional variables and checks.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eComparative Analysis\u003c/h2\u003e\n\u003cp\u003eChoosing the right flattening technique depends on the specific requirements of your application:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eRecursive Flattening:\u003c/strong\u003e Best suited for structures with moderate depth, offering simplicity and readability.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eIterative DFS:\u003c/strong\u003e Ideal for handling very deep or complex structures, providing robust performance without the risk of stack overflow.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eEnhanced Recursive:\u003c/strong\u003e A balanced option that maintains the elegance of recursion while optimizing for performance and readability.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eUnderstanding and applying these flattening techniques allows developers to efficiently process and manipulate hierarchical data structures in JavaScript, enhancing the data handling capabilities of frontend applications.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Objects"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Microsoft",
+        "Netflix",
+        "LinkedIn",
+        "Snap"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Nested Objects II - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Unlock the secrets to efficiently flattening nested object structures in JavaScript with our expert guide. Discover practical techniques, best practices, and real-world applications to simplify complex data for your web development projects.",
+        "pageURL": "flatten-nested-objects-2",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Nested Objects II  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eDeveloping a frontend application often involves dealing with complex data structures, particularly when displaying hierarchical lists of items where each item can potentially have children, formin",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eTechniques for Flattening Nested Object Structures in JavaScript\u003c/h1\u003e\n\u003cp\u003eHandling nested object structures is a common challenge in JavaScript, especially in frontend developme",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

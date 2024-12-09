@@ -1,0 +1,117 @@
+{
+    "type": "react",
+    "id": "image-slider",
+    "title": "32. Image Slider",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "image-slider",
+    "problemStatement": "\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" class=\"alignnone size-medium wp-image-376\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-3.02.18-PM-300x147.png\" alt=\"\" width=\"300\" height=\"147\" srcset=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-3.02.18-PM-300x147.png 300w, https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-3.02.18-PM.png 644w\" sizes=\"(max-width: 300px) 100vw, 300px\" /\u003e\u003c/p\u003e\n\u003cp\u003eCreate a simple image slider component in React to display a set of product images fetched from an API. The slider should enable users to navigate through the images using \u0026#8220;Next\u0026#8221; and \u0026#8220;Previous\u0026#8221; buttons, allowing for smooth transitions between them.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eInput Examples:\u003c/strong\u003e\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eInitial render with fetched product images.\u003c/li\u003e\n\u003cli\u003eClicking the \u0026#8220;Next\u0026#8221; button to move to the next image.\u003c/li\u003e\n\u003cli\u003eClicking the \u0026#8220;Previous\u0026#8221; button to move to the previous image.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e\u003cstrong\u003eExpected Output Examples:\u003c/strong\u003e\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eDisplay a set of product images in a slider format.\u003c/li\u003e\n\u003cli\u003eTransition smoothly to the next image when clicking \u0026#8220;Next\u0026#8221;.\u003c/li\u003e\n\u003cli\u003eTransition smoothly to the previous image when clicking \u0026#8220;Previous\u0026#8221;.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThe implementation should handle fetching product images from an external API, managing the current image index, and enabling smooth transitions between images within the React application.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The carousel should fetch and display images from a provided API endpoint."
+        },
+        {
+            "constraint": "The carousel should fetch and display images from a provided API endpoint."
+        },
+        {
+            "constraint": "The carousel should preload all images upon initial render to ensure smooth transitions."
+        },
+        {
+            "constraint": "Navigation through images should be possible using \"Next\" and \"Previous\" buttons."
+        },
+        {
+            "constraint": "The carousel should loop back to the first image after the last image when navigating forward and to the last image when navigating backward from the first image."
+        },
+        {
+            "constraint": "The transition between images should be smooth, indicating a sliding motion."
+        },
+        {
+            "constraint": "The component should be responsive, adapting to different screen sizes without breaking the layout."
+        },
+        {
+            "constraint": "User interaction should not be allowed during the transition to prevent unexpected behavior."
+        },
+        {
+            "constraint": "The carousel should handle loading states and potential errors from the API gracefully."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "// React hooks are auto imported\r\n\r\nfunction ImageSlider() {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default ImageSlider;",
+    "starterHTMLCode": null,
+    "starterCSSCode": "/* You are expected to write the css */\r\n",
+    "solutionCode": "/* React Solution */\r\n// Async function to fetch product data from an API.\r\nconst getData = async () =\u003e {\r\n  const response = await fetch('https://dummyjson.com/products');\r\n  const results = await response.json();\r\n  const products = results.products.map((product) =\u003e {\r\n    return {\r\n      image: product.images[0],\r\n      name: product.description,\r\n    };\r\n  });\r\n  return products;\r\n};\r\n\r\nconst ImageSlider = () =\u003e {\r\n  // State to store product data, current index, and animation flag.\r\n  const [products, setProducts] = useState([]);\r\n  const [currentIndex, setCurrentIndex] = useState(0);\r\n  const [isAnimating, setIsAnimating] = useState(false);\r\n  const wrapperRef = useRef(null);\r\n\r\n  useEffect(() =\u003e {\r\n    async function fetchResults() {\r\n      const results = await getData();\r\n      setProducts(results.splice(0, 4)); // Limit to the first 4 products.\r\n    }\r\n    fetchResults();\r\n  }, []);\r\n\r\n  const handleNextClick = () =\u003e {\r\n    if (!wrapperRef.current) return;\r\n    let nextIndex = currentIndex + 1;\r\n    if (currentIndex + 1 === products.length) {\r\n      nextIndex = 0; // Loop back to the first item.\r\n    }\r\n\r\n    setCurrentIndex(nextIndex);\r\n\r\n    // Smooth scroll to the next item.\r\n    wrapperRef.current.scrollTo({\r\n      left: nextIndex * 400, // Assuming each item is 400px wide.\r\n      behavior: 'smooth',\r\n    });\r\n  };\r\n\r\n  const handlePrevClick = () =\u003e {\r\n    if (!wrapperRef.current) return;\r\n    let nextIndex = currentIndex - 1;\r\n    if (currentIndex === 0) {\r\n      nextIndex = products.length - 1; // Wrap around to the last item.\r\n    }\r\n\r\n    setCurrentIndex(nextIndex);\r\n\r\n    // Smooth scroll to the previous item.\r\n    wrapperRef.current.scrollTo({\r\n      left: nextIndex * 400, // Assuming each item is 400px wide.\r\n      behavior: 'smooth',\r\n    });\r\n  };\r\n\r\n  useEffect(() =\u003e {\r\n    console.log(currentIndex);\r\n  }, [currentIndex]);\r\n\r\n  return (\r\n    \u003cdiv\u003e\r\n      \u003cdiv className=\"slider\"\u003e\r\n        \u003cdiv ref={wrapperRef} className=\"container\"\u003e\r\n          \u003cdiv className=\"wrapper\" style={{ width: products.length * 400 }}\u003e\r\n            {products.map((product, idx) =\u003e (\r\n              \u003cdiv className=\"slide\" style={{ width: 400 }} key={idx}\u003e\r\n                \u003cimg src={product.image} alt={product.name} /\u003e \u003cbr /\u003e\r\n                {product.name}\r\n              \u003c/div\u003e\r\n            ))}\r\n          \u003c/div\u003e\r\n        \u003c/div\u003e\r\n        \u003cbutton className=\"nextButton button\" onClick={handleNextClick} disabled={isAnimating}\u003e\r\n          Next\r\n        \u003c/button\u003e\r\n        \u003cbutton className=\"prevButton button\" onClick={handlePrevClick} disabled={isAnimating}\u003e\r\n          Previous\r\n        \u003c/button\u003e\r\n      \u003c/div\u003e\r\n    \u003c/div\u003e\r\n  );\r\n};\r\n\r\n/* CSS Solution\r\n.slider {\r\n  width: 100%;\r\n  overflow: hidden;\r\n  position: relative;\r\n}\r\n\r\n.slider .container {\r\n  max-width: 500px;\r\n  margin: 0 auto;\r\n  overflow: hidden;\r\n}\r\n\r\n.slider .wrapper {\r\n  text-align: center;\r\n  position: relative;\r\n}\r\n\r\n.slider .slide {\r\n  width: 100%;\r\n  float: left;\r\n  max-width: 400px;\r\n}\r\n\r\n.slider img {\r\n  width: 100%;\r\n  height: 250px;\r\n  object-fit: cover;\r\n}\r\n\r\n.slider .button {\r\n  position: absolute;\r\n  bottom: 22%;\r\n  left: 0;\r\n}\r\n\r\n.slider .nextButton {\r\n  right: 0;\r\n  left: auto;\r\n}\r\n*/",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eCreating an Image Slider in React\u003c/h1\u003e\n\u003cp\u003eThis guide walks through the process of building an image slider component in React, designed to display a set of product images fetched from an API, with the ability to navigate through images smoothly.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eFetching Data\u003c/h2\u003e\n\u003cp\u003eThe component begins by fetching product data from a specified API endpoint. This is achieved using an asynchronous function \u003ccode\u003egetData\u003c/code\u003e, which retrieves the product information and extracts the first image and name from each product. The fetched data is then stored in the component\u0026#8217;s state.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eSetting Up the Slider\u003c/h2\u003e\n\u003cp\u003eThe Image Slider component initializes with an empty array for products and a current index to track the displayed image. A reference to the slider\u0026#8217;s wrapper div is created using \u003ccode\u003euseRef\u003c/code\u003e to enable smooth scrolling behavior.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eNavigating the Images\u003c/h2\u003e\n\u003cp\u003eNavigation is facilitated by \u0026#8220;Next\u0026#8221; and \u0026#8220;Previous\u0026#8221; buttons, which update the current index and trigger a smooth scroll to the new image. The component ensures seamless looping from the last image back to the first, and vice versa.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eImplementation Details\u003c/h2\u003e\n\u003cp\u003eThe images are rendered within a wrapper div that has a dynamic width, calculated based on the number of products. Each product image and name are displayed within individual divs, styled to fit the slider\u0026#8217;s layout. Smooth scrolling is achieved by adjusting the scroll position of the wrapper div based on the current index.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eEnsuring Smooth Transitions\u003c/h2\u003e\n\u003cp\u003eTo enhance user experience, the component prevents navigation actions while animations are in progress, indicated by the \u003ccode\u003eisAnimating\u003c/code\u003e state. This state can be toggled in conjunction with CSS transitions or JavaScript-based animation libraries to achieve desired effects.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe Image Slider component showcases how React can be used to build interactive UI components with dynamic content fetched from APIs. By leveraging state management, effect hooks, and references, developers can create engaging features that enhance web applications.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "App Design"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": null,
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Build a React Image Slider - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Master how to create an engaging React Image Slider with this step-by-step tutorial. Learn to fetch product images, implement smooth transitions, and add navigation for a dynamic product carousel.",
+        "pageURL": "image-slider",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Build a React Image Slider  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" class=\"alignnone size-medium wp-image-376\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screenshot-2024-03-16-at-3.02.18-PM-300x147.png\" alt=\"\" ",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eCreating an Image Slider in React\u003c/h1\u003e\n\u003cp\u003eThis guide walks through the process of building an image slider component in React, designed to display a set of product images fetch",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+rue,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

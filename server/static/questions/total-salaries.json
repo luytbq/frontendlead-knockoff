@@ -1,0 +1,121 @@
+{
+    "type": "coding",
+    "id": "total-salaries",
+    "title": "6. Total Salaries",
+    "difficulty": [
+        "Hard"
+    ],
+    "link": "total-salaries",
+    "problemStatement": "\u003cp\u003eYou are tasked with implementing a function named \u003ccode\u003ecalculateTotalSalaries\u003c/code\u003e that will navigate through a company\u0026#8217;s hierarchical structure to calculate the cumulative sum of salaries for all employees. The company\u0026#8217;s structure is depicted as a nested object, where each node can either be a department containing further sub-departments or an array of employees. Each employee is represented by an object containing their name and salary.\u003c/p\u003e\n\u003cp\u003eThe main challenge lies in efficiently traversing this nested structure, which may vary in depth and complexity across different companies, to aggregate all the salary values. This problem not only tests your ability to work with nested data structures but also assesses your recursive thinking and problem-solving skills.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eInput:\u003c/strong\u003e A nested object representing the company\u0026#8217;s structure, where each department can contain sub-departments or an array of employees with their respective salaries.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eOutput:\u003c/strong\u003e A single integer value representing the total sum of salaries of all employees across the entire company.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eExample:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst company = {\r\n  sales: [\r\n    { name: \"John\", salary: 1000 },\r\n    { name: \"Alice\", salary: 1600 }\r\n  ],\r\n  development: {\r\n    sites: [\r\n      { name: \"Peter\", salary: 2000 },\r\n      { name: \"Alex\", salary: 1800 }\r\n    ],\r\n    internals: [\r\n      { name: \"Jack\", salary: 1300 }\r\n    ]\r\n  }\r\n};\r\nconst totalSalaries = calculateTotalSalaries(company);\r\nconsole.log(totalSalaries); // Output: 7700\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eIn this example, the function \u003ccode\u003ecalculateTotalSalaries\u003c/code\u003e navigates through each department and sub-department, summing up the salaries of \u0026#8220;John\u0026#8221;, \u0026#8220;Alice\u0026#8221;, \u0026#8220;Peter\u0026#8221;, \u0026#8220;Alex\u0026#8221;, and \u0026#8220;Jack\u0026#8221;, resulting in a total of 7700.\u003c/p\u003e\n\u003cp\u003eThis problem encapsulates a real-world scenario where understanding and manipulating nested data structures are crucial. It provides a foundation for more complex data processing tasks that are common in software development, especially in handling hierarchical data.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should correctly calculate the total salaries of a simple company structure",
+            "test": "it('should correctly calculate the total salaries of a simple company structure', (done) =\u003e {\r\n    const company = {\r\n      sales: [\r\n        { name: \"John\", salary: 1000 },\r\n        { name: \"Alice\", salary: 1600 }\r\n      ],\r\n      development: {\r\n        sites: [\r\n          { name: \"Peter\", salary: 2000 },\r\n          { name: \"Alex\", salary: 1800 }\r\n        ],\r\n        internals: [\r\n          { name: \"Jack\", salary: 1300 }\r\n        ]\r\n      }\r\n    };\r\n    const totalSalaries = calculateTotalSalaries(company);\r\n    expect(totalSalaries).to.equal(7700);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should return 0 for an empty company structure",
+            "test": "it('should return 0 for an empty company structure', (done) =\u003e {\r\n    const company = {};\r\n    const totalSalaries = calculateTotalSalaries(company);\r\n    expect(totalSalaries).to.equal(0);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should handle nested departments correctly",
+            "test": "it('should handle nested departments correctly', (done) =\u003e {\r\n    const company = {\r\n      admin: {\r\n        hr: [\r\n          { name: \"Sam\", salary: 1500 }\r\n        ],\r\n        finance: [\r\n          { name: \"Sara\", salary: 2500 }\r\n        ]\r\n      },\r\n      development: {\r\n        internals: [\r\n          { name: \"Jack\", salary: 1300 }\r\n        ]\r\n      }\r\n    };\r\n    const totalSalaries = calculateTotalSalaries(company);\r\n    expect(totalSalaries).to.equal(5300);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should handle a company structure with empty departments",
+            "test": "it('should handle a company structure with empty departments', (done) =\u003e {\r\n    const company = {\r\n      sales: [],\r\n      development: {\r\n        sites: [],\r\n        internals: [\r\n          { name: \"Jack\", salary: 1300 }\r\n        ]\r\n      }\r\n    };\r\n    const totalSalaries = calculateTotalSalaries(company);\r\n    expect(totalSalaries).to.equal(1300);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The input data structure can contain multiple levels of nesting, representing departments and sub-departments within the company."
+        },
+        {
+            "constraint": "Each department can contain either further sub-departments or an array of employees."
+        },
+        {
+            "constraint": "Each employee is represented as an object with at least two properties: \u003ccode\u003ename\u003c/code\u003e (a string) and \u003ccode\u003esalary\u003c/code\u003e (an integer)."
+        },
+        {
+            "constraint": "The salary values are positive integers, representing the amount of money each employee earns."
+        },
+        {
+            "constraint": "The function should return an integer representing the total sum of all salaries within the company."
+        },
+        {
+            "constraint": "The input object will not contain any circular references."
+        },
+        {
+            "constraint": "Employee names are not necessarily unique, and the function's focus is solely on calculating the total salary sum."
+        },
+        {
+            "constraint": "The function should handle empty departments (i.e., departments with no employees or sub-departments) correctly."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function calculateTotalSalaries(data) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default calculateTotalSalaries;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function calculateTotalSalaries(data) {\r\n    // Check if the input is an object and it's empty, then return 0\r\n    if (typeof data === \"object\" \u0026\u0026 Object.keys(data).length === 0) {\r\n        return 0;\r\n    }\r\n\r\n    // Define a function to recursively flatten the input data\r\n    function flattenData(data) {\r\n        let flatList = []; // Initialize an empty array to hold flattened data\r\n\r\n        // Check if the current data is an array\r\n        if (Array.isArray(data)) {\r\n            // If it's an array, iterate through each item\r\n            data.forEach(item =\u003e {\r\n                // Recursively flatten the item and concatenate it with the flatList\r\n                flatList.push(...flattenData(item));\r\n            });\r\n        } \r\n        // Check if the current data is an object (but not null, as typeof null is also 'object')\r\n        else if (data !== null \u0026\u0026 typeof data === \"object\") {\r\n            // Iterate through each key-value pair in the object\r\n            for (let key in data) {\r\n                // Check if the current key is 'salary'\r\n                if (key === 'salary') {\r\n                    // If it is, add the salary value directly to flatList\r\n                    flatList.push(data[key]);\r\n                } else {\r\n                    // If it's not a salary key, recursively flatten the value and concatenate\r\n                    flatList.push(...flattenData(data[key]));\r\n                }\r\n            }\r\n        } \r\n        // Base case: if the data is neither an array nor an object, add it directly to flatList\r\n        else {\r\n            flatList.push(data);\r\n        }\r\n\r\n        // Return the flattened list\r\n        return flatList;\r\n    }\r\n\r\n    // Use the flattenData function to flatten the input data\r\n    let flatList = flattenData(data);\r\n\r\n    // Filter the flatList to include only numbers, then use reduce to sum them up, initializing the accumulator to 0\r\n    return flatList.filter(item =\u003e typeof item === \"number\").reduce((acc, item) =\u003e acc + item, 0);\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003eThe \u0026#8220;Total Salaries\u0026#8221; solution employs a recursive approach to navigate through a nested object structure, which represents a company\u0026#8217;s departments and employees. The primary challenge lies in handling the varying levels of nesting, as departments can contain sub-departments and arrays of employees.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eFlattening the Structure\u003c/h2\u003e\n\u003cp\u003eThe provided solution defines three functions: \u003ccode\u003eflattenArray\u003c/code\u003e, \u003ccode\u003eflattenObj\u003c/code\u003e, and \u003ccode\u003egetTotalSalaries\u003c/code\u003e. The \u003ccode\u003eflattenArray\u003c/code\u003e and \u003ccode\u003eflattenObj\u003c/code\u003e functions work together to recursively traverse the nested structure, extracting salary values regardless of their nesting level within departments or sub-departments.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eFunction Breakdown\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eflattenArray:\u003c/strong\u003e This function checks if the input is an array, an object, or a base value. For arrays, it recursively flattens each element. For objects, it iterates over each key-value pair, specifically looking for \u0026#8216;salary\u0026#8217; keys to flatten. Otherwise, it directly adds base values (like individual salaries) to the flat list.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eflattenObj:\u003c/strong\u003e Similar to \u003ccode\u003eflattenArray\u003c/code\u003e, this function handles objects by iterating over each key-value pair and using recursion to flatten the structure. It is designed to work in tandem with \u003ccode\u003eflattenArray\u003c/code\u003e to ensure all nested objects and arrays are processed.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eCalculating Total Salaries\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003egetTotalSalaries\u003c/code\u003e function serves as the entry point for the salary calculation. It begins by creating a flat list of all salary values using the helper functions. Then, it utilizes the \u003ccode\u003ereduce\u003c/code\u003e method to sum up these values, resulting in the total sum of all salaries.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eEfficiency and Complexity\u003c/h2\u003e\n\u003cp\u003eThe time complexity of this solution primarily depends on the total number of employees and the depth of the nested structure. In the worst-case scenario, it would be O(n) where n is the total number of key-value pairs in the structure. The space complexity is also O(n) due to the storage required for the flat list of salaries and the recursive call stack.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThis solution elegantly addresses the problem of calculating total salaries within a nested organizational structure. By using recursion and carefully handling both arrays and objects, it ensures that all salary values, regardless of their location within the nesting, are accounted for in the final sum.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "JSON"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Google"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "6. Total Salaries - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Master the art of calculating total employee salaries within complex, nested company structures with our expert JavaScript guide. Dive into our detailed tutorial and enhance your data manipulation skills today!",
+        "pageURL": "total-salaries",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Total Salaries  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eYou are tasked with implementing a function named \u003ccode\u003ecalculateTotalSalaries\u003c/code\u003e that will navigate through a company\u0026#8217;s hierarchical structure to calculate the cumulative sum of salaries",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eThe \u0026#8220;Total Salaries\u0026#8221; solution employs a recursive approach to navigate through a nested object structure, which represents a company\u0026#8217;s departments and employees. T",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

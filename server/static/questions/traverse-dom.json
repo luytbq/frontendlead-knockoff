@@ -1,0 +1,145 @@
+{
+    "type": "coding",
+    "id": "traverse-dom",
+    "title": "16. Traverse DOM",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "traverse-dom",
+    "problemStatement": "\u003cp\u003eGiven a root node of a DOM tree, write a function to traverse the tree level by level and return an array of nodes in the order they are visited. This task simulates a breadth-first search (BFS) traversal of the Document Object Model (DOM), which is particularly useful for various web development tasks, such as manipulating or querying a webpage\u0026#8217;s structure.\u003c/p\u003e\n\u003cp\u003eThe function should take a single argument: the root node of the DOM tree to be traversed. It should return an array containing the nodes in the order they were visited during the traversal. The DOM tree can be visualized as a hierarchical structure of nodes, where each node represents an element in the webpage, and its children represent the nested elements within it.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eExample:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\r\nInput: Root node of a DOM tree representing the following HTML structure:\r\n\u0026lt;div\u0026gt;\r\n  \u0026lt;p\u0026gt;Paragraph 1\u0026lt;/p\u0026gt;\r\n  \u0026lt;div\u0026gt;\r\n    \u0026lt;p\u0026gt;Paragraph 2\u0026lt;/p\u0026gt;\r\n  \u0026lt;/div\u0026gt;\r\n\u0026lt;/div\u0026gt;\r\n\r\nOutput: [div, p (Paragraph 1), div, p (Paragraph 2)]\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis example illustrates a simple case where the function starts at the root \u003ccode\u003e\u0026lt;div\u0026gt;\u003c/code\u003e node, adds it to the results array, and then proceeds to its children, adding them to the array in the order they appear, level by level. The process continues until all nodes in the tree have been visited and added to the results array.\u003c/p\u003e\n\u003cp\u003eYour task is to implement this traversal function, ensuring that it accurately reflects the breadth-first search approach and correctly captures the structure of the DOM tree.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should return an array of nodes in level order",
+            "test": "it('should return an array of nodes in level order', (done) =\u003e {\r\n    // Create a simple DOM structure for the test\r\n    const root = document.createElement('div');\r\n    const child1 = document.createElement('p');\r\n    const child2 = document.createElement('span');\r\n    root.appendChild(child1);\r\n    root.appendChild(child2);\r\n\r\n    // Expected order is root, child1, child2\r\n    const expected = [root, child1, child2];\r\n    const result = traverseDOMLevelByLevel(root);\r\n\r\n    // Check if the result matches the expected level order\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should handle a single node",
+            "test": "it('should handle a single node', (done) =\u003e {\r\n    const root = document.createElement('div');\r\n    const expected = [root];\r\n    const result = traverseDOMLevelByLevel(root);\r\n\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should return an empty array for null input",
+            "test": "it('should return an empty array for null input', (done) =\u003e {\r\n    const result = traverseDOMLevelByLevel(null);\r\n    expect(result).to.be.an('array').that.is.empty;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should correctly traverse a more complex DOM tree",
+            "test": "it('should correctly traverse a more complex DOM tree', (done) =\u003e {\r\n    const root = document.createElement('div');\r\n    const child1 = document.createElement('ul');\r\n    const child2 = document.createElement('li');\r\n    const child3 = document.createElement('li');\r\n    child1.appendChild(child2);\r\n    child1.appendChild(child3);\r\n    root.appendChild(child1);\r\n\r\n    // Expected order is root, child1, child2, child3\r\n    const expected = [root, child1, child2, child3];\r\n    const result = traverseDOMLevelByLevel(root);\r\n\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The root node will always be a valid DOM node."
+        },
+        {
+            "constraint": "The DOM tree will not contain more than 10,000 nodes to ensure reasonable performance and avoid potential browser limitations."
+        },
+        {
+            "constraint": "The function should handle various types of DOM nodes (e.g., elements, text nodes, etc.), but the primary focus is on element nodes."
+        },
+        {
+            "constraint": "Nodes should be added to the output array in the exact order they are visited (i.e., level by level from left to right)."
+        },
+        {
+            "constraint": "The function should not use any external libraries or built-in functions that directly implement a level-order traversal."
+        },
+        {
+            "constraint": "Circular references in the DOM tree are not expected; however, the function should be robust enough to handle unexpected inputs gracefully."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function traverseDOMLevelByLevel(root) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default traverseDOMLevelByLevel;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function traverseDOMLevelByLevel(root) {\r\n  // Check if the root node is null, return an empty array if true\r\n  if (!root) return [];\r\n\r\n  // Initialize the queue with the root node to start the traversal from the top\r\n  const queue = [root];\r\n  // Initialize the results array to store the visited nodes\r\n  const results = [];\r\n\r\n  // Continue the loop until all nodes are visited (i.e., the queue is empty)\r\n  while (queue.length) {\r\n    // Remove the first node from the queue to process it\r\n    const current = queue.shift();\r\n    // Add the current node to the results array\r\n    results.push(current);\r\n    // Add all children of the current node to the queue for future visits\r\n    queue.push(...current.children);\r\n  }\r\n\r\n  // Return the array of visited nodes after completing the traversal\r\n  return results;\r\n}\r\n\r\n// Do not edit below this line\r\nexport default traverseDOMLevelByLevel;",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe task involves traversing a DOM tree starting from a given root node and visiting each node level by level. This method, known as Breadth-First Search (BFS) traversal, is commonly used in tree and graph algorithms. The challenge here is to apply this algorithm to the DOM tree, representing the hierarchical arrangement of elements on a webpage.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eThe Algorithm\u003c/h2\u003e\n\u003cp\u003eThe solution employs a queue to facilitate the BFS traversal, a First-In-First-Out (FIFO) data structure, ideal for keeping track of which node to visit next while ensuring that nodes are visited in their level order.\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003e\u003cstrong\u003eInitialization\u003c/strong\u003e: Check if the provided root node is null. Initialize a queue with the root node and an empty array named \u003ccode\u003eresults\u003c/code\u003e to store the visited nodes.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eTraversal Loop\u003c/strong\u003e: Continue the traversal as long as there are nodes in the queue, remove the first node from the queue, add it to the \u003ccode\u003eresults\u003c/code\u003e array, and then add all its children to the queue.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eCompletion\u003c/strong\u003e: Once the queue is empty, the traversal is complete, and the \u003ccode\u003eresults\u003c/code\u003e array containing the visited nodes is returned.\u003c/li\u003e\n\u003c/ol\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eExample\u003c/h2\u003e\n\u003cp\u003eConsider a simple DOM structure:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\u0026lt;div\u0026gt;\r\n  \u0026lt;p\u0026gt;Paragraph 1\u0026lt;/p\u0026gt;\r\n  \u0026lt;div\u0026gt;\r\n    \u0026lt;p\u0026gt;Paragraph 2\u0026lt;/p\u0026gt;\r\n  \u0026lt;/div\u0026gt;\r\n\u0026lt;/div\u0026gt;\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe traversal starts at the \u003ccode\u003e\u0026lt;div\u0026gt;\u003c/code\u003e root node, then visits \u003ccode\u003e\u0026lt;p\u0026gt;\u003c/code\u003e (Paragraph 1), the inner \u003ccode\u003e\u0026lt;div\u0026gt;\u003c/code\u003e, and finally \u003ccode\u003e\u0026lt;p\u0026gt;\u003c/code\u003e (Paragraph 2), resulting in an array: \u003ccode\u003e[div, p, div, p]\u003c/code\u003e.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eComplexity Analysis\u003c/h2\u003e\n\u003cp\u003e\u003cstrong\u003eTime Complexity\u003c/strong\u003e: O(N), where N is the number of nodes in the DOM tree. Each node is processed exactly once.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eSpace Complexity\u003c/strong\u003e: O(W), where W is the maximum width of the tree. This space is used to store nodes in the queue at the level with the maximum number of nodes.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003cp\u003eThe \u0026#8220;Traverse DOM Level By Level\u0026#8221; function is a practical implementation of BFS for DOM trees, enabling efficient traversal and manipulation of webpage structures. Mastering such traversal techniques is invaluable for front-end development.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "DOM API"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Amazon"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "16. Traverse DOM - Amazon Frontend Interview Question - FrontendLead",
+        "pageDescription": "Master the technique of traversing the DOM tree level by level with our in-depth guide. Perfect your frontend skills by understanding this essential web development concept.",
+        "pageURL": "traverse-dom",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Traverse DOM  Amazon Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eGiven a root node of a DOM tree, write a function to traverse the tree level by level and return an array of nodes in the order they are visited. This task simulates a breadth-first search (BFS) tr",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe task involves traversing a DOM tree starting from a given root node and visiting each node level by level. This method, known as Breadth-First Search (BFS) traversal, is com",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

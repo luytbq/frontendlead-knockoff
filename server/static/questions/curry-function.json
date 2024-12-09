@@ -1,0 +1,168 @@
+{
+    "type": "coding",
+    "id": "curry-function",
+    "title": "44. Curry Function",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "curry-function",
+    "problemStatement": "\u003cp\u003eThe goal is to implement a \u003ccode\u003ecurry\u003c/code\u003e function in JavaScript that allows a function to be called with arguments one at a time until all arguments have been provided, after which the original function is executed with all of the accumulated arguments. This technique is particularly useful in functional programming where functions are treated as first-class citizens and can be composed or chained together.\u003c/p\u003e\n\u003cp\u003eThe \u003ccode\u003ecurry\u003c/code\u003e function takes a callback as an argument and returns a new function. This new function can be called multiple times, each with a single argument, until no arguments are provided, at which point the original callback function is executed with all of the previously provided arguments.\u003c/p\u003e\n\u003cp\u003eUsage Example:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst curriedSum = curry((a, b, c) =\u003e a + b + c);\r\nconsole.log(curriedSum(1)(2)(3)()); // Outputs: 6\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis example defines a \u003ccode\u003ecurriedSum\u003c/code\u003e function that adds three numbers together. The \u003ccode\u003ecurry\u003c/code\u003e function enables \u003ccode\u003ecurriedSum\u003c/code\u003e to be called with one argument at a time, and finally, an empty call triggers the execution of the sum operation with all the provided arguments.\u003c/p\u003e\n\u003cp\u003eThis approach offers flexibility in how functions receive their arguments, enabling more dynamic and functional programming patterns.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should correctly curry a function with three arguments",
+            "test": "it('should correctly curry a function with three arguments', (done) =\u003e {\r\n    const sum = (a, b, c) =\u003e a + b + c;\r\n    const curriedSum = curry(sum);\r\n    expect(curriedSum(1)(2)(3)()).to.equal(6);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should allow currying with multiple arguments in a single call",
+            "test": "it('should allow currying with multiple arguments in a single call', (done) =\u003e {\r\n    const sum = (a, b, c) =\u003e a + b + c;\r\n    const curriedSum = curry(sum);\r\n    expect(curriedSum(1, 2)(3)()).to.equal(6);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should handle currying of a function with a single argument",
+            "test": "it('should handle currying of a function with a single argument', (done) =\u003e {\r\n    const identity = a =\u003e a;\r\n    const curriedIdentity = curry(identity);\r\n    expect(curriedIdentity(1)()).to.equal(1);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should correctly curry a function and maintain the correct order of arguments",
+            "test": "it('should correctly curry a function and maintain the correct order of arguments', (done) =\u003e {\r\n    const subtract = (a, b) =\u003e a - b;\r\n    const curriedSubtract = curry(subtract);\r\n    expect(curriedSubtract(10)(5)()).to.equal(5);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The curry function must accept exactly one function as its argument. This function can have any number of parameters."
+        },
+        {
+            "constraint": "The returned curried function should be able to accept one argument at a time. However, it can also support receiving multiple arguments in a single call, e.g., curriedFn(a)(b, c)."
+        },
+        {
+            "constraint": "The curried function should not execute the original function until it's called with an empty argument list, e.g., curriedFn(a)(b)(c)()."
+        },
+        {
+            "constraint": "The original function should be called with all the arguments provided in the previous calls once the curried function is invoked with an empty argument list."
+        },
+        {
+            "constraint": "The curry function should ensure that the context (this value) of the original function is preserved."
+        },
+        {
+            "constraint": "The curry function should ensure that the context (this value) of the original function is preserved."
+        },
+        {
+            "constraint": "The original function must be called only once, and its result should be returned immediately upon receiving the empty argument list in the curried function."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function curry(callback) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default curry;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function curry(callback) {\r\n  // Define a new function that will be returned by the `curry` function.\r\n  const currier = function(...args) {\r\n    // If no arguments were passed in, call the original function and return its result.\r\n    if (!args.length) return callback();\r\n    \r\n    // If some arguments were passed in, return a new function that will wait for more arguments.\r\n    return function(...secondArgs) {\r\n      // If no second arguments were passed in, call the original function with the first set of arguments and return its result.\r\n      if (!secondArgs.length) return callback(...args);\r\n      \r\n      // If second arguments were passed in, return a new function that will wait for even more arguments.\r\n      // This is done by calling the `currier` function recursively with the first set of arguments and the second set of arguments.\r\n      return currier(...args, ...secondArgs);\r\n    };\r\n  };\r\n\r\n  // Return the new `currier` function that was defined above.\r\n  return currier;\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe \u003ccode\u003ecurry\u003c/code\u003e function in JavaScript is a fundamental concept in functional programming that transforms a multi-argument function into a sequence of functions, each accepting a single argument. This transformation allows for partial application of functions, making function composition more flexible.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eBreaking Down the Curry Function\u003c/h2\u003e\n\u003cp\u003eThe provided \u003ccode\u003ecurry\u003c/code\u003e function implementation works by returning a nested function, \u003ccode\u003ecurrier\u003c/code\u003e, which collects arguments over successive calls. This process continues until \u003ccode\u003ecurrier\u003c/code\u003e is invoked without any arguments, signaling that all necessary arguments have been gathered and the original function can be executed with them.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eKey Components\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eThe Currier Function:\u003c/strong\u003e An inner function that serves as the mechanism for collecting arguments. It uses rest parameters to accept an arbitrary number of arguments and checks if it\u0026#8217;s called with any arguments to decide the next step.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eArgument Accumulation:\u003c/strong\u003e If \u003ccode\u003ecurrier\u003c/code\u003e is called with arguments, it returns another instance of itself, ready to collect more arguments. This recursive process facilitates the accumulation of arguments.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eExecuting the Original Function:\u003c/strong\u003e When \u003ccode\u003ecurrier\u003c/code\u003e is finally invoked without arguments, it calls the original function, passed as \u003ccode\u003ecallback\u003c/code\u003e, with all the collected arguments, returning the result.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eIllustrative Example\u003c/h2\u003e\n\u003cp\u003eConsider the function \u003ccode\u003esum(a, b, c)\u003c/code\u003e. Using the \u003ccode\u003ecurry\u003c/code\u003e function, it becomes \u003ccode\u003ecurriedSum(a)(b)(c)()\u003c/code\u003e, allowing each argument to be supplied in separate function calls. The final invocation without arguments triggers the calculation of the sum.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eBenefits of Currying\u003c/h2\u003e\n\u003cp\u003eCurrying enhances the flexibility in function invocation, enabling partial application where a function\u0026#8217;s arguments can be fixed in advance, simplifying further calls.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": null,
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "How to build 44. Curry Function in Javascript - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Dive into the world of functional programming in JavaScript with our detailed guide on the curry function. Learn how to transform functions for flexible argument handling and partial application.",
+        "pageURL": "curry-function",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement How to build  Curry Function in Javascript  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eThe goal is to implement a \u003ccode\u003ecurry\u003c/code\u003e function in JavaScript that allows a function to be called with arguments one at a time until all arguments have been provided, after which the origina",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003cp\u003eThe \u003ccode\u003ecurry\u003c/code\u003e function in JavaScript is a fundamental concept in functional programming that transforms a multi-argument function into a sequence of functions, each acc",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+nd constraints of your project, including the expected input array size and depth. While the recursive method is concise and elegant, the iterative method provides a robust alternative for handling large and deeply nested arrays without the risk of stack overflow.\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 10,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/UV9Lp-3uwwg?si=sIkEur5qGudwyPgh",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

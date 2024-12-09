@@ -1,0 +1,172 @@
+{
+    "type": "coding",
+    "id": "top-k-words",
+    "title": "31. Top K Words",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "top-k-words",
+    "problemStatement": "\u003cp\u003eWrite a function \u003ccode\u003etopKWords(log, k)\u003c/code\u003e that analyzes a given log file content and identifies the top K most frequently occurring words within it. The function should return an array containing these top K words, sorted by their frequency of occurrence in descending order.\u003c/p\u003e\n\u003cp\u003eFor instance, given a log:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\r\nMay 12, 2023: User1 logged in.\r\nMay 13, 2023: User2 logged in.\r\nMay 13, 2023: User1 performed an action.\r\nMay 14, 2023: User3 logged in.\r\nMay 15, 2023: User2 performed an action.\r\nMay 15, 2023: User1 logged out.\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eAnd a value of K = 3, the function \u003ccode\u003etopKWords(log, 3)\u003c/code\u003e should return:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e['User1', 'logged', 'May']\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis output represents the top 3 most frequently occurring words in the log, which are \u0026#8216;User1\u0026#8217;, \u0026#8216;logged\u0026#8217;, and \u0026#8216;May\u0026#8217; in this example.\u003c/p\u003e\n\u003cp\u003eThe function should process the log content to count word occurrences, then sort and return the most frequent words up to the specified limit of K.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should correctly identify the top K words",
+            "test": "it('should correctly identify the top K words', (done) =\u003e {\r\n    const input = \"apple banana apple orange banana apple\";\r\n    const k = 2;\r\n    const expected = ['apple', 'banana'];\r\n    const result = topKWords(input, k);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should be case-sensitive",
+            "test": "it('should be case-sensitive', (done) =\u003e {\r\n    const input = \"Apple apple apple Banana banana orange Orange\";\r\n    const k = 2;\r\n    // Expected 'apple' and 'Apple' to be counted separately due to case sensitivity\r\n    const expected = ['apple', 'Apple']; \r\n    const result = topKWords(input, k);\r\n    expect(result).to.deep.include.members(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should not ignore punctuation",
+            "test": "it('should not ignore punctuation', (done) =\u003e {\r\n    const input = \"apple, apple; banana! orange? apple.\";\r\n    const k = 1;\r\n    // Expected 'apple,' to be the most frequent due to not ignoring punctuation\r\n    const expected = ['apple,'];\r\n    const result = topKWords(input, k);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should handle numbers as words",
+            "test": "it('should handle numbers as words', (done) =\u003e {\r\n    const input = \"1 apple 2 apple 3 banana 1 1\";\r\n    const k = 2;\r\n    const expected = ['1', 'apple'];\r\n    const result = topKWords(input, k);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should handle K larger than unique word count",
+            "test": "it('should handle K larger than unique word count', (done) =\u003e {\r\n    const input = \"apple banana orange\";\r\n    const k = 5;\r\n    const result = topKWords(input, k);\r\n    expect(result.length).to.be.at.most(k);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 5,
+            "description": "should return an empty array when K is 0",
+            "test": "it('should return an empty array when K is 0', (done) =\u003e {\r\n    const input = \"apple banana orange\";\r\n    const k = 0;\r\n    const expected = [];\r\n    const result = topKWords(input, k);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 6,
+            "description": "should accurately count word frequencies",
+            "test": "it('should accurately count word frequencies', (done) =\u003e {\r\n    const input = \"apple apple banana apple banana banana\";\r\n    const k = 2;\r\n    const expected = ['apple', 'banana']; // or ['banana', 'apple'] depending on the implementation\r\n    const result = topKWords(input, k);\r\n    expect(result).to.include.members(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 7,
+            "description": "should perform well on long input",
+            "test": "it('should perform well on long input', (done) =\u003e {\r\n    const input = new Array(10000).fill(\"apple banana orange\").join(\" \");\r\n    const k = 3;\r\n    const expected = ['apple', 'banana', 'orange'];\r\n    const result = topKWords(input, k);\r\n    expect(result).to.include.members(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Input is a single string (the log) and a positive integer K."
+        },
+        {
+            "constraint": "Words are separated by spaces; punctuation is not considered part of the word."
+        },
+        {
+            "constraint": "Word comparisons are case-insensitive, but the output retains the original case."
+        },
+        {
+            "constraint": "The output is an array of the top K most frequent words, sorted by frequency."
+        },
+        {
+            "constraint": "Ties in frequency are allowed; the order among tied words is not specified."
+        },
+        {
+            "constraint": "Efficient handling of large logs is expected."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function topKWords(log, k) {\r\n   // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default topKWords",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function topKWords(input, k) {\r\n  // Create an object to store word counts\r\n  const wordCounts = {};\r\n\r\n  // Split the input into an array of words\r\n  let listOfWords = input.split(' ');\r\n\r\n  // Count the occurrences of each word\r\n  listOfWords.forEach(item =\u003e {\r\n    if (!wordCounts[item]) {\r\n      wordCounts[item] = 0;\r\n    }\r\n    wordCounts[item]++;\r\n  });\r\n\r\n  // Sort the words based on occurrence count in descending order\r\n  const sortedWords = Object.keys(wordCounts).sort((a, b) =\u003e wordCounts[b] - wordCounts[a]);\r\n\r\n  // Take the top K words from the sorted list\r\n  const topWords = sortedWords.slice(0, k);\r\n\r\n  return topWords;\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eFinding the Top K Most Used Words in a Log File\u003c/h2\u003e\n\u003cp\u003eIn this guide, we explore a solution for extracting the top K most frequently occurring words from a log file, a common task in data analysis and natural language processing. Our approach involves parsing the log content, counting word frequencies, and then sorting these to identify the most common terms.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eUnderstanding the Solution\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003etopKWords\u003c/code\u003e function is designed to process a log file\u0026#8217;s content and determine the most frequently used words. It utilizes JavaScript\u0026#8217;s string manipulation and object properties to efficiently count and rank words based on their occurrence.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eStep-by-Step Breakdown\u003c/h2\u003e\n\u003col\u003e\n\u003cli\u003e\u003cstrong\u003eSplitting the Log:\u003c/strong\u003e The log content is divided into individual words using the \u003ccode\u003esplit\u003c/code\u003e method, treating spaces as delimiters.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eWord Counting:\u003c/strong\u003e Each word\u0026#8217;s frequency is tallied, employing an object where keys represent words and values denote counts.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eSorting:\u003c/strong\u003e Words are then sorted by frequency in descending order to prioritize the most common terms.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eSelecting Top K Words:\u003c/strong\u003e The sorted array of words is sliced to retain only the top K entries, as specified by the function\u0026#8217;s second parameter.\u003c/li\u003e\n\u003c/ol\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eKey Considerations\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003eThe function is case-sensitive and considers different casings of the same word as distinct entries.\u003c/li\u003e\n\u003cli\u003ePunctuation and special characters adjacent to words might affect the word splitting, potentially leading to inaccuracies in counting.\u003c/li\u003e\n\u003cli\u003eThe choice of K impacts the output array\u0026#8217;s size, with larger values offering a broader view of common terms in the log.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003etopKWords\u003c/code\u003e function offers a straightforward yet powerful tool for analyzing text data. By identifying the most frequent words, users can gain insights into recurring themes and subjects within logs or other text corpora.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Algorithmic"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Find 31. Top K Words - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Uncover insights and trends in your log files and text data by learning how to identify the most frequently occurring words with our JavaScript function guide. Perfect for data analysis and natural language processing tasks.",
+        "pageURL": "top-k-words",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Find  Top K Words  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function \u003ccode\u003etopKWords(log, k)\u003c/code\u003e that analyzes a given log file content and identifies the top K most frequently occurring words within it. The function should return an array contai",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eFinding the Top K Most Used Words in a Log File\u003c/h2\u003e\n\u003cp\u003eIn this guide, we explore a solution for extracting the top K most frequently occurring words from a log file, a common ",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+   "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

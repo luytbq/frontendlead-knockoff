@@ -1,0 +1,118 @@
+{
+    "type": "vanilla",
+    "id": "histogram",
+    "title": "2. Histogram",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "histogram",
+    "problemStatement": "\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" class=\"alignnone size-medium wp-image-299\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screen-Shot-2023-05-15-at-6.38.31-PM-300x118.png\" alt=\"\" width=\"300\" height=\"118\" srcset=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screen-Shot-2023-05-15-at-6.38.31-PM-300x118.png 300w, https://api.frontendlead.com/wp-content/uploads/2024/03/Screen-Shot-2023-05-15-at-6.38.31-PM.png 527w\" sizes=\"(max-width: 300px) 100vw, 300px\" /\u003e\u003c/p\u003e\n\u003cp\u003eYou are given an array of numbers. Your task is to write a function \u003ccode\u003ebuildHistogram()\u003c/code\u003e that generates a histogram based on the occurrences of each unique number in the array. The histogram should visually represent the frequency of each number with vertical bars, displaying the count on the left axis.\u003c/p\u003e\n\u003cp\u003eThis challenge involves:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eCounting the occurrences of each unique number in the given array.\u003c/li\u003e\n\u003cli\u003eBuilding a histogram where each bar represents the frequency of a unique number.\u003c/li\u003e\n\u003cli\u003eDisplaying the frequency on the left axis of the histogram.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e\u003cstrong\u003eExample:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003eInput: [2, 4, 5, 2, 3, 4]\r\nHistogram:\r\n4 |      ##\r\n3 |     ####\r\n2 |    ######\r\n1 |   ########\r\n    ---------\r\n     2  3  4  5\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eYour implementation should dynamically generate the histogram based on the input array, accommodating arrays with varying lengths and ranges of numbers. Consider the visualization aspect of the histogram, ensuring that the bars are proportional and accurately reflect the data\u0026#8217;s distribution.\u003c/p\u003e\n",
+    "premiumQuestion": false,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should accurately count the frequency of each number in the array",
+            "test": "it('should accurately count the frequency of each number in the array', (done) =\u003e {\r\n    const list = [2, 3, 2, 4, 5, 3];\r\n    const expectedCounts = {2: 2, 3: 2, 4: 1, 5: 1};\r\n    const result = HistogramBuilder.buildObjectBySeenCount(list);\r\n    expect(result).to.deep.equal(expectedCounts);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should handle an empty array without errors",
+            "test": "it('should handle an empty array without errors', (done) =\u003e {\r\n    const list = [];\r\n    const expectedCounts = {};\r\n    const result = HistogramBuilder.buildObjectBySeenCount(list);\r\n    expect(result).to.deep.equal(expectedCounts);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should handle negative numbers correctly",
+            "test": "it('should handle negative numbers correctly', (done) =\u003e {\r\n    const list = [-2, -2, -3, -3, -3, 1];\r\n    const expectedCounts = {'-2': 2, '-3': 3, '1': 1}; // Use strings for keys\r\n    const result = HistogramBuilder.buildObjectBySeenCount(list);\r\n    expect(result).to.deep.equal(expectedCounts);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should ensure buildHistogram modifies the DOM as expected",
+            "test": "it('should ensure buildHistogram modifies the DOM as expected', (done) =\u003e {\r\n    // Define mockDOM function\r\n    function mockDOM() {\r\n      // Clear the global document body to ensure a clean slate for each test\r\n      document.body.innerHTML = '';\r\n\r\n      // Create and append the histogram container to the body\r\n      const histogram = document.createElement('div');\r\n      histogram.id = 'histogram';\r\n      document.body.appendChild(histogram);\r\n\r\n      // Create and append the left-axis, bottom-axis, and content divs to the histogram container\r\n      const leftAxis = document.createElement('div');\r\n      leftAxis.className = 'left-axis';\r\n      histogram.appendChild(leftAxis);\r\n\r\n      const bottomAxis = document.createElement('div');\r\n      bottomAxis.className = 'bottom-axis';\r\n      histogram.appendChild(bottomAxis);\r\n\r\n      const content = document.createElement('div');\r\n      content.className = 'content';\r\n      histogram.appendChild(content);\r\n    }\r\n\r\n    // Define checkHistogramDOM function\r\n    function checkHistogramDOM() {\r\n      // Retrieve elements from the mock DOM\r\n      const leftAxis = document.querySelector('.left-axis');\r\n      const bottomAxis = document.querySelector('.bottom-axis');\r\n      const content = document.querySelector('.content');\r\n\r\n      // Check if the elements have been populated as expected\r\n      const hasLeftAxisLabels = leftAxis.children.length \u003e 0;\r\n      const hasBottomAxisLabels = bottomAxis.children.length \u003e 0;\r\n      const hasContentBars = content.children.length \u003e 0;\r\n\r\n      // Return true if all conditions are met\r\n      return hasLeftAxisLabels \u0026\u0026 hasBottomAxisLabels \u0026\u0026 hasContentBars;\r\n    }\r\n    \r\n    const list = [1, 2, 2, 3, 3, 3];\r\n    // Assuming a function mockDOM() to mock necessary DOM elements for the test\r\n    mockDOM();\r\n    HistogramBuilder.buildHistogram(list);\r\n    \r\n    // This is a conceptual test; you might need to implement specific DOM checks\r\n    // For the purpose of this example, assume `checkHistogramDOM` validates the DOM changes\r\n    const isHistogramBuiltCorrectly = checkHistogramDOM();\r\n    expect(isHistogramBuiltCorrectly).to.be.true;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The input array may contain both positive and negative integers."
+        },
+        {
+            "constraint": "The input array will not contain non-integer values."
+        },
+        {
+            "constraint": "The length of the input array will not exceed 10,000 elements."
+        },
+        {
+            "constraint": "The histogram should accurately represent the frequency of each unique number, regardless of the range of values in the input array."
+        },
+        {
+            "constraint": "The histogram's vertical bars should be proportional to the highest frequency to ensure a visually coherent representation."
+        },
+        {
+            "constraint": "The function should not modify the original input array."
+        },
+        {
+            "constraint": "The implementation should focus on readability and efficiency, with a time complexity aim of O(n) where n is the number of elements in the input array."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "const HistogramBuilder = {\r\n  buildObjectBySeenCount: function(list) {\r\n    // Write your code here\r\n  },\r\n\r\n  buildHistogram: function(list) {\r\n  \t// Write your code here\r\n  }\r\n};\r\n\r\n// To visually test your code via output tab\r\nconst list = [2, 4, 5, 2, 3, 4];\r\nHistogramBuilder.buildHistogram(list);\r\n\r\n// Do not edit below this line\r\nexport default HistogramBuilder;",
+    "starterHTMLCode": "\u003cdiv id=\"histogram\"\u003e\r\n  \u003cdiv class=\"left-axis\"\u003e\u003c/div\u003e\r\n  \u003cdiv class=\"bottom-axis\"\u003e\u003c/div\u003e\r\n  \u003cdiv class=\"content\"\u003e\u003c/div\u003e\r\n\u003c/div\u003e",
+    "starterCSSCode": "#histogram {\r\n  width: calc(100% - 60px);\r\n  height: 150px;\r\n  background: #000;\r\n  position: relative;\r\n  border: 10px solid #999;\r\n  margin: 20px;\r\n}\r\n\r\n#histogram .left-axis {\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  width: 20px;\r\n  height: calc(100% - 20px);\r\n  background: green;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  flex-direction: column;\r\n  text-align: center;\r\n  align-items: center;\r\n}\r\n\r\n#histogram .left-axis div {\r\n  flex-grow: 1;\r\n  border-top: 2px solid #000;\r\n  width: 100%;\r\n  padding-top: 5px;\r\n}\r\n\r\n#histogram .bottom-axis {\r\n  position: absolute;\r\n  right: 0;\r\n  bottom: 0;\r\n  width: calc(100% - 20px);\r\n  height: 20px;\r\n  background: blue;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  text-align: center;\r\n}\r\n\r\n#histogram .bottom-axis div,\r\n#histogram .content div{\r\n  flex-basis: 0;\r\n  flex-grow: 0.2;\r\n  border-right: 2px;\r\n}\r\n\r\n#histogram .content {\r\n  position: absolute;\r\n  left: 20px;\r\n  bottom: 20px;\r\n  width: calc(100% - 20px);\r\n  height: calc(100% - 20px);\r\n  background: red;\r\n  display: flex;\r\n  align-items: end;\r\n  justify-content: center;\r\n  text-align: bottom;\r\n  gap: 10px;\r\n  align-self: flex-end;\r\n}\r\n\r\n#histogram .content div {\r\n  background: rgba(255,255,255, 0.5);\r\n  height: 100%;\r\n  height: 0;\r\n  transition: 1s all;\r\n}",
+    "solutionCode": "const HistogramBuilder = {\r\n  // Function to count occurrences of each item in the list\r\n  buildObjectBySeenCount: function(list) {\r\n    const result = {};\r\n    // Iterate over each item in the list\r\n    list.forEach(item =\u003e {\r\n      // If the item hasn't been encountered before, initialize its count to 0\r\n      // Then increment the count for this item\r\n      result[item] = (result[item] || 0) + 1;\r\n    });\r\n    // Return the object containing counts of each item\r\n    return result;\r\n  },\r\n\r\n  // Function to build and display the histogram based on the list provided\r\n  buildHistogram: function(list) {\r\n    // Generate an object with counts of each unique item in the list\r\n    const data = this.buildObjectBySeenCount(list);\r\n    // Select the DOM elements for the histogram's axes and content\r\n    const leftAxis = document.querySelector('.left-axis');\r\n    const bottomAxis = document.querySelector('.bottom-axis');\r\n    const contentAxis = document.querySelector('.content');\r\n    const leftAxisValues = []; // To keep track of unique frequency values\r\n\r\n    // Populate the left axis with frequency values\r\n    for (const key in data) {\r\n      const val = data[key];\r\n      // If this frequency value hasn't been added to the left axis yet, add it\r\n      if (!leftAxisValues.includes(val)) {\r\n        leftAxisValues.push(val);\r\n        const keyElement = document.createElement('div');\r\n        keyElement.textContent = val; // Set the text to the frequency value\r\n        leftAxis.appendChild(keyElement); // Append this element to the left axis\r\n      }\r\n    }\r\n\r\n    // Generate bars in the histogram for each unique item\r\n    for (const key in data) {\r\n      const val = data[key];\r\n      const keyElement = document.createElement('div');\r\n      keyElement.textContent = key; // Label for the bar, representing the item\r\n      const valElement = document.createElement('div');\r\n      // Set the height of the bar proportional to its frequency relative to the highest frequency\r\n      valElement.style.height = ((val / Math.max(...leftAxisValues)) * 100) + '%';\r\n\r\n      bottomAxis.appendChild(keyElement); // Append the label to the bottom axis\r\n      contentAxis.appendChild(valElement); // Append the bar to the histogram content area\r\n    }\r\n  }\r\n};",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003eThe \u003ccode\u003eHistogramBuilder\u003c/code\u003e solution is designed to build a histogram from a given list of numbers, illustrating the frequency of each unique number within that list. The solution is encapsulated within an object that contains two primary functions: \u003ccode\u003ebuildObjectBySeenCount\u003c/code\u003e and \u003ccode\u003ebuildHistogram\u003c/code\u003e.\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eCounting Occurrences with buildObjectBySeenCount\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003ebuildObjectBySeenCount\u003c/code\u003e function serves the purpose of creating a mapping from each unique number in the input array to its frequency. Here\u0026#8217;s a step-by-step breakdown of its process:\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003eAn empty object \u003ccode\u003eresult\u003c/code\u003e is initialized to store the frequency counts.\u003c/li\u003e\n\u003cli\u003eThe function iterates over each number in the provided list.\u003c/li\u003e\n\u003cli\u003eFor each number, the function checks if it already exists as a key in \u003ccode\u003eresult\u003c/code\u003e. If not, it sets the key with a value of 0.\u003c/li\u003e\n\u003cli\u003eThe value (count) associated with that key is then incremented by 1.\u003c/li\u003e\n\u003cli\u003eAfter processing all numbers, the \u003ccode\u003eresult\u003c/code\u003e object, containing the counts of all unique numbers, is returned.\u003c/li\u003e\n\u003c/ol\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eBuilding the Histogram with buildHistogram\u003c/h2\u003e\n\u003cp\u003eOnce the occurrences of each number are counted, \u003ccode\u003ebuildHistogram\u003c/code\u003e visualizes this data. The steps involved are as follows:\u003c/p\u003e\n\u003col\u003e\n\u003cli\u003eThe function first invokes \u003ccode\u003ebuildObjectBySeenCount\u003c/code\u003e with the provided list to get the frequency data.\u003c/li\u003e\n\u003cli\u003eIt then selects DOM elements designated for the histogram\u0026#8217;s axes and content area.\u003c/li\u003e\n\u003cli\u003eFor the left axis (representing frequencies), the function iterates through the frequency data, adding a new element for each unique frequency.\u003c/li\u003e\n\u003cli\u003eFor the bottom axis (representing unique numbers) and the content area (representing the bars of the histogram), the function iterates through the frequency data again, this time creating a label for each unique number and a bar whose height is proportional to its frequency.\u003c/li\u003e\n\u003cli\u003eThese labels and bars are then appended to their respective elements in the DOM, visually constructing the histogram.\u003c/li\u003e\n\u003c/ol\u003e\n\u003cp\u003eThis approach ensures that the histogram dynamically reflects the distribution of numbers in any given list, providing a clear visual representation of their frequencies.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eHistogramBuilder\u003c/code\u003e object offers a concise yet powerful method for both calculating the frequency of numbers in a list and visually representing this data as a histogram. Through its well-structured functions, it encapsulates the entire process from data processing to DOM manipulation, making it an effective tool for data visualization tasks.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "App Design"
+    ],
+    "likes": 6,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/jSzkUAe4YBc",
+    "company": [
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Building a Dynamic Histogram in JavaScript - Frontend Interview - FrontendLead",
+        "pageDescription": "Learn how to build a dynamic histogram in JavaScript with our step-by-step guide. Understand key concepts in data visualization and enhance your frontend skills.",
+        "pageURL": "histogram",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Building a Dynamic Histogram in JavaScript  Frontend Interview  FrontendLead in Javascript?",
+            "text": "\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" class=\"alignnone size-medium wp-image-299\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screen-Shot-2023-05-15-at-6.38.31-PM-300x118.png\" alt=\"\"",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eThe \u003ccode\u003eHistogramBuilder\u003c/code\u003e solution is designed to build a histogram from a given list of numbers, illustrating the frequency of each unique number within that list. The solu",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

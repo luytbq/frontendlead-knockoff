@@ -1,0 +1,150 @@
+{
+    "type": "coding",
+    "id": "roman-numeral-to-int",
+    "title": "83. Roman Numeral To Int",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "roman-numeral-to-int",
+    "problemStatement": "\u003cp\u003eImplement a function \u003ccode\u003eromanToInteger\u003c/code\u003e that converts a Roman numeral string to an integer. Roman numerals are represented by seven different symbols: \u003ccode\u003eI\u003c/code\u003e, \u003ccode\u003eV\u003c/code\u003e, \u003ccode\u003eX\u003c/code\u003e, \u003ccode\u003eL\u003c/code\u003e, \u003ccode\u003eC\u003c/code\u003e, \u003ccode\u003eD\u003c/code\u003e and \u003ccode\u003eM\u003c/code\u003e.\u003c/p\u003e\n\u003cp\u003eThe rules for Roman numeral conversion are as follows:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003ccode\u003eI\u003c/code\u003e can be placed before \u003ccode\u003eV\u003c/code\u003e (5) and \u003ccode\u003eX\u003c/code\u003e (10) to make 4 and 9.\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003eX\u003c/code\u003e can be placed before \u003ccode\u003eL\u003c/code\u003e (50) and \u003ccode\u003eC\u003c/code\u003e (100) to make 40 and 90.\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003eC\u003c/code\u003e can be placed before \u003ccode\u003eD\u003c/code\u003e (500) and \u003ccode\u003eM\u003c/code\u003e (1000) to make 400 and 900.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e\u003cstrong\u003eFunction Signature:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003efunction romanToInteger(str: string): number\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003e\u003cstrong\u003eExample Usage:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst result = romanToInteger(\"MCMXCIV\");\r\nconsole.log(result);  // Output: 1994\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eYour solution should handle strings representing Roman numerals in the range from 1 to 3999. The input string is guaranteed to be a valid Roman numeral up to 3999.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should convert basic Roman numerals correctly",
+            "test": "it('should convert basic Roman numerals correctly', (done) =\u003e {\r\n    // Test for a basic numeral without subtraction logic\r\n    expect(romanToInteger(\"III\")).to.equal(3);\r\n    expect(romanToInteger(\"VIII\")).to.equal(8);\r\n    expect(romanToInteger(\"XXII\")).to.equal(22);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should handle Roman numerals with subtraction logic",
+            "test": "it('should handle Roman numerals with subtraction logic', (done) =\u003e {\r\n    // Test for numerals that include the subtraction principle\r\n    expect(romanToInteger(\"IV\")).to.equal(4);\r\n    expect(romanToInteger(\"IX\")).to.equal(9);\r\n    expect(romanToInteger(\"XL\")).to.equal(40);\r\n    expect(romanToInteger(\"XC\")).to.equal(90);\r\n    expect(romanToInteger(\"CD\")).to.equal(400);\r\n    expect(romanToInteger(\"CM\")).to.equal(900);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should convert complex Roman numerals correctly",
+            "test": "it('should convert complex Roman numerals correctly', (done) =\u003e {\r\n    // Test for more complex numerals combining addition and subtraction principles\r\n    expect(romanToInteger(\"MCMXCIV\")).to.equal(1994);\r\n    expect(romanToInteger(\"MMXX\")).to.equal(2020);\r\n    expect(romanToInteger(\"DLV\")).to.equal(555);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Input Range: The function should handle Roman numeral strings representing values from 1 (I) to 3999 (MMMCMXCIX) inclusively."
+        },
+        {
+            "constraint": "Valid Input: The input string is guaranteed to be a valid Roman numeral within the specified range. There's no need to implement validation for incorrect Roman numeral strings or values outside the specified range."
+        },
+        {
+            "constraint": "Optimization: The function should aim for efficient computation, ideally achieving a time complexity of O(n), where n is the length of the input string."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function romanToInteger(str) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default romanToInteger;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function romanToInteger(str) {\r\n  // Create a map of Roman numeral characters to their integer values\r\n  const numerals = new Map([\r\n    [\"I\", 1],\r\n    [\"V\", 5],\r\n    [\"X\", 10],\r\n    [\"L\", 50],\r\n    [\"C\", 100],\r\n    [\"D\", 500],\r\n    [\"M\", 1000],\r\n  ]);\r\n\r\n  // Reverse the input string to simplify subtraction logic\r\n  const backwards = str.split('').reverse();\r\n\r\n  // Initialize a variable to keep track of the previous numeral value\r\n  let prev = 0;\r\n\r\n  // Use the reduce function to calculate the integer value\r\n  return backwards.reduce((sum, char) =\u003e {\r\n    // Get the integer value of the current Roman numeral character\r\n    const value = numerals.get(char);\r\n\r\n    // Check if the current value is greater than or equal to the previous value\r\n    if (value \u003e= prev) {\r\n      // Add the current value to the sum\r\n      sum += value;\r\n    } else {\r\n      // Subtract the current value from the sum (e.g., IV = 4, not 6)\r\n      sum -= value;\r\n    }\r\n\r\n    // Update the previous value for the next iteration\r\n    prev = value;\r\n\r\n    return sum;\r\n  }, 0); // The initial sum is 0\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eConverting Roman Numerals to Integers\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eUnderstanding the conversion of Roman numerals to their integer equivalents is essential for various applications, including historical data analysis, software development, and educational tools. The \u003ccode\u003eromanToInteger\u003c/code\u003e function showcases an efficient method to achieve this conversion using a straightforward algorithmic approach.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eAlgorithm Overview\u003c/h2\u003e\n\u003cp\u003eThe conversion process relies on a map of Roman numerals to their integer values and a reverse traversal of the input string. This reverse order simplifies the handling of the subtraction principle found in Roman numeral notation, such as IV representing 4 instead of 6 (V \u0026#8211; I = 4).\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eKey Steps in the Conversion Process\u003c/h2\u003e\n\u003cul\u003e\n\u003cli\u003eThe function initializes a map correlating Roman characters to their respective integer values.\u003c/li\u003e\n\u003cli\u003eIt reverses the input string to start the conversion from the lowest significant numeral, simplifying the detection and application of the subtraction principle.\u003c/li\u003e\n\u003cli\u003eUsing a loop, the function iterates over each character in the reversed string, converting it to its integer value and applying addition or subtraction to a cumulative sum based on the value\u0026#8217;s comparison to its predecessor.\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHandling Subtractive Notation\u003c/h2\u003e\n\u003cp\u003eSubtractive notation, a unique feature of Roman numerals where a smaller numeral preceding a larger one indicates subtraction (e.g., IV for 4), is elegantly handled by this reverse traversal method. When a numeral of lesser value precedes one of greater value, the function subtracts this lesser value from the total, correctly applying the subtractive principle.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eromanToInteger\u003c/code\u003e function efficiently translates Roman numeral strings into their integer counterparts, respecting the nuances of Roman numeral rules. Its implementation demonstrates the practical application of algorithmic thinking to solve real-world problems.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Algorithmic"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "83. Roman Numeral To Int - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Master the art of converting Roman numerals to integers with our simple and efficient guide. Ideal for students, educators, and developers, our method ensures accurate conversions every time.",
+        "pageURL": "roman-numeral-to-int",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Roman Numeral To Int  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eImplement a function \u003ccode\u003eromanToInteger\u003c/code\u003e that converts a Roman numeral string to an integer. Roman numerals are represented by seven different symbols: \u003ccode\u003eI\u003c/code\u003e, \u003ccode\u003eV\u003c/code\u003e, \u003ccode",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eConverting Roman Numerals to Integers\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eUnderstanding the conversion of Roman numerals to their integer equivalents is essential for various applications, including histo",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+nerally O(n) but can be worse depending on the recursion\u0026#8217;s depth and the function call overhead.\u003c/p\u003e\n\u003cp\u003eOn the other hand, the iterative approach avoids potential stack overflow issues and provides a more controlled execution flow. However, due to the unshift operation\u0026#8217;s O(n) complexity in each step, this method can result in quadratic time complexity O(n^2) in the worst case, making it less efficient for large arrays.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003eIn conclusion, the choice between recursive and iterative approaches to array flattening depends on the specific requirements and constraints of your project, including the expected input array size and depth. While the recursive method is concise and elegant, the iterative method provides a robust alternative for handling large and deeply nested arrays without the risk of stack overflow.\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 10,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/UV9Lp-3uwwg?si=sIkEur5qGudwyPgh",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

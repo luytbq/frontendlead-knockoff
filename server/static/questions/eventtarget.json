@@ -1,0 +1,129 @@
+{
+    "type": "coding",
+    "id": "eventtarget",
+    "title": "15. Event Target",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "eventtarget",
+    "problemStatement": "\u003cp\u003eYou are tasked with building an \u003ccode\u003eEventTarget\u003c/code\u003e class in JavaScript, structured to efficiently handle events. This class is fundamental for registering event listeners, removing these listeners, and dispatching events to the registered listeners.\u003c/p\u003e\n\u003cp\u003eThe \u003ccode\u003eEventTarget\u003c/code\u003e class should encapsulate three primary methods:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eaddEventListener(name, callback):\u003c/strong\u003e Utilized to register event listeners. Whenever an event with the specified name is dispatched, the corresponding callback functions are invoked. This method should prevent the addition of duplicate callback functions for the same event.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eremoveEventListener(name, callback):\u003c/strong\u003e Employed to deregister a previously added event listener. If the specified callback is located within the event\u0026#8217;s callback list, it should be removed. Should the callback list become empty as a result, the event should be completely removed from the class\u0026#8217;s registry.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003edispatchEvent(name):\u003c/strong\u003e Used to trigger events. It executes all callback functions associated with the provided event name.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e\u003cstrong\u003eExample Usage:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst et = new EventTarget();\r\net.addEventListener('click', () =\u003e console.log('Clicked!'));\r\net.dispatchEvent('click'); // Output: \"Clicked!\"\r\net.removeEventListener('click', () =\u003e console.log('Clicked!'));\r\net.dispatchEvent('click'); // No output, as the listener has been removed.\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis \u003ccode\u003eEventTarget\u003c/code\u003e implementation offers a streamlined and adaptable approach to managing events within event-driven programming paradigms, allowing for the dynamic addition and removal of event handlers and the capability to programmatically initiate events.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should add and trigger an event listener",
+            "test": "it('should add and trigger an event listener', (done) =\u003e {\r\n    const et = new EventTarget();\r\n    let triggered = false;\r\n    et.addEventListener('testEvent', () =\u003e { triggered = true; });\r\n    et.dispatchEvent('testEvent');\r\n    expect(triggered).to.be.true;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should not trigger an event after listener is removed",
+            "test": "it('should not trigger an event after listener is removed', (done) =\u003e {\r\n    const et = new EventTarget();\r\n    let triggered = false;\r\n    const listener = () =\u003e { triggered = true; };\r\n    et.addEventListener('testEvent', listener);\r\n    et.removeEventListener('testEvent', listener);\r\n    et.dispatchEvent('testEvent');\r\n    expect(triggered).to.be.false;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should handle multiple listeners for the same event",
+            "test": "it('should handle multiple listeners for the same event', (done) =\u003e {\r\n    const et = new EventTarget();\r\n    let count = 0;\r\n    const listener1 = () =\u003e { count += 1; };\r\n    const listener2 = () =\u003e { count += 1; };\r\n    et.addEventListener('testEvent', listener1);\r\n    et.addEventListener('testEvent', listener2);\r\n    et.dispatchEvent('testEvent');\r\n    expect(count).to.equal(2);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should not add the same listener multiple times for the same event",
+            "test": "it('should not add the same listener multiple times for the same event', (done) =\u003e {\r\n    const et = new EventTarget();\r\n    let count = 0;\r\n    const listener = () =\u003e { count += 1; };\r\n    et.addEventListener('testEvent', listener);\r\n    et.addEventListener('testEvent', listener);\r\n    et.dispatchEvent('testEvent');\r\n    expect(count).to.equal(1);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should not affect other events when removing a listener",
+            "test": "it('should not affect other events when removing a listener', (done) =\u003e {\r\n    const et = new EventTarget();\r\n    let triggeredA = false;\r\n    let triggeredB = false;\r\n    const listenerA = () =\u003e { triggeredA = true; };\r\n    const listenerB = () =\u003e { triggeredB = true; };\r\n    et.addEventListener('eventA', listenerA);\r\n    et.addEventListener('eventB', listenerB);\r\n    et.removeEventListener('eventA', listenerA);\r\n    et.dispatchEvent('eventB');\r\n    expect(triggeredA).to.be.false;\r\n    expect(triggeredB).to.be.true;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Event names are strings without any specific format restrictions."
+        },
+        {
+            "constraint": "Callbacks must be functions; other types should not be accepted or ignored if added."
+        },
+        {
+            "constraint": "An event can have multiple callbacks associated with it, but the same callback should not be added more than once for the same event."
+        },
+        {
+            "constraint": "Removing a callback that doesn't exist for an event should have no effect."
+        },
+        {
+            "constraint": "Dispatching an event that has no callbacks associated with it should have no effect."
+        },
+        {
+            "constraint": "The class should handle any number of event names and callbacks, limited only by JavaScript's memory constraints."
+        },
+        {
+            "constraint": "Callbacks should be executed in the order they were added when an event is dispatched."
+        },
+        {
+            "constraint": "The eventsMap object should remain private to the class, not accessible from outside."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "class EventTarget {\r\n    constructor() {\r\n        // Write your code here\r\n    }\r\n\r\n    addEventListener(name, callback) {\r\n        // Write your code here\r\n    }\r\n\r\n    removeEventListener(name, callback) {\r\n        // Write your code here\r\n    }\r\n\r\n    dispatchEvent(name) {\r\n        // Write your code here\r\n    }\r\n}\r\n\r\n// Do not edit below this line\r\nexport default EventTarget;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "class EventTarget {\r\n  eventsMap = {}; // Initialize an object to store event names and their callbacks.\r\n\r\n  // Method to add event listeners to the eventsMap.\r\n  addEventListener(name, callback) {\r\n    // Check if this event name already exists in the map.\r\n    if (!this.eventsMap[name]) {\r\n      // If not, create a new array for this event name with the callback.\r\n      this.eventsMap[name] = [callback];\r\n    } else {\r\n      // If it exists, add the new callback to the array if it's not already there.\r\n      if (!this.eventsMap[name].includes(callback)) {\r\n        this.eventsMap[name].push(callback);\r\n      }\r\n    }\r\n  }\r\n\r\n  // Method to remove event listeners from the eventsMap.\r\n  removeEventListener(name, callback) {\r\n    // Check if this event name exists in the map.\r\n    if (this.eventsMap[name]) {\r\n      // Find the index of the callback to remove.\r\n      const index = this.eventsMap[name].indexOf(callback);\r\n      // If found, remove it from the array.\r\n      if (index !== -1) {\r\n        this.eventsMap[name].splice(index, 1);\r\n        // If the array is empty after removal, delete the key from the map.\r\n        if (this.eventsMap[name].length === 0) {\r\n          delete this.eventsMap[name];\r\n        }\r\n      }\r\n    }\r\n  }\r\n\r\n  // Method to dispatch events from the eventsMap.\r\n  dispatchEvent(name) {\r\n    // Check if this event name exists in the map.\r\n    if (this.eventsMap[name]) {\r\n      // If so, loop through the callbacks array and execute each callback.\r\n      this.eventsMap[name].forEach(callback =\u003e callback());\r\n    }\r\n  }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003cp\u003eimport { expect } from \u0026#8216;chai\u0026#8217;;\u003cbr /\u003e\nimport EventTarget from \u0026#8216;./EventTarget\u0026#8217;;\u003c/p\u003e\n\u003cp\u003edescribe(\u0026#8216;EventTarget Tests\u0026#8217;, () =\u003e {\u003c/p\u003e\n\u003cp\u003e  // start test\u003cbr /\u003e\n  it(\u0026#8216;should add and trigger an event listener\u0026#8217;, (done) =\u003e {\u003cbr /\u003e\n    const et = new EventTarget();\u003cbr /\u003e\n    let triggered = false;\u003cbr /\u003e\n    et.addEventListener(\u0026#8216;testEvent\u0026#8217;, () =\u003e { triggered = true; });\u003cbr /\u003e\n    et.dispatchEvent(\u0026#8216;testEvent\u0026#8217;);\u003cbr /\u003e\n    expect(triggered).to.be.true;\u003cbr /\u003e\n    done();\u003cbr /\u003e\n  });\u003cbr /\u003e\n  // end test\u003c/p\u003e\n\u003cp\u003e  // start test\u003cbr /\u003e\n  it(\u0026#8216;should not trigger an event after listener is removed\u0026#8217;, (done) =\u003e {\u003cbr /\u003e\n    const et = new EventTarget();\u003cbr /\u003e\n    let triggered = false;\u003cbr /\u003e\n    const listener = () =\u003e { triggered = true; };\u003cbr /\u003e\n    et.addEventListener(\u0026#8216;testEvent\u0026#8217;, listener);\u003cbr /\u003e\n    et.removeEventListener(\u0026#8216;testEvent\u0026#8217;, listener);\u003cbr /\u003e\n    et.dispatchEvent(\u0026#8216;testEvent\u0026#8217;);\u003cbr /\u003e\n    expect(triggered).to.be.false;\u003cbr /\u003e\n    done();\u003cbr /\u003e\n  });\u003cbr /\u003e\n  // end test\u003c/p\u003e\n\u003cp\u003e  // start test\u003cbr /\u003e\n  it(\u0026#8216;should handle multiple listeners for the same event\u0026#8217;, (done) =\u003e {\u003cbr /\u003e\n    const et = new EventTarget();\u003cbr /\u003e\n    let count = 0;\u003cbr /\u003e\n    const listener1 = () =\u003e { count += 1; };\u003cbr /\u003e\n    const listener2 = () =\u003e { count += 1; };\u003cbr /\u003e\n    et.addEventListener(\u0026#8216;testEvent\u0026#8217;, listener1);\u003cbr /\u003e\n    et.addEventListener(\u0026#8216;testEvent\u0026#8217;, listener2);\u003cbr /\u003e\n    et.dispatchEvent(\u0026#8216;testEvent\u0026#8217;);\u003cbr /\u003e\n    expect(count).to.equal(2);\u003cbr /\u003e\n    done();\u003cbr /\u003e\n  });\u003cbr /\u003e\n  // end test\u003c/p\u003e\n\u003cp\u003e  // start test\u003cbr /\u003e\n  it(\u0026#8216;should not add the same listener multiple times for the same event\u0026#8217;, (done) =\u003e {\u003cbr /\u003e\n    const et = new EventTarget();\u003cbr /\u003e\n    let count = 0;\u003cbr /\u003e\n    const listener = () =\u003e { count += 1; };\u003cbr /\u003e\n    et.addEventListener(\u0026#8216;testEvent\u0026#8217;, listener);\u003cbr /\u003e\n    et.addEventListener(\u0026#8216;testEvent\u0026#8217;, listener);\u003cbr /\u003e\n    et.dispatchEvent(\u0026#8216;testEvent\u0026#8217;);\u003cbr /\u003e\n    expect(count).to.equal(1);\u003cbr /\u003e\n    done();\u003cbr /\u003e\n  });\u003cbr /\u003e\n  // end test\u003c/p\u003e\n\u003cp\u003e  // start test\u003cbr /\u003e\n  it(\u0026#8216;should not affect other events when removing a listener\u0026#8217;, (done) =\u003e {\u003cbr /\u003e\n    const et = new EventTarget();\u003cbr /\u003e\n    let triggeredA = false;\u003cbr /\u003e\n    let triggeredB = false;\u003cbr /\u003e\n    const listenerA = () =\u003e { triggeredA = true; };\u003cbr /\u003e\n    const listenerB = () =\u003e { triggeredB = true; };\u003cbr /\u003e\n    et.addEventListener(\u0026#8216;eventA\u0026#8217;, listenerA);\u003cbr /\u003e\n    et.addEventListener(\u0026#8216;eventB\u0026#8217;, listenerB);\u003cbr /\u003e\n    et.removeEventListener(\u0026#8216;eventA\u0026#8217;, listenerA);\u003cbr /\u003e\n    et.dispatchEvent(\u0026#8216;eventB\u0026#8217;);\u003cbr /\u003e\n    expect(triggeredA).to.be.false;\u003cbr /\u003e\n    expect(triggeredB).to.be.true;\u003cbr /\u003e\n    done();\u003cbr /\u003e\n  });\u003cbr /\u003e\n  // end test\u003c/p\u003e\n\u003cp\u003e});\u003c/p\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "15. Event Target in Javascript - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Master the EventTarget class in JavaScript for custom event management. Learn how to add, remove, and dispatch event listeners effectively in your web applications with our comprehensive guide.",
+        "pageURL": "eventtarget",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Event Target in Javascript  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eYou are tasked with building an \u003ccode\u003eEventTarget\u003c/code\u003e class in JavaScript, structured to efficiently handle events. This class is fundamental for registering event listeners, removing these list",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003cp\u003eimport { expect } from \u0026#8216;chai\u0026#8217;;\u003cbr /\u003e\nimport EventTarget from \u0026#8216;./EventTarget\u0026#8217;;\u003c/p\u003e\n\u003cp\u003edescribe(\u0026#8216;EventTarget Tests\u0026#8217;, () =\u003e {\u003c/p\u003e\n\u003cp\u003e  // start test\u003cbr /\u003e\n  it(\u0026#82",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

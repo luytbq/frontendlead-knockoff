@@ -1,0 +1,146 @@
+{
+    "type": "coding",
+    "id": "asynchronous-request-queue",
+    "title": "38. Asynchronous Request Queue",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "asynchronous-request-queue",
+    "problemStatement": "\u003cp\u003eYou are tasked with creating an asynchronous request queue in JavaScript. The primary objective is to ensure that each request in the queue is executed sequentially, adhering to the order in which they were added to the queue. The execution of a subsequent request should commence only after the completion of the preceding one. Your challenge involves developing a function named \u003ccode\u003erequestQueue\u003c/code\u003e, which accepts an array of request promises as input and returns a promise that resolves to an array containing the results of these requests, maintaining the sequence of their execution.\u003c/p\u003e\n\u003cp\u003eConsider the following example of requests:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst requests = [ \r\n  fetch('https://api.example.com/data/1'), \r\n  fetch('https://api.example.com/data/2'), \r\n  fetch('https://api.example.com/data/3') \r\n];\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe expected output should be an array containing the results of the requests, in the order they were executed:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e[\r\n  // Result of the first request\r\n  { /* data for request 1 */ },\r\n  // Result of the second request\r\n  { /* data for request 2 */ },\r\n  // Result of the third request\r\n  { /* data for request 3 */ }\r\n]\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe \u003ccode\u003erequestQueue\u003c/code\u003e function is crucial for scenarios where the order of request execution and completion is paramount, ensuring that each request is given due consideration in a sequential manner.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should process requests sequentially and return results in order",
+            "test": "it('should process requests sequentially and return results in order', (done) =\u003e {\r\n    // Mocking fetch requests to return different responses\r\n    fetchMock.mock('https://api.example.com/data/1', { body: { data: 1 }, status: 200 });\r\n    fetchMock.mock('https://api.example.com/data/2', { body: { data: 2 }, status: 200 });\r\n    fetchMock.mock('https://api.example.com/data/3', { body: { data: 3 }, status: 200 });\r\n\r\n    const requests = [\r\n      fetch('https://api.example.com/data/1'),\r\n      fetch('https://api.example.com/data/2'),\r\n      fetch('https://api.example.com/data/3')\r\n    ];\r\n\r\n    requestQueue(requests)\r\n      .then(results =\u003e {\r\n        // Verify that results are in the expected order\r\n        expect(results).to.deep.equal([{ data: 1 }, { data: 2 }, { data: 3 }]);\r\n        done();\r\n      })\r\n      .catch(error =\u003e {\r\n        done(error);\r\n      });\r\n    \r\n    fetchMock.restore();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should handle errors and continue processing subsequent requests",
+            "test": "it('should handle errors and continue processing subsequent requests', (done) =\u003e {\r\n    // Mocking fetch requests with the second request failing\r\n    fetchMock.mock('https://api.example.com/data/1', { body: { data: 1 }, status: 200 });\r\n    fetchMock.mock('https://api.example.com/data/2', 500); // Simulated failure\r\n    fetchMock.mock('https://api.example.com/data/3', { body: { data: 3 }, status: 200 });\r\n\r\n    const requests = [\r\n      fetch('https://api.example.com/data/1'),\r\n      fetch('https://api.example.com/data/2'),\r\n      fetch('https://api.example.com/data/3')\r\n    ];\r\n\r\n    requestQueue(requests)\r\n      .then(results =\u003e {\r\n        // Verify that the results include the error for the failed request\r\n        expect(results[0]).to.deep.equal({ data: 1 });\r\n        expect(results[1]).to.have.property('error');\r\n        expect(results[2]).to.deep.equal({ data: 3 });\r\n        done();\r\n      })\r\n      .catch(error =\u003e {\r\n        done(error);\r\n      });\r\n    \r\n   \tfetchMock.restore();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Requests must be executed sequentially, not in parallel. Each request in the queue should start only after the previous one has completed."
+        },
+        {
+            "constraint": "The function should maintain the order of requests and their results, ensuring that the output array matches the sequence of the input array of requests."
+        },
+        {
+            "constraint": "In case of a request failure, the function should handle the error appropriately, potentially halting the queue and returning the results up to the point of failure, or including the error in the results array for that request."
+        },
+        {
+            "constraint": "The solution should be efficient in terms of memory and execution, avoiding unnecessary overhead."
+        },
+        {
+            "constraint": "The function should return a promise that resolves with an array of results once all requests have been processed."
+        },
+        {
+            "constraint": "Consideration should be given to error handling to ensure that one request's failure does not prevent the execution of subsequent requests in the queue, unless intended."
+        },
+        {
+            "constraint": "The implementation should be flexible enough to handle any number of requests passed in the input array."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "async function requestQueue(requests) {\r\n  // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default requestQueue;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "async function requestQueue(requests) {\r\n  // Initialize an array to store the results\r\n  const results = [];\r\n\r\n  // Iterate over the array of requests\r\n  for (let request of requests) {\r\n    try {\r\n      // Await the resolution of each request before proceeding to the next\r\n      const response = await request;\r\n      // Assuming the response needs to be converted to JSON, but this can be adjusted based on the expected response type\r\n      const data = await response.json();\r\n      // Add the successful response data to the results array\r\n      results.push(data);\r\n    } catch (error) {\r\n      // Handle any errors that occur during the request or response processing\r\n      // For this example, we're adding the error to the results array, but alternative error handling can be implemented as needed\r\n      results.push({ error: error.message });\r\n    }\r\n  }\r\n\r\n  // Return the array of results after all requests have been processed\r\n  return results;\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eSequential Asynchronous Request Processing\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eIn scenarios where maintaining the order of asynchronous operations is critical, a request queue that processes requests sequentially can be invaluable. The \u003ccode\u003erequestQueue\u003c/code\u003e function exemplifies this by ensuring that each request in a queue is executed only after the preceding request has completed, preserving the order of execution and their responses.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eSequential Execution\u003c/h2\u003e\n\u003cp\u003eThe function iterates over an array of request promises using a loop. Within this loop, the \u003ccode\u003eawait\u003c/code\u003e keyword is used to pause the execution until the current request is resolved, ensuring that requests are processed one after the other, rather than simultaneously.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eResult Aggregation\u003c/h2\u003e\n\u003cp\u003eAs each request is resolved, its result is added to an array of results in the same sequence as the requests were made. This guarantees that the order of responses matches the order of requests, an essential aspect for applications where the sequence of data processing is crucial.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eError Handling\u003c/h2\u003e\n\u003cp\u003eThe function is designed to handle errors gracefully. If a request fails, the error is caught, and an error message is included in the results array. This approach ensures that a single failing request does not halt the entire process, allowing subsequent requests to be executed.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Applications\u003c/h2\u003e\n\u003cp\u003eThis method is particularly useful in scenarios where the results of one operation are dependent on the completion of a previous one, such as in data synchronization tasks, ordered data processing, or when dealing with APIs that require a specific sequence of requests.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003erequestQueue\u003c/code\u003e function demonstrates a robust approach to managing asynchronous requests in a controlled, sequential manner, ensuring the integrity of the operation order and providing comprehensive error handling.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/wOmQoeiZlQw?si=YHlqvUvege5x-FXe",
+    "company": [
+        "Google",
+        "Robinhood"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "38. Asynchronous Request Queue - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Learn how to maintain order in asynchronous operations with a JavaScript request queue. Discover a robust solution for executing API calls sequentially, ensuring data integrity and efficient error handling in web applications.",
+        "pageURL": "asynchronous-request-queue",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Asynchronous Request Queue  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eYou are tasked with creating an asynchronous request queue in JavaScript. The primary objective is to ensure that each request in the queue is executed sequentially, adhering to the order in which ",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eSequential Asynchronous Request Processing\u003c/h1\u003e\n\u003csection\u003e\n\u003cp\u003eIn scenarios where maintaining the order of asynchronous operations is critical, a request queue that processes requests sequ",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

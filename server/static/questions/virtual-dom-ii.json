@@ -1,0 +1,117 @@
+{
+    "type": "coding",
+    "id": "virtual-dom-ii",
+    "title": "34. Virtual DOM II",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "virtual-dom-ii",
+    "problemStatement": "\u003cp\u003eBuilding on the concept of Virtual DOM introduced in Virtual DOM I, this challenge involves transforming a virtualized JSON representation of a DOM tree back into a valid DOM structure. The process should accurately recreate the DOM elements, including their attributes and nested structure, from the virtual representation.\u003c/p\u003e\n\u003cp\u003eGiven a virtual DOM representation like:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e{\r\n  \"type\": \"div\",\r\n  \"props\": {\r\n    \"children\": [{\r\n      \"type\": \"h1\",\r\n      \"props\": {\r\n        \"children\": \"this is\"\r\n      }\r\n    }, {\r\n      \"type\": \"p\",\r\n      \"props\": {\r\n        \"className\": \"paragraph\",\r\n        \"children\": [\"a \", {\r\n          \"type\": \"button\",\r\n          \"props\": {\r\n            \"children\": \"button\"\r\n          }\r\n        }, \" from\", {\r\n          \"type\": \"a\",\r\n          \"props\": {\r\n            \"href\": \"https://frontendlead.com\",\r\n            \"children\": [{\r\n              \"type\": \"b\",\r\n              \"props\": {\r\n                \"children\": \"frontendlead\"\r\n              }\r\n            }, \".com\"]\r\n          }\r\n        }]\r\n      }\r\n    }]\r\n  }\r\n}\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eYour task is to implement a function \u003ccode\u003erender()\u003c/code\u003e that takes this object literal representation of a DOM tree and recreates the corresponding real DOM tree, as shown below:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003e\u0026lt;div id=\"root\"\u0026gt;\r\n   \u0026lt;h1\u0026gt;\r\n     this is\r\n   \u0026lt;/h1\u0026gt;\r\n   \u0026lt;p class=\"paragraph\"\u0026gt;\r\n     a\r\n     \u0026lt;button\u0026gt;\r\n       button\r\n     \u0026lt;/button\u0026gt;\r\n     from\r\n     \u0026lt;a href=\"https://frontendlead.com\"\u0026gt;\r\n       \u0026lt;b\u0026gt;frontendlead\u0026lt;/b\u0026gt;\r\n       .com\r\n     \u0026lt;/a\u0026gt;\r\n   \u0026lt;/p\u0026gt;\r\n\u0026lt;/div\u0026gt;\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThe function should support basic HTML tags and properties, including the handling of text nodes, single or multiple children, and camelCased properties like \u003ccode\u003eclassName\u003c/code\u003e.\u003c/p\u003e\n\u003cp\u003eThis challenge tests your understanding of DOM manipulation, recursion, and the concept of a virtual DOM, highlighting the algorithmic approach to rendering web interfaces.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should create a virtual representation of a simple element",
+            "test": "it('should create a virtual representation of a simple element', () =\u003e {\r\n    const virtualElement = VirtualDOM.createElement('div', { id: 'test-div' }, 'Hello, Virtual DOM!');\r\n    \r\n    expect(virtualElement).to.deep.equal({\r\n      type: 'div',\r\n      props: {\r\n        id: 'test-div',\r\n        children: 'Hello, Virtual DOM!'\r\n      }\r\n    });\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should render a simple virtual element to a real DOM node",
+            "test": "it('should render a simple virtual element to a real DOM node', () =\u003e {\r\n    const virtualElement = {\r\n      type: 'div',\r\n      props: {\r\n        id: 'test-div',\r\n        children: 'Hello, World!'\r\n      }\r\n    };\r\n\r\n    const realElement = VirtualDOM.render(virtualElement);\r\n\r\n    expect(realElement.tagName.toLowerCase()).to.equal('div');\r\n    expect(realElement.id).to.equal('test-div');\r\n    expect(realElement.textContent).to.equal('Hello, World!');\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should render nested virtual elements to real DOM nodes",
+            "test": "it('should render nested virtual elements to real DOM nodes', () =\u003e {\r\n    const virtualElement = {\r\n      type: 'div',\r\n      props: {\r\n        id: 'parent-div',\r\n        children: [{\r\n          type: 'span',\r\n          props: {\r\n            className: 'child-span',\r\n            children: 'Nested content'\r\n          }\r\n        }]\r\n      }\r\n    };\r\n\r\n    const realElement = VirtualDOM.render(virtualElement);\r\n\r\n    expect(realElement.tagName.toLowerCase()).to.equal('div');\r\n    expect(realElement.id).to.equal('parent-div');\r\n    expect(realElement.firstChild.tagName.toLowerCase()).to.equal('span');\r\n    expect(realElement.firstChild.className).to.equal('child-span');\r\n    expect(realElement.firstChild.textContent).to.equal('Nested content');\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [],
+    "order": null,
+    "starterJSCode": "class VirtualDOM {\r\n  static createElement(type, props, ...children) {\r\n    // Write your code here\r\n  }\r\n  static render(virtual) {\r\n   // Write your code here\r\n  }\r\n}\r\n\r\n// Do not edit  below this line\r\nexport default VirtualDOM;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "class VirtualDOM {\r\n\r\n    // Function to create a virtual element representation\r\n    static createElement(type, props, ...children) {\r\n        return {\r\n            type,\r\n            props: {\r\n                ...props,\r\n                children: children.length === 1 ? children[0] : children\r\n            }\r\n        };\r\n    }\r\n\r\n    // Function to render a virtual element to a real DOM node\r\n    static render(virtual) {\r\n        // Directly create a text node for string types\r\n        if (typeof virtual === 'string') {\r\n            return document.createTextNode(virtual);\r\n        }\r\n\r\n        // Destructure the type and props from the virtual node\r\n        const { type, props } = virtual;\r\n        \r\n        // Create the DOM element\r\n        const element = document.createElement(type);\r\n\r\n        // Assign properties to the element, converting 'className' back to 'class'\r\n        Object.keys(props).forEach(propName =\u003e {\r\n            if (propName === 'children') {\r\n                // Ignore the 'children' prop here. It's handled separately below.\r\n            } else if (propName === 'className') {\r\n                element.setAttribute('class', props[propName]);\r\n            } else {\r\n                element.setAttribute(propName, props[propName]);\r\n            }\r\n        });\r\n\r\n        // Recursively render children\r\n        if (props.children) {\r\n            if (Array.isArray(props.children)) {\r\n                // Handle multiple children\r\n                props.children.forEach(child =\u003e {\r\n                    element.appendChild(VirtualDOM.render(child));\r\n                });\r\n            } else {\r\n                // Handle a single child\r\n                element.appendChild(VirtualDOM.render(props.children));\r\n            }\r\n        }\r\n\r\n        return element;\r\n    }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eUnderstanding the VirtualDOM Class\u003c/h1\u003e\n\u003cp\u003eThe \u003ccode\u003eVirtualDOM\u003c/code\u003e class is a simplified simulation of the concept of the virtual DOM used in modern web development frameworks like React. It consists of two main functions: \u003ccode\u003ecreateElement\u003c/code\u003e for creating a virtual representation of DOM elements and \u003ccode\u003erender\u003c/code\u003e for converting these virtual elements back into real DOM elements.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eThe createElement Function\u003c/h2\u003e\n\u003cp\u003eThis function takes three parameters: the type of the DOM element (e.g., \u0026#8216;div\u0026#8217;), an object containing any properties or attributes (e.g., {id: \u0026#8216;unique\u0026#8217;}), and children elements. These children can be either more virtual DOM elements created by \u003ccode\u003ecreateElement\u003c/code\u003e or simple text content. The function constructs and returns a virtual DOM object that mirrors the structure of real DOM elements but in a lightweight, JavaScript object form.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eThe render Function\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003erender\u003c/code\u003e function takes a virtual DOM object as input and recursively creates actual DOM elements from it. For text content, it simply creates text nodes. For virtual DOM objects, it creates elements using \u003ccode\u003edocument.createElement\u003c/code\u003e, sets any provided attributes, and recursively appends children elements by calling \u003ccode\u003erender\u003c/code\u003e on each child. This process reconstructs the entire DOM tree from the virtual representation.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePractical Implications\u003c/h2\u003e\n\u003cp\u003eThe VirtualDOM class showcases the core principles behind the virtual DOM concept: a way to efficiently update and manage the DOM by minimizing direct manipulations and instead working with a lightweight JavaScript representation. This approach can lead to significant performance improvements in web applications, especially those with frequent UI updates.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eLimitations and Considerations\u003c/h2\u003e\n\u003cp\u003eWhile the VirtualDOM class captures the essence of the virtual DOM, it is a simplified model. In real-world applications, additional complexities such as handling events, managing component lifecycle, and optimizing re-rendering through diffing algorithms are also important considerations.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "DOM API"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/5DIxFGFG1e4",
+    "company": [
+        "Facebook"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "34. Virtual DOM II - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Dive deeper into the Virtual DOM concept with our Virtual DOM II guide, focusing on rendering virtual structures back into the real DOM, complete with code examples and explanations.",
+        "pageURL": "virtual-dom-ii",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Virtual DOM II  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eBuilding on the concept of Virtual DOM introduced in Virtual DOM I, this challenge involves transforming a virtualized JSON representation of a DOM tree back into a valid DOM structure. The process",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eUnderstanding the VirtualDOM Class\u003c/h1\u003e\n\u003cp\u003eThe \u003ccode\u003eVirtualDOM\u003c/code\u003e class is a simplified simulation of the concept of the virtual DOM used in modern web development framewo",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+     "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

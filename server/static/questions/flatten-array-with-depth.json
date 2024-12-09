@@ -1,0 +1,132 @@
+{
+    "type": "coding",
+    "id": "flatten-array-with-depth",
+    "title": "17. Flatten II",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "flatten-array-with-depth",
+    "problemStatement": "\u003carticle\u003e\n\u003ch2\u003eFlatten with Depth\u003c/h2\u003e\n\u003cp\u003eImplement a function to flatten a multi-level nested array up to a specified depth. The function should accept two arguments: the array to be flattened (\u003ccode\u003earr\u003c/code\u003e) and the depth of flattening (\u003ccode\u003edepth\u003c/code\u003e). This challenge should be tackled using both recursive and iterative approaches to offer different strategies for achieving the same outcome.\u003c/p\u003e\n\u003ch3\u003eRecursive Solution:\u003c/h3\u003e\n\u003cp\u003eThe recursive approach involves a function that calls itself to flatten each level of nested arrays until the specified depth is reached. If the current item is an array and the depth has not been exceeded, the function recursively flattens this item and concatenates the result. If the item is not an array or the depth has been exceeded, it is added directly to the result. This approach elegantly handles nested arrays by leveraging the call stack, but it\u0026#8217;s essential to manage the depth to avoid excessive recursion that can lead to a stack overflow.\u003c/p\u003e\n\u003ch3\u003eIterative Solution:\u003c/h3\u003e\n\u003cp\u003eThe iterative approach uses a stack to manage the array items. Each item from the input array is processed: if it\u0026#8217;s an array and the depth allows, its items are added to the stack to be processed; otherwise, the item is added to the results. This method iteratively deconstructs the nested arrays without recursion, making it robust for deeply nested structures but potentially more complex to implement and understand.\u003c/p\u003e\n\u003ch3\u003eExample Usage:\u003c/h3\u003e\n\u003cp\u003eConsider an array \u003ccode\u003e[1, [2, [3, [4, 5]]], 6]\u003c/code\u003e with a depth of 2. The expected output would be \u003ccode\u003e[1, 2, 3, [4, 5], 6]\u003c/code\u003e, flattening the array up to two levels deep but leaving any further nesting intact.\u003c/p\u003e\n\u003cp\u003eThis problem tests your ability to manipulate arrays, handle recursion, and implement iterative solutions, all crucial skills for a frontend developer.\u003c/p\u003e\n\u003c/article\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should flatten an array to a specified depth",
+            "test": "it('should flatten an array to a specified depth', (done) =\u003e {\r\n    const input = [1, [2, [3, [4, 5]]], 6];\r\n    const depth = 2;\r\n    const expected = [1, 2, 3, [4, 5], 6];\r\n    const result = flatten(input, depth);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should return the same array if depth is 0",
+            "test": "it('should return the same array if depth is 0', (done) =\u003e {\r\n    const input = [1, [2, 3], 4];\r\n    const depth = 0;\r\n    const expected = [1, [2, 3], 4];\r\n    const result = flatten(input, depth);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should completely flatten an array if depth is greater than array depth",
+            "test": "it('should completely flatten an array if depth is greater than array depth', (done) =\u003e {\r\n    const input = [[1, [2, [3, [4, 5]]]], 6];\r\n    const depth = 10; // Greater than actual depth\r\n    const expected = [1, 2, 3, 4, 5, 6];\r\n    const result = flatten(input, depth);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should handle empty arrays",
+            "test": "it('should handle empty arrays', (done) =\u003e {\r\n    const input = [];\r\n    const depth = 1;\r\n    const expected = [];\r\n    const result = flatten(input, depth);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should handle arrays with non-array elements",
+            "test": "it('should handle arrays with non-array elements', (done) =\u003e {\r\n    const input = [1, 'a', true, [2, 'b', false], 3];\r\n    const depth = 1;\r\n    const expected = [1, 'a', true, 2, 'b', false, 3];\r\n    const result = flatten(input, depth);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 5,
+            "description": "should handle arrays with null and undefined values",
+            "test": "it('should handle arrays with null and undefined values', (done) =\u003e {\r\n    const input = [null, undefined, [1, [2, null], undefined], 3];\r\n    const depth = 2;\r\n    const expected = [null, undefined, 1, 2, null, undefined, 3];\r\n    const result = flatten(input, depth);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Nested arrays may not exceed a depth of 10 levels to prevent excessive recursion and potential stack overflow errors."
+        },
+        {
+            "constraint": "rrays may contain elements of any type, including integers, strings, and other arrays, but no objects or other complex data types."
+        },
+        {
+            "constraint": "The input array can contain up to 1000 elements at any level to ensure manageable execution times and avoid performance issues."
+        },
+        {
+            "constraint": "The function will accept two parameters: the array to be flattened (\u003ccode\u003earr\u003c/code\u003e) and the depth (\u003ccode\u003edepth\u003c/code\u003e), where depth is a non-negative integer."
+        },
+        {
+            "constraint": "The function must not modify the original array; it should produce and return a new array with the desired level of flattening."
+        },
+        {
+            "constraint": "The solution should aim for an optimal time complexity, ideally no worse than O(n * depth), where n is the total number of elements in the array and depth is the specified flattening depth."
+        },
+        {
+            "constraint": "Usage of \u003ccode\u003eArray.prototype.flat()\u003c/code\u003e or similar built-in flattening functions is discouraged to ensure a focus on understanding and implementing the underlying algorithm."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function flatten(input, depth = 0) {\r\n  // write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default flatten",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function flatRecursively(arr, depth = 0) {\r\n  const results = [];\r\n  \r\n  // Check if the input array is an array and the depth is greater than or equal to 0\r\n  if (Array.isArray(arr) \u0026\u0026 depth \u003e= 0) {\r\n    depth--;\r\n\r\n    // If so, loop through the input array and call flatRecursively on each item.\r\n    // The depth is decreased by one for each recursive call.\r\n    // The spread operator is used to push each item returned by the recursive call into the results array.\r\n    arr.forEach(item =\u003e results.push(...flatRecursively(item, depth)));\r\n  } else {\r\n    // If the input array is not an array or the depth is less than 0, push the array into the results array.\r\n    results.push(arr);\r\n  }\r\n  \r\n  // Return the flattened results array.\r\n  return results;\r\n}\r\n\r\n\r\nfunction flattenIteratively(arr, depth = 0) {\r\n  const results = []; // This will hold the flattened result\r\n  // Initialize a stack with each item in the input array paired with the current depth\r\n  const stack = arr.map(item =\u003e [item, depth]);\r\n\r\n  // Process the stack until it's empty\r\n  while (stack.length) {\r\n    // Get the next item and its associated depth from the stack\r\n    const [current, currentDepth] = stack.shift();\r\n\r\n    // If the current item is an array and we haven't reached the specified depth\r\n    if (Array.isArray(current) \u0026\u0026 currentDepth \u003e 0) {\r\n      // Push each item in the current array onto the stack with its depth decreased by 1\r\n      stack.unshift(...current.map(item =\u003e [item, currentDepth - 1]));\r\n    } else {\r\n      // If the current item is not an array or we have reached the specified depth, add it to the results\r\n      results.push(current);\r\n    }\r\n  }\r\n\r\n  // Return the flattened result\r\n  return results;\r\n}\r\n",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eRecursive Approach\u003c/h2\u003e\n\u003cp\u003eThe recursive solution to flatten arrays with a specific depth leverages the function\u0026#8217;s ability to call itself, reducing the problem size with each call. This approach is particularly elegant for processing nested structures.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003efunction flatRecursively(arr, depth = 0) {\r\n  const results = [];\r\n  \r\n  if (Array.isArray(arr) \u0026amp;\u0026amp; depth \u0026gt;= 0) {\r\n    depth--;\r\n    arr.forEach(item =\u0026gt; results.push(...flatRecursively(item, depth)));\r\n  } else {\r\n    results.push(arr);\r\n  }\r\n  \r\n  return results;\r\n}\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis function begins by checking if the input \u003ccode\u003earr\u003c/code\u003e is indeed an array and the \u003ccode\u003edepth\u003c/code\u003e is non-negative. For each element in the array, it then either recursively flattens it (if it\u0026#8217;s an array and the depth hasn\u0026#8217;t been exceeded) or adds it directly to the results array. This process continues until all elements are processed or the depth limit is reached, effectively flattening the array to the specified depth.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eIterative Approach\u003c/h2\u003e\n\u003cp\u003eIn contrast to the recursive approach, the iterative solution uses a stack to manage and flatten the array elements up to the specified depth. This method iteratively deconstructs the nested arrays without recursion, making it robust for deeply nested structures.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003efunction flatIteratively(arr, depth = 0) {\r\n  const results = [];\r\n  const arrWithDepths = arr.map(item =\u0026gt; ([item, depth]));\r\n  const stack = [...arrWithDepths];\r\n\r\n  while (stack.length) {\r\n    let [current, depth] = stack.shift();\r\n\r\n    if (Array.isArray(current) \u0026amp;\u0026amp; depth \u0026gt; 0) {\r\n      current.forEach(item =\u0026gt; {\r\n        depth--;\r\n        stack.push([item, depth]);\r\n      });\r\n    } else {\r\n      results.push(current);\r\n    }\r\n  }\r\n  \r\n  return results;\r\n}\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis function initially pairs each array element with its corresponding depth in a new array. It then uses a stack to process each element: if an element is an array and the depth allows, its items are added to the stack with decreased depth; otherwise, the item is added to the results. This process continues until the stack is empty, resulting in a flattened array up to the desired depth.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eComparison and Conclusion\u003c/h2\u003e\n\u003cp\u003eBoth recursive and iterative solutions effectively flatten nested arrays up to a specified depth. The choice between them depends on the specific requirements and constraints of your project, including the expected input array size and depth. While the recursive method offers concise and elegant code, the iterative method provides a robust alternative for handling large and deeply nested arrays without the risk of stack overflow.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": null,
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Arrays with Depth - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Discover array flattening in JavaScript with depth control using recursive and iterative methods, with clear examples.",
+        "pageURL": "flatten-array-with-depth",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Arrays with Depth  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003carticle\u003e\n\u003ch2\u003eFlatten with Depth\u003c/h2\u003e\n\u003cp\u003eImplement a function to flatten a multi-level nested array up to a specified depth. The function should accept two arguments: the array to be flattened (\u003ccode\u003e",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eRecursive Approach\u003c/h2\u003e\n\u003cp\u003eThe recursive solution to flatten arrays with a specific depth leverages the function\u0026#8217;s ability to call itself, reducing the problem size with ",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

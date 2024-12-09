@@ -1,0 +1,86 @@
+{
+    "type": "vanilla",
+    "id": "autocomplete-search-list",
+    "title": "40. Autocomplete Search List",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "autocomplete-search-list",
+    "problemStatement": "\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screen-Shot-2023-08-20-at-5.38.01-PM-283x300.png\" alt=\"\" width=\"283\" height=\"300\" class=\"alignnone size-medium wp-image-340\" srcset=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screen-Shot-2023-08-20-at-5.38.01-PM-283x300.png 283w, https://api.frontendlead.com/wp-content/uploads/2024/03/Screen-Shot-2023-08-20-at-5.38.01-PM.png 477w\" sizes=\"(max-width: 283px) 100vw, 283px\" /\u003e\u003c/p\u003e\n\u003cp\u003eDevelop an autocomplete search suggestion feature that dynamically displays search suggestions to users as they type in a search query. This feature fetches search results from an API endpoint and displays them as suggestions in real-time. Selected results are displayed separately, enhancing user experience and interaction.\u003c/p\u003e\n\u003cp\u003eThe functionality is akin to what you might find in popular search engines, where suggestions appear as you type, based on the current input. This not only makes the search process more efficient but also provides users with a glimpse of what information is available even before they complete typing their query.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eInput Examples:\u003c/strong\u003e\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eUser types: \u0026#8220;ph\u0026#8221; \u003cbr /\u003eExpected Output: Display a list of search suggestions related to \u0026#8220;phone.\u0026#8221;\u003c/li\u003e\n\u003cli\u003eUser types: \u0026#8220;lap\u0026#8221; \u003cbr /\u003eExpected Output: Display a list of search suggestions related to \u0026#8220;laptop.\u0026#8221;\u003c/li\u003e\n\u003cli\u003eUser types: \u0026#8220;app\u0026#8221; \u003cbr /\u003eExpected Output: Display a list of search suggestions related to \u0026#8220;apparel.\u0026#8221;\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThis task involves handling user input in real-time, querying an API for search results based on this input, and then displaying these results as clickable suggestions. When a user selects a suggestion, it should be displayed separately to indicate selection.\u003c/p\u003e\n\u003cp\u003ePlease use \u003ccode\u003ehttps://dummyjson.com/products/search?q=yourkeyword\u003c/code\u003e endpoint to fetch results\u003c/p\u003e\n\u003cp\u003eThe completion of this feature involves understanding and handling asynchronous operations, DOM manipulation, and event handling in JavaScript. It is a practical and commonly implemented feature in many web applications, making it an essential skill for frontend developers.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The search input should dynamically fetch suggestions after a minimum of 2 characters have been typed."
+        },
+        {
+            "constraint": "Debounce implementation is required to limit the number of API requests during rapid typing."
+        },
+        {
+            "constraint": "The autocomplete suggestions must update with every keystroke, reflecting the current state of the search input."
+        },
+        {
+            "constraint": "Only the top 10 search results should be displayed as suggestions to avoid overwhelming the user."
+        },
+        {
+            "constraint": "The application should handle API request failures gracefully, without crashing or freezing the UI."
+        },
+        {
+            "constraint": "Selected suggestions from the autocomplete list should be displayed in a separate area, and once selected, they should be removed from the suggestions list."
+        },
+        {
+            "constraint": "Ensure the application is accessible, allowing users to navigate through suggestions using keyboard inputs (e.g., arrow keys, enter to select)."
+        },
+        {
+            "constraint": "The autocomplete functionality should be case-insensitive, providing a user-friendly experience."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function SearchApp() {\r\n    // Write your code here\r\n}\r\n\r\n// Initialize the Search App\r\nconst container = document.getElementById('container');\r\nconst app = new SearchApp(container);\r\napp.init();\r\n\r\n// Do not edit below this line\r\nexport default SearchApp;",
+    "starterHTMLCode": "\u003cdiv id=\"container\"\u003e\r\n  \u003cdiv class=\"wrapper\"\u003e\r\n    \u003ch1\u003eFoogle\u003c/h1\u003e\r\n    \u003cform action=\"#\" class=\"search-form\"\u003e\r\n      \u003cdiv class=\"input-wrapper\"\u003e\r\n        \u003cinput type=\"text\" class=\"search-input\" placeholder=\"Search\"\u003e\r\n        \u003cinput type=\"submit\" class=\"submit\" value=\"Add Todo\"\u003e\r\n      \u003c/div\u003e\r\n      \u003cul class=\"results\"\u003e\r\n      \u003c/ul\u003e\r\n    \u003c/form\u003e\r\n    \u003cbr/\u003e\u003cbr/\u003e\r\n    \u003ch2\u003eResults\u003c/h2\u003e\r\n    \u003cbr/\u003e----\u003cbr/\u003e\r\n    \u003cul class=\"selected-results\"\u003e\r\n      \u003cdiv class=\"no-results\"\u003e\r\n        No Results Avaliable Yet\r\n      \u003c/div\u003e\r\n    \u003c/ul\u003e\r\n  \u003c/div\u003e\r\n\u003c/div\u003e",
+    "starterCSSCode": "#container {\r\n  width: 100%;\r\n  background: #efefef;\r\n  overflow: hidden;\r\n  min-height: 100vh;\r\n  .hidden {\r\n    display: none;\r\n  }\r\n  .wrapper {\r\n    width:  500px;\r\n    margin: 40px auto;\r\n  }\r\n  h1 {\r\n    text-align: center;\r\n    font-family: helvetica;\r\n    margin-bottom: 20px\r\n  }\r\n  .search-form {\r\n    width: 100%;\r\n    background: #fff;\r\n    position: relative;\r\n    .input-wrapper {\r\n      border: 1px solid green;\r\n      width: 100%;\r\n      overflow: hidden;\r\n    }\r\n    input[type='text'] {\r\n      border: 0;\r\n      padding: 20px;\r\n      font-size: 12px;\r\n      width: 68%;\r\n      float: left;\r\n    }\r\n    input[type='submit'] {\r\n      border: 0;\r\n      padding: 20px;\r\n      font-size: 12px;\r\n      float: right;\r\n      background: green;\r\n      width: 23%;\r\n      cursor: pointer;\r\n    }\r\n    .results {\r\n      width: 100%;\r\n      position: absolute;\r\n      left: 0;\r\n      top: 55px;\r\n      max-height: 120px;\r\n      overflow: hidden;\r\n      overflow-y: scroll;\r\n      li {\r\n        width: 92%;\r\n        padding: 20px;\r\n        background: white;\r\n        cursor: pointer;\r\n        \u0026:hover {\r\n          background: #eee;\r\n        }\r\n      }\r\n    }\r\n  }\r\n  \r\n  ul {\r\n    li {\r\n      width: 100%;\r\n      position: relative;\r\n      \u0026.editing {\r\n        input[type=\"text\"] {\r\n          display: block !important;\r\n        }\r\n        .text {\r\n          display: none;\r\n        }\r\n        \r\n        .green {\r\n          background: green;\r\n        }\r\n      }\r\n      \u0026.completed {\r\n        .done {\r\n          display: none;\r\n        }\r\n        .text {\r\n          text-decoration: line-through;\r\n        }\r\n        button {\r\n          width: 50% !important;\r\n        }\r\n      }\r\n      .buttons {\r\n        width: 50%;\r\n        position: absolute;\r\n        right: 0;\r\n        top:0;\r\n        button {\r\n          width: 32%;\r\n          float: left;\r\n        }\r\n      }\r\n    }\r\n  }\r\n}",
+    "solutionCode": "// Initialize the Search App\r\nclass SearchApp {\r\n  constructor(container) {\r\n    // Check if the required container element exists\r\n    if (!container) return;\r\n\r\n    // Create properties to store elements and cached results\r\n    this.cachedResults = {};\r\n    this.searchInputForm = container.querySelector('.search-form');\r\n    this.searchInput = container.querySelector('.search-input');\r\n    this.searchResultsContainer = container.querySelector('.results');\r\n    this.selectedResultsContainer = container.querySelector('.selected-results');\r\n    this.noElement = container.querySelector('.no-results');\r\n\r\n    // Check if all essential elements are present, otherwise return\r\n    if (!this.searchInputForm || !this.searchInput || !this.searchResultsContainer || !this.selectedResultsContainer) return;\r\n\r\n    // Bind the handleSearch method to the class instance\r\n    this.handleSearch = this.handleSearch.bind(this);\r\n  }\r\n\r\n  // Initialize the search app\r\n  async init() {\r\n    this.searchInput.addEventListener(\r\n      'keyup',\r\n      // Attach the debounce function to handleSearch to prevent excessive API requests\r\n      this.debounce(this.handleSearch, 200, true)\r\n    );\r\n  }\r\n\r\n  // Debounce function to limit API requests during user input\r\n  debounce(fn, delay, immediate = false) {\r\n    let timer;\r\n    return (...args) =\u003e {\r\n      const shouldRun = !timer \u0026\u0026 immediate;\r\n      if (shouldRun) {\r\n        fn.apply(this, args);\r\n      }\r\n      clearTimeout(timer);\r\n      timer = setTimeout(() =\u003e {\r\n        if (!shouldRun) {\r\n          fn.apply(this, args);\r\n        }\r\n        timer = null;\r\n      }, delay);\r\n    };\r\n  }\r\n\r\n  // Handle user search input\r\n  async handleSearch(e) {\r\n    console.log(e.target);\r\n    const currentVal = e.target.value;\r\n\r\n    // Clear the search results before displaying new suggestions\r\n    this.clearResults();\r\n\r\n    // If no input, return\r\n    if (!currentVal) return;\r\n\r\n    // If the results are cached for the current input, display them\r\n    if (this.cachedResults[currentVal]) {\r\n      this.showSearchResults(this.cachedResults[currentVal], currentVal);\r\n      return;\r\n    }\r\n\r\n    // Fetch search results from the API\r\n    let results = await this.fetchApi(currentVal);\r\n\r\n    // Store the results in the cache\r\n    this.cachedResults[currentVal] = results;\r\n\r\n    // Display the search results\r\n    this.showSearchResults(results, currentVal);\r\n  }\r\n\r\n  // Display search results\r\n  showSearchResults(results, currentVal) {\r\n    results\r\n      .filter(result =\u003e result.title.includes(currentVal))\r\n      .forEach(result =\u003e {\r\n        const element = document.createElement('li');\r\n        element.textContent = result.title;\r\n        this.searchResultsContainer.append(element);\r\n\r\n        // Add a click event listener to handle result selection\r\n        element.addEventListener('click', this.handleSearchResultTap(result.title));\r\n      });\r\n  }\r\n\r\n  // Handle result selection\r\n  handleSearchResultTap(currentVal) {\r\n    return e =\u003e {\r\n      // Clear the search input and results\r\n      this.searchInput.value = '';\r\n      this.clearResults();\r\n\r\n      // Create a new list element and append it to the selected results container\r\n      const li = document.createElement('li');\r\n      li.textContent = currentVal;\r\n      this.selectedResultsContainer.append(li);\r\n\r\n      // Remove the \"No Results Available\" message if it's present\r\n      this.noElement.remove();\r\n    };\r\n  }\r\n\r\n  // Clear the search results\r\n  clearResults() {\r\n    this.searchResultsContainer.innerHTML = '';\r\n  }\r\n\r\n  // Fetch search results from the API\r\n  async fetchApi(keyWord) {\r\n    try {\r\n      const result = await fetch('https://dummyjson.com/products/search?q='+keyWord);\r\n      const json = await result.json();\r\n      return json.products;\r\n    } catch (error) {\r\n      // Handle errors by throwing an exception\r\n      throw new Error(error);\r\n    }\r\n  }\r\n}\r\n\r\n\r\n// Initialization\r\nconst container = document.getElementById('container');\r\nconst app = new SearchApp(container);\r\napp.init();",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch1\u003eUnderstanding the SearchApp\u0026#8217;s Autocomplete Functionality\u003c/h1\u003e\n\u003csection\u003e\n\u003ch2\u003eInitialization\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eSearchApp\u003c/code\u003e begins by accepting a container element upon instantiation. It then queries this container for essential elements like the search input form, input field, results container, and selected results container. If any of these elements are missing, the app does not proceed further, ensuring all necessary DOM elements are present before initializing.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eDebounce Mechanism\u003c/h2\u003e\n\u003cp\u003eTo optimize performance and reduce unnecessary API calls, a debounce function is employed. This function waits for a specified delay (200ms) after the last keyup event before executing the search. This ensures that the app only makes an API call when the user has paused typing, effectively reducing the number of requests sent to the server.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHandling Search Input\u003c/h2\u003e\n\u003cp\u003eWhen the user types in the search input, the \u003ccode\u003ehandleSearch\u003c/code\u003e method is triggered. This method first clears any existing results. It then checks if there\u0026#8217;s a cached result for the current query to avoid repeated API calls for the same input. If no cached result is found, it fetches new results from the API.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eDisplaying Search Results\u003c/h2\u003e\n\u003cp\u003eUpon receiving search results, either from the cache or the API, the app filters these results to include only those matching the current query. It then dynamically creates list items for each result and appends them to the results container, making them visible to the user.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eSelecting Results\u003c/h2\u003e\n\u003cp\u003eEach result item is clickable, thanks to an event listener attached to it. When clicked, the app clears the search input and results display, adds the selected result to a separate \u0026#8220;selected results\u0026#8221; area, and removes the \u0026#8220;No Results Available\u0026#8221; message if it\u0026#8217;s present.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eError Handling\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003efetchApi\u003c/code\u003e method includes error handling to catch any issues during the API request. This ensures that the app remains robust and can handle failures gracefully without disrupting the user experience.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "App Design"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": null,
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "40. Autocomplete Search List Frontend Interview Question - FrontendLead",
+        "pageDescription": "Discover how to create an efficient and dynamic autocomplete search suggestion list with our in-depth JavaScript tutorial. Learn about debounce functions, API integration, and user interaction handling for web applications.",
+        "pageURL": "autocomplete-search-list",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Autocomplete Search List Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003e\u003cimg loading=\"lazy\" decoding=\"async\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/Screen-Shot-2023-08-20-at-5.38.01-PM-283x300.png\" alt=\"\" width=\"283\" height=\"300\" class=\"alignnone ",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch1\u003eUnderstanding the SearchApp\u0026#8217;s Autocomplete Functionality\u003c/h1\u003e\n\u003csection\u003e\n\u003ch2\u003eInitialization\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eSearchApp\u003c/code\u003e begins by accepting a container element upon instantia",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

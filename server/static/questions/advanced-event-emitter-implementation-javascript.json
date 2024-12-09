@@ -1,0 +1,113 @@
+{
+    "type": "coding",
+    "id": "advanced-event-emitter-implementation-javascript",
+    "title": "49. Event Emitter II",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "advanced-event-emitter-implementation-javascript",
+    "problemStatement": "\u003cp\u003eImplement an \u003ccode\u003eEventEmitter\u003c/code\u003e class in JavaScript that allows for subscribing to events, emitting events, and unsubscribing from events. This problem is categorized as medium difficulty and is commonly encountered in interviews for companies like Meta. Understanding event handling and the observer pattern is crucial for frontend developers, making this challenge both relevant and instructive.\u003c/p\u003e\n\u003cp\u003eThe \u003ccode\u003eEventEmitter\u003c/code\u003e class should have the following functionalities:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eon(name, callback):\u003c/strong\u003e Registers an event listener for the specified event \u003ccode\u003ename\u003c/code\u003e. This method should return an object with an \u003ccode\u003eoff\u003c/code\u003e method, which when called, removes the listener.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eemit(name, \u0026#8230;args):\u003c/strong\u003e Triggers the specified event \u003ccode\u003ename\u003c/code\u003e and calls all the registered callbacks with the provided arguments.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eYour implementation should allow for the dynamic addition and removal of event listeners, ensuring that event callbacks are executed in the order they were added. The \u003ccode\u003eemit\u003c/code\u003e method should return \u003ccode\u003etrue\u003c/code\u003e if the event has listeners and was successfully emitted, or \u003ccode\u003efalse\u003c/code\u003e otherwise.\u003c/p\u003e\n\u003cp\u003eExample usage:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst emitter = new EventEmitter();\r\nvar sum = 0;\r\nfunction addTwoNumbers(a, b) {\r\n  sum = a + b;\r\n}\r\nconst sub = emitter.on('foo', addTwoNumbers);\r\nemitter.emit('foo', 2, 5); // Triggers addTwoNumbers, expecting sum = 7\r\nconsole.log(sum); // Output: 7\r\n\r\nsub.off(); // Unsubscribe the addTwoNumbers listener from 'foo' event\r\nemitter.emit('foo', -3, 9); // Since addTwoNumbers is unsubscribed, sum remains unchanged\r\nconsole.log(sum); // Output: 7\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis task assesses your ability to work with classes, callbacks, and advanced JavaScript concepts such as closures and the observer pattern. Successfully implementing an \u003ccode\u003eEventEmitter\u003c/code\u003e demonstrates a deep understanding of event-driven programming, a key aspect of many JavaScript applications.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should allow subscription to events and trigger them appropriately",
+            "test": "it('should allow subscription to events and trigger them appropriately', (done) =\u003e {\r\n    const emitter = new EventEmitter();\r\n    let testValue = 0;\r\n    function increment() {\r\n      testValue++;\r\n    }\r\n\r\n    emitter.on('increment', increment);\r\n    emitter.emit('increment');\r\n    expect(testValue).to.equal(1);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should handle multiple subscribers for the same event",
+            "test": "it('should handle multiple subscribers for the same event', (done) =\u003e {\r\n    const emitter = new EventEmitter();\r\n    let sum = 0;\r\n    function addToSum(value) {\r\n      sum += value;\r\n    }\r\n\r\n    emitter.on('add', addToSum);\r\n    emitter.on('add', addToSum);\r\n    emitter.emit('add', 5);\r\n    expect(sum).to.equal(10); // Since addToSum is called twice\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should not trigger events that have been unsubscribed",
+            "test": "it('should not trigger events that have been unsubscribed', (done) =\u003e {\r\n    const emitter = new EventEmitter();\r\n    let count = 0;\r\n    function increment() {\r\n      count++;\r\n    }\r\n\r\n    const subscription = emitter.on('increment', increment);\r\n    emitter.emit('increment');\r\n    subscription.off();\r\n    emitter.emit('increment');\r\n    \r\n    expect(count).to.equal(1); // Only the first emit should increment the count\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should return true for emitted events with listeners and false for those without",
+            "test": "it('should return true for emitted events with listeners and false for those without', (done) =\u003e {\r\n    const emitter = new EventEmitter();\r\n    function testFunc() {}\r\n\r\n    const hasListeners = emitter.on('test', testFunc);\r\n    expect(emitter.emit('test')).to.be.true;\r\n    hasListeners.off();\r\n    expect(emitter.emit('test')).to.be.false;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The EventEmitter class must support an unlimited number of event names and listeners."
+        },
+        {
+            "constraint": "Listeners should be invoked in the order they were added for a given event name."
+        },
+        {
+            "constraint": "The off method returned by the on method call should only remove the specific listener it's associated with."
+        },
+        {
+            "constraint": "The emit method should return true if the event has listeners and false if no listeners are present for the event."
+        },
+        {
+            "constraint": "The solution should not use any external libraries or frameworks; it must be implemented in pure JavaScript."
+        },
+        {
+            "constraint": "Consider thread-safety and memory leaks, ensuring that listeners are properly garbage collected once removed."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "class EventEmitter {\r\n    constructor() {\r\n        // Initialize an object to hold event names and their corresponding callbacks\r\n        this.events = {};\r\n    }\r\n\r\n    on(name, callback) {\r\n        // Method for registering event listeners\r\n    }\r\n\r\n    emit(name, ...args) {\r\n        // Method for emitting events and invoking registered callbacks\r\n    }\r\n}\r\n\r\n// Do not edit below this line\r\nexport default EventEmitter;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "class EventEmitter {\r\n  constructor() {\r\n    // Object to hold event names as keys and arrays of callbacks as their values\r\n    this.events = {};\r\n  }\r\n\r\n  on(name, callback) {\r\n    // Check if the event name already exists; if not, initialize it with an empty array\r\n    if (!this.events[name]) {\r\n      this.events[name] = [];\r\n    }\r\n    \r\n    // Add the callback to the array of listeners for the specified event name\r\n    this.events[name].push(callback);\r\n    \r\n    // Return an object with an off method to remove the listener\r\n    return {\r\n      off: () =\u003e {\r\n        if (this.events[name]) {\r\n          // Find the index of the callback to remove\r\n          const eventIndex = this.events[name].indexOf(callback);\r\n          if (eventIndex !== -1) {\r\n            // Remove the callback from the array of listeners\r\n            this.events[name].splice(eventIndex, 1);\r\n            // If no listeners remain for the event, delete the event key\r\n            if (!this.events[name].length) {\r\n              delete this.events[name];\r\n            }\r\n          }\r\n        }\r\n        // Return the EventEmitter instance for potential method chaining\r\n        return this;\r\n      }\r\n    };\r\n  }\r\n\r\n  emit(name, ...args) {\r\n    // Check if the event has registered listeners\r\n    if (!this.events[name]) {\r\n      return false; // Return false if no listeners are registered for the event\r\n    }\r\n\r\n    // Call each registered listener for the event, passing in provided arguments\r\n    this.events[name].forEach(callback =\u003e callback(...args));\r\n    return true; // Indicate successful event emission\r\n  }\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eDetailed Explanation of the EventEmitter Class\u003c/h1\u003e\n\u003cp\u003eThe \u003ccode\u003eEventEmitter\u003c/code\u003e class in JavaScript is a fundamental component of the Observer pattern, allowing objects (observers) to subscribe to events and get notified when those events occur. This pattern is especially useful in designing loosely coupled systems and is widely used in various programming paradigms, including frontend development.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eClass Structure and Initialization\u003c/h2\u003e\n\u003cp\u003eThe class is initialized with a single property: \u003ccode\u003eevents\u003c/code\u003e, an object that serves as a registry for event names and their corresponding listener functions. This object maps event names to arrays of callbacks, enabling efficient management of multiple listeners for the same event.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eSubscribing to Events\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eon\u003c/code\u003e method allows clients to register callbacks for a specific event name. When an event of this name is emitted, all registered callbacks are invoked in the order they were added. If an event doesn\u0026#8217;t exist, it\u0026#8217;s initialized with an empty array before adding the callback. This method returns an object containing an \u003ccode\u003eoff\u003c/code\u003e function, which can be used to remove the subscribed listener, showcasing a practical use of closures for managing subscriptions.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eEmitting Events\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eemit\u003c/code\u003e method is responsible for triggering an event. It iterates over all callbacks registered under the event name and calls them with provided arguments. If the event has no listeners, \u003ccode\u003eemit\u003c/code\u003e returns \u003ccode\u003efalse\u003c/code\u003e; otherwise, it returns \u003ccode\u003etrue\u003c/code\u003e after successfully invoking all callbacks.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eUnsubscribing from Events\u003c/h2\u003e\n\u003cp\u003eThe capability to unsubscribe from events is crucial for preventing memory leaks and managing listener lifecycles. The \u003ccode\u003eoff\u003c/code\u003e method, accessible through the object returned by \u003ccode\u003eon\u003c/code\u003e, allows for precise removal of specific listeners. This design pattern ensures that each subscription can be independently managed and removed, enhancing the flexibility and robustness of event handling.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003eEventEmitter\u003c/code\u003e class embodies the principles of event-driven programming, enabling dynamic and flexible event management. Through its methods, developers can create a highly responsive, loosely coupled system where components can interact seamlessly without direct dependencies. Understanding and implementing custom event emitters is a valuable skill in software development, fostering better application architecture and design.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": null,
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "49. Event Emitter II - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Master event handling: Learn to implement a custom Event Emitter in JavaScript, enhancing your frontend development expertise.",
+        "pageURL": "advanced-event-emitter-implementation-javascript",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Event Emitter II  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eImplement an \u003ccode\u003eEventEmitter\u003c/code\u003e class in JavaScript that allows for subscribing to events, emitting events, and unsubscribing from events. This problem is categorized as medium difficulty an",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch1\u003eDetailed Explanation of the EventEmitter Class\u003c/h1\u003e\n\u003cp\u003eThe \u003ccode\u003eEventEmitter\u003c/code\u003e class in JavaScript is a fundamental component of the Observer pattern, allowing objects (o",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

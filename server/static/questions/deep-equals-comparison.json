@@ -1,0 +1,172 @@
+{
+    "type": "coding",
+    "id": "deep-equals-comparison",
+    "title": "48. Deep Equals",
+    "difficulty": [
+        "Hard"
+    ],
+    "link": "deep-equals-comparison",
+    "problemStatement": "\u003cp\u003eImplement a \u003ccode\u003edeepEquals\u003c/code\u003e function capable of comparing two inputs, which can vary widely in type and structure, including null, undefined, objects, arrays, NaN, and primitives (such as numbers, strings, and booleans). The function should accurately determine whether the two inputs are deeply equal, meaning they are structurally identical and contain the same values at every level of nesting.\u003c/p\u003e\n\u003cp\u003eThe challenge lies in handling the nuanced differences between JavaScript data types and their comparisons. For instance:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eComparing \u003ccode\u003eNaN\u003c/code\u003e values, which by default are not equal to themselves.\u003c/li\u003e\n\u003cli\u003eDistinguishing between different types of falsy values, such as \u003ccode\u003enull\u003c/code\u003e and \u003ccode\u003eundefined\u003c/code\u003e.\u003c/li\u003e\n\u003cli\u003eEnsuring that arrays and objects are compared recursively, delving into each element or property to verify equality.\u003c/li\u003e\n\u003cli\u003eCorrectly handling primitive data types, ensuring strict equality.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eExamples of expected behavior:\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003edeepEquals(NaN, NaN) // true\r\ndeepEquals([1, 2, [3]], [1, 2, [3]]) // true\r\ndeepEquals({ a: 1, b: { c: 2 } }, { a: 1, b: { c: 2 } }) // true\r\ndeepEquals(null, undefined) // false\r\ndeepEquals([1, 2, 3], { 0: 1, 1: 2, 2: 3 }) // false\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis function is not only a powerful tool for JavaScript developers to accurately compare complex structures but also serves as an excellent exercise in understanding JavaScript\u0026#8217;s type coercion and equality comparisons.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should return true for two NaN values",
+            "test": "it('should return true for two NaN values', (done) =\u003e {\r\n    expect(deepEquals(NaN, NaN)).to.be.true;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should return true for identical primitive values",
+            "test": "it('should return true for identical primitive values', (done) =\u003e {\r\n    expect(deepEquals('test', 'test')).to.be.true;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should return false for different primitive values",
+            "test": "it('should return false for different primitive values', (done) =\u003e {\r\n    expect(deepEquals(10, '10')).to.be.false;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should return true for two identical arrays",
+            "test": "it('should return true for two identical arrays', (done) =\u003e {\r\n    expect(deepEquals([1, 2, 3], [1, 2, 3])).to.be.true;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should return false for two different arrays",
+            "test": "it('should return false for two different arrays', (done) =\u003e {\r\n    expect(deepEquals([1, 2, 3], [1, 2, 4])).to.be.false;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 5,
+            "description": "should return true for two identical objects",
+            "test": "it('should return true for two identical objects', (done) =\u003e {\r\n    const obj1 = { a: 1, b: { c: 2 } };\r\n    const obj2 = { a: 1, b: { c: 2 } };\r\n    expect(deepEquals(obj1, obj2)).to.be.true;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 6,
+            "description": "should return false for two different objects",
+            "test": "it('should return false for two different objects', (done) =\u003e {\r\n    const obj1 = { a: 1, b: { c: 2 } };\r\n    const obj2 = { a: 1, b: { c: 3 } };\r\n    expect(deepEquals(obj1, obj2)).to.be.false;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 7,
+            "description": "should handle mixed nested structures",
+            "test": "it('should handle mixed nested structures', (done) =\u003e {\r\n    const valueOne = [1, { a: 2, b: [3, 4] }, [5, { c: 6 }]];\r\n    const valueTwo = [1, { a: 2, b: [3, 4] }, [5, { c: 6 }]];\r\n    expect(deepEquals(valueOne, valueTwo)).to.be.true;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 8,
+            "description": "should return false for null and undefined comparison",
+            "test": "it('should return false for null and undefined comparison', (done) =\u003e {\r\n    expect(deepEquals(null, undefined)).to.be.false;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The function must accurately compare primitive types (strings, numbers, booleans), treating them with strict equality."
+        },
+        {
+            "constraint": "NaN should be considered equal to NaN."
+        },
+        {
+            "constraint": "undefined should only be equal to undefined."
+        },
+        {
+            "constraint": "null should only be equal to null."
+        },
+        {
+            "constraint": "The function should perform a deep comparison of objects and arrays, ensuring that every nested object or array is equal in structure and content."
+        },
+        {
+            "constraint": "For object comparison, the order of keys should not affect the outcome; only the presence of the same keys with equal values matters."
+        },
+        {
+            "constraint": "The function should return false when comparing values of different types, e.g., an array and an object, even if their content might look similar when stringified."
+        },
+        {
+            "constraint": "The function should handle circular references gracefully without entering an infinite loop."
+        },
+        {
+            "constraint": "Performance-wise, the function should avoid unnecessary computations, aiming for efficiency, especially with large and deeply nested structures."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function deepEquals(valueOne, valueTwo) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default deepEquals;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function deepEquals(valueOne, valueTwo) {\r\n  // Check for NaN equality\r\n  if (Number.isNaN(valueOne) \u0026\u0026 Number.isNaN(valueTwo)) {\r\n    return true;\r\n  }\r\n\r\n  // Check for undefined or null equality\r\n  if (valueOne === undefined || valueOne === null || valueTwo === undefined || valueTwo === null) {\r\n    return valueOne === valueTwo;\r\n  }\r\n\r\n  // Check for primitive type equality\r\n  if (typeof valueOne !== 'object' \u0026\u0026 typeof valueTwo !== 'object') {\r\n    return valueOne === valueTwo;\r\n  }\r\n\r\n  // Check for array equality\r\n  if (Array.isArray(valueOne) \u0026\u0026 Array.isArray(valueTwo)) {\r\n    if (valueOne.length !== valueTwo.length) return false;\r\n    for (let i = 0; i \u003c valueOne.length; i++) {\r\n      if (!deepEquals(valueOne[i], valueTwo[i])) return false;\r\n    }\r\n    return true;\r\n  }\r\n\r\n  // If one is an array and the other is not, return false\r\n  if (Array.isArray(valueOne) || Array.isArray(valueTwo)) {\r\n    return false;\r\n  }\r\n\r\n  // Check for object equality\r\n  const keysOne = Object.keys(valueOne);\r\n  const keysTwo = Object.keys(valueTwo);\r\n\r\n  if (keysOne.length !== keysTwo.length) return false;\r\n\r\n  for (let key of keysOne) {\r\n    if (!keysTwo.includes(key) || !deepEquals(valueOne[key], valueTwo[key])) return false;\r\n  }\r\n\r\n  return true;\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eIntroduction\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003edeepEquals\u003c/code\u003e function is crafted to meticulously compare two given inputs, addressing the intricacies of JavaScript\u0026#8217;s types and values, including primitives, arrays, objects, and special cases like \u003ccode\u003eNaN\u003c/code\u003e, \u003ccode\u003enull\u003c/code\u003e, and \u003ccode\u003eundefined\u003c/code\u003e.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eHandling Special Cases\u003c/h2\u003e\n\u003ch3\u003eNaN Comparison\u003c/h3\u003e\n\u003cp\u003eTo account for JavaScript\u0026#8217;s unique treatment of \u003ccode\u003eNaN\u003c/code\u003e, the function uses \u003ccode\u003eNumber.isNaN\u003c/code\u003e to ensure that two \u003ccode\u003eNaN\u003c/code\u003e values are considered equal.\u003c/p\u003e\n\u003ch3\u003eUndefined and Null\u003c/h3\u003e\n\u003cp\u003eGiven their singular nature, \u003ccode\u003eundefined\u003c/code\u003e and \u003ccode\u003enull\u003c/code\u003e are compared directly using strict equality.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003ePrimitive Type Comparison\u003c/h2\u003e\n\u003cp\u003eFor non-object types, the function leverages strict equality to ascertain if the values are the same, providing a straightforward comparison method for these types.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eDeep Comparison of Arrays and Objects\u003c/h2\u003e\n\u003ch3\u003eArrays\u003c/h3\u003e\n\u003cp\u003eThe function first verifies if both inputs are arrays. It then compares their lengths as an initial equality check, followed by a recursive element-wise comparison to ensure deep equality, accommodating nested structures within arrays.\u003c/p\u003e\n\u003ch3\u003eObjects\u003c/h3\u003e\n\u003cp\u003eFor objects, \u003ccode\u003edeepEquals\u003c/code\u003e compares the sets of keys and then recursively checks each key-value pair for deep equality, ensuring that both objects have identical content and structure.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThis comprehensive approach to deep equality checks encapsulates the nuances of JavaScript\u0026#8217;s typing system and value comparison, making \u003ccode\u003edeepEquals\u003c/code\u003e an indispensable tool for developers seeking accuracy and depth in their comparisons.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/PUmNzgIhdPA",
+    "company": null,
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Build 48. Deep Equals in Javascript - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Discover the art of deep comparison in JavaScript with our in-depth guide on the Deep Equals function. Learn how to accurately compare objects, arrays, and more, handling complex data structures with ease.",
+        "pageURL": "deep-equals-comparison",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Build  Deep Equals in Javascript  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eImplement a \u003ccode\u003edeepEquals\u003c/code\u003e function capable of comparing two inputs, which can vary widely in type and structure, including null, undefined, objects, arrays, NaN, and primitives (such as n",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eIntroduction\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003edeepEquals\u003c/code\u003e function is crafted to meticulously compare two given inputs, addressing the intricacies of JavaScript\u0026#8217;s types and values",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+res. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

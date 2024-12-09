@@ -1,0 +1,124 @@
+{
+    "type": "coding",
+    "id": "flatten-arrays-recursively-and-iteratively",
+    "title": "1. Flatten I",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "flatten-arrays-recursively-and-iteratively",
+    "problemStatement": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nested arrays of various levels into a single-level array. For example, given an input like \u003ccode\u003e[[1, 2, [3]], 4]\u003c/code\u003e, the expected output would be \u003ccode\u003e[1, 2, 3, 4]\u003c/code\u003e. This challenge must be addressed in two distinct manners:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003eRecursive Approach:\u003c/strong\u003e This method leverages the concept of recursion, where a function calls itself. When the function encounters an element that is an array, it calls itself with this nested array, accumulating all the elements into a single, flattened array. This approach elegantly navigates through the layers of nested arrays, extracting and combining elements into one cohesive structure.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eIterative Approach:\u003c/strong\u003e Differing from recursion, the iterative solution utilizes a stack to manage and process the elements. This method iteratively examines each element, and when an array is encountered, its elements are added to the stack to be processed. This continues until all elements are flattened into a single array, ensuring efficient handling without the overhead of recursive function calls.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e\u003cstrong\u003eExample:\u003c/strong\u003e Let\u0026#8217;s illustrate the problem and solutions with a concrete example.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003eInput: [[1, 2, [3, [4, 5]]], 6]\r\n\r\nRecursive Output: [1, 2, 3, 4, 5, 6]\r\nIterative Output: [1, 2, 3, 4, 5, 6]\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis task not only tests your understanding of array manipulation but also evaluates your ability to implement solutions using different programming paradigms. Whether you opt for the elegance of recursion or the control of iteration, mastering this challenge will sharpen your problem-solving skills and prepare you for frontend interviews.\u003c/p\u003e\n\u003cp\u003eAs you embark on solving this problem, consider the implications of each approach, including the ease of implementation, efficiency, and potential limitations such as stack overflow in recursion for deeply nested arrays. Good luck!\u003c/p\u003e\n",
+    "premiumQuestion": false,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should verify the result is an array",
+            "test": "it('should verify the result is an array', (done) =\u003e {\r\n    const result = flattenArray([1, [2, 3]]);\r\n    expect(Array.isArray(result)).to.be.true;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should handle arrays with negative numbers",
+            "test": "it('should handle arrays with negative numbers', (done) =\u003e {\r\n    const input = [1, -2, [3, -4, [-5]]];\r\n    const expected = [1, -2, 3, -4, -5];\r\n    const result = flattenArray(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should handle arrays with Infinity and -Infinity",
+            "test": "it('should handle arrays with Infinity and -Infinity', (done) =\u003e {\r\n    const input = [1, Infinity, [-Infinity, [2]]];\r\n    const expected = [1, Infinity, -Infinity, 2];\r\n    const result = flattenArray(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should flatten arrays containing various types including null and undefined",
+            "test": "it('should flatten arrays containing various types including null and undefined', (done) =\u003e {\r\n    const input = [null, undefined, [true, [false, ['string'], [{}]]]];\r\n    const expected = [null, undefined, true, false, 'string', {}];\r\n    const result = flattenArray(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should return an empty array when the input is an empty array",
+            "test": "it('should return an empty array when the input is an empty array', (done) =\u003e {\r\n    const input = [];\r\n    const expected = [];\r\n    const result = flattenArray(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 5,
+            "description": "should handle deeply nested arrays",
+            "test": "it('should handle deeply nested arrays', (done) =\u003e {\r\n    const input = [[[[[1]]]], 2, [[3], 4]];\r\n    const expected = [1, 2, 3, 4];\r\n    const result = flattenArray(input);\r\n    expect(result).to.deep.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": null
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function flattenArray(value) {\r\n  // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default flattenArray;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "// Recurive Solution\r\nfunction flattenArray(value) {\r\n  // Initialize an empty array to hold the flattened result\r\n  let results = [];\r\n\r\n  // Check if the input value is an array\r\n  if (Array.isArray(value)) {\r\n    // If value is an array, iterate over each element\r\n    value.forEach(val =\u003e {\r\n      // Recursively flatten the element and concatenate it with the results array\r\n      results.push(...flattenArray(val));\r\n    });\r\n  } else {\r\n    // If value is not an array, add it directly to the results array\r\n    results.push(value);\r\n  }\r\n\r\n  // Return the flattened results array\r\n  return results;\r\n}\r\n\r\n// Iterative solution\r\nfunction flattenArray(value) {\r\n  // Initialize an empty array to hold the flattened result\r\n  let results = [];\r\n  // Initialize a stack with the input array to manage the iteration\r\n  let stack = [...value];\r\n\r\n  // Loop until the stack is empty\r\n  while (stack.length) {\r\n    // Remove and return the last element from the stack\r\n    let current = stack.pop();\r\n    // Check if the current element is an array\r\n    if (Array.isArray(current)) {\r\n      // If current is an array, add its elements to the end of the stack\r\n      current.forEach(val =\u003e stack.push(val));\r\n    } else {\r\n      // If current is not an array, add it to the beginning of the results array\r\n      results.unshift(current);\r\n    }\r\n  }\r\n\r\n  // Return the flattened results array\r\n  return results;\r\n}\r\n",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explore two distinct methods: recursive and iterative. We\u0026#8217;ll delve into how each works, their advantages, and their computational complexity.\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eRecursive Approach\u003c/h2\u003e\n\u003cp\u003eThe recursive approach to flattening arrays is an intuitive method that leverages the function\u0026#8217;s ability to call itself with a subset of the original problem. This method is particularly elegant and straightforward for processing nested structures.\u003c/p\u003e\n\u003cp\u003eIn the recursive function \u003ccode\u003eflattenRecursively\u003c/code\u003e, we start by checking if the input is an array. If so, we iterate over each element, recursively calling the function on it and appending the results to our accumulated array. If the element is not an array, it\u0026#8217;s added directly to the result set. This process continues until all nested arrays have been explored and flattened.\u003c/p\u003e\n\u003cp\u003eThe recursive approach\u0026#8217;s complexity can be challenging to determine due to its dependence on the depth and shape of the input array. However, in the worst case, where the array is deeply nested, the complexity can approach O(n), where n is the total number of elements across all nested arrays.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eIterative Approach\u003c/h2\u003e\n\u003cp\u003eThe iterative approach, demonstrated by the function \u003ccode\u003eflattenIteratively\u003c/code\u003e, utilizes a stack to manage the elements yet to be processed. This method starts by treating the entire input array as a stack. We then repeatedly pop elements from the stack, inspecting each one. If an element is an array, its contents are pushed back onto the stack for further inspection. If it\u0026#8217;s not an array, it\u0026#8217;s added to the results array.\u003c/p\u003e\n\u003cp\u003eOne notable detail in this implementation is that non-array elements are added to the front of the results array. This choice ensures that elements maintain their original order once fully flattened, but it also means that each insertion can potentially be O(n), leading to a worst-case complexity of O(n^2) for the entire operation, where n is the total number of elements to be processed.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eComparison and Complexity\u003c/h2\u003e\n\u003cp\u003eBoth methods effectively flatten nested arrays, but their efficiency can vary significantly based on the input data\u0026#8217;s structure. The recursive approach is elegant and easier to understand but can suffer from stack overflow issues with very deep or large arrays. Its complexity is generally O(n) but can be worse depending on the recursion\u0026#8217;s depth and the function call overhead.\u003c/p\u003e\n\u003cp\u003eOn the other hand, the iterative approach avoids potential stack overflow issues and provides a more controlled execution flow. However, due to the unshift operation\u0026#8217;s O(n) complexity in each step, this method can result in quadratic time complexity O(n^2) in the worst case, making it less efficient for large arrays.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003eIn conclusion, the choice between recursive and iterative approaches to array flattening depends on the specific requirements and constraints of your project, including the expected input array size and depth. While the recursive method is concise and elegant, the iterative method provides a robust alternative for handling large and deeply nested arrays without the risk of stack overflow.\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 10,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/UV9Lp-3uwwg?si=sIkEur5qGudwyPgh",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

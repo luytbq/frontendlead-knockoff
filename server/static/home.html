@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript Coding Questions</title>
+    <link rel="stylesheet" href="./static/styles.css">
+    <script src="./static/common.js"></script>
+</head>
+<body>
+    <h1>Home Page</h1>
+    <div id="question-list">
+        <h2>Choose a question to solve</h2>
+        <table id="question-table"></table>
+
+    </div>
+</body>
+<script>
+    function loadQuestions() {
+        fetch("/static/crawled-questions.json")
+        .then(res => res.json())
+        .then(questions => renderQuestions(questions));
+    }
+
+    function renderSingleQuestion(question) {
+        let div = document.createElement('div');
+        div.classList.add('question');
+
+        let cdiv1 = document.createElement('div');
+        cdiv1.classList.add('question-title');
+        let a = document.createElement('a');
+        a.href = `/question.html?slug=${question.slug}`;
+        a.innerText = question.title || 'Question title';
+        cdiv1.appendChild(a)
+        renderQuestionTags(question, cdiv1);
+        div.appendChild(cdiv1);
+
+        document.getElementById("question-list").appendChild(div)
+    }
+
+    function renderQuestions(questions) {
+        questions.forEach(question => {
+            renderSingleQuestion(question)
+        });
+    }
+
+    loadQuestions();
+</script>
+</html>

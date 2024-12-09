@@ -1,0 +1,132 @@
+{
+    "type": "coding",
+    "id": "next-right-sibling",
+    "title": "22. Next Right Sibling",
+    "difficulty": [
+        "Easy"
+    ],
+    "link": "next-right-sibling",
+    "problemStatement": "\u003carticle\u003e\n\u003cimg loading=\"lazy\" decoding=\"async\" class=\"alignnone size-medium wp-image-195\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/I8ncH1ncdGaBXV3nwPH061w1MmdqNR9p_1169x546_1597852405395-300x140.png\" alt=\"\" width=\"300\" height=\"140\" srcset=\"https://api.frontendlead.com/wp-content/uploads/2024/03/I8ncH1ncdGaBXV3nwPH061w1MmdqNR9p_1169x546_1597852405395-300x140.png 300w, https://api.frontendlead.com/wp-content/uploads/2024/03/I8ncH1ncdGaBXV3nwPH061w1MmdqNR9p_1169x546_1597852405395-1024x478.png 1024w, https://api.frontendlead.com/wp-content/uploads/2024/03/I8ncH1ncdGaBXV3nwPH061w1MmdqNR9p_1169x546_1597852405395-768x359.png 768w, https://api.frontendlead.com/wp-content/uploads/2024/03/I8ncH1ncdGaBXV3nwPH061w1MmdqNR9p_1169x546_1597852405395.png 1169w\" sizes=\"(max-width: 300px) 100vw, 300px\" /\u003e\u003c/p\u003e\n\u003cp\u003eYou are tasked with creating a function \u003ccode\u003efindNextRightSibling\u003c/code\u003e that identifies the next right sibling of a given node within a tree structure, resembling the DOM tree. This function should traverse the tree in a breadth-first manner, using a queue to keep track of the nodes.\u003c/p\u003e\n\u003cp\u003eThe function \u003ccode\u003efindNextRightSibling\u003c/code\u003e takes two arguments:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003ccode\u003eroot\u003c/code\u003e: The root node of the tree from which the search begins.\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003etarget\u003c/code\u003e: The node for which you want to find the next right sibling.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThe goal is to find and return the node that is the immediate right sibling of the \u003ccode\u003etarget\u003c/code\u003e node. If the \u003ccode\u003etarget\u003c/code\u003e node is the last child of its parent or does not have any right siblings, the function should return \u003ccode\u003enull\u003c/code\u003e.\u003c/p\u003e\n\u003cp\u003eThis functionality is crucial for applications that need to understand or manipulate hierarchical structures similar to the DOM, where knowing a node\u0026#8217;s relationship to its siblings can influence layout, styling, or interactivity.\u003c/p\u003e\n\u003c/article\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should return the next right sibling at the same level",
+            "test": "it('should return the next right sibling at the same level', (done) =\u003e {\r\n    // Create a simple DOM structure for this test\r\n    document.body.innerHTML = `\r\n      \u003cdiv id=\"root\"\u003e\r\n        \u003cdiv id=\"child1\"\u003eChild 1\u003c/div\u003e\r\n        \u003cdiv id=\"child2\"\u003eChild 2\u003c/div\u003e \u003c!-- This is the expected next right sibling --\u003e\r\n        \u003cdiv id=\"child3\"\u003eChild 3\u003c/div\u003e\r\n      \u003c/div\u003e\r\n    `;\r\n\r\n    const root = document.getElementById('root');\r\n    const target = document.getElementById('child1');\r\n    const expectedResult = document.getElementById('child2');\r\n\r\n    const result = findNextRightSibling(root, target);\r\n    expect(result).to.equal(expectedResult);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should return null if the target is the last child",
+            "test": "it('should return null if the target is the last child', (done) =\u003e {\r\n    // Create a new DOM structure for this test to ensure isolation\r\n    document.body.innerHTML = `\r\n      \u003cdiv id=\"root\"\u003e\r\n        \u003cdiv id=\"child1\"\u003eChild 1\u003c/div\u003e\r\n        \u003cdiv id=\"child2\"\u003eChild 2\u003c/div\u003e \u003c!-- Target --\u003e\r\n        \u003c!-- No sibling after child2, so expect null --\u003e\r\n      \u003c/div\u003e\r\n    `;\r\n\r\n    const root = document.getElementById('root');\r\n    const target = document.getElementById('child2');\r\n\r\n    const result = findNextRightSibling(root, target);\r\n    expect(result).to.be.null;\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [],
+    "order": null,
+    "starterJSCode": "function findNextRightSibling(root, target) {\r\n  // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default findNextRightSibling;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function findNextRightSibling(root, target) {\r\n  const Q = [root]; // Initialize the queue with the root element for breadth-first search\r\n  \r\n  while (Q.length) { // Continue the search until the queue is empty\r\n    const current = Q.shift(); // Remove and get the first element from the queue as the current element\r\n    \r\n    // Check if the current element is the target element we're looking for\r\n    if (current === target) {\r\n      // If found, the next element in the queue is the next right sibling in the DOM tree\r\n      const nextSibling = Q.shift();\r\n      \r\n      // If there's no next element, it means the target is the last child or has no siblings\r\n      if (!nextSibling) return null; // Return null if the target has no right sibling\r\n      \r\n      return nextSibling; // Return the next right sibling of the target\r\n    }\r\n    \r\n    // If the current element has children, add them to the queue to continue the search\r\n    if (current.children) {\r\n      Q.push(...current.children); // Spread operator (...) is used to add all children to the queue\r\n    }\r\n  }\r\n  // If the loop completes without finding the target, return null (though in practice this should not happen if the target is within the tree)\r\n  return null\r\n}\r\n",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003ch2\u003eFinding the Next Right Sibling in a DOM Tree\u003c/h2\u003e\n\u003cp\u003eIn web development, navigating the Document Object Model (DOM) efficiently is crucial. This article explores a JavaScript function designed to find the next right sibling of a given target element within a DOM tree.\u003c/p\u003e\n\u003csection\u003e\n\u003ch3\u003eUnderstanding the Problem\u003c/h3\u003e\n\u003cp\u003eThe challenge involves identifying the immediate sibling element that follows a specified target element, assuming both elements share the same parent node in the DOM structure.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch3\u003eProposed Solution\u003c/h3\u003e\n\u003cp\u003eThe \u003ccode\u003efindNextRightSibling\u003c/code\u003e function employs a Breadth-First Search (BFS) traversal algorithm to systematically explore sibling elements in the DOM tree, ensuring an accurate and efficient search process.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch3\u003eImplementation Details\u003c/h3\u003e\n\u003col\u003e\n\u003cli\u003e\u003cstrong\u003eQueue Initialization:\u003c/strong\u003e The function begins by initializing a queue with the root node of the DOM tree, setting the stage for a level-order traversal.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eBFS Traversal:\u003c/strong\u003e A loop iterates over the queue\u0026#8217;s elements, extracting and examining each node to determine if it matches the target element.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eTarget Identification:\u003c/strong\u003e Upon locating the target element within the queue, the function proceeds to check the next item in the queue, which represents the potential next right sibling.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eSibling Determination:\u003c/strong\u003e If a subsequent element exists, it is deemed the next right sibling; otherwise, the function concludes that no such sibling is present, returning \u003ccode\u003enull\u003c/code\u003e.\u003c/li\u003e\n\u003c/ol\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch3\u003eExample Usage\u003c/h3\u003e\n\u003cp\u003eConsider a DOM tree with multiple child elements under a single parent. Invoking \u003ccode\u003efindNextRightSibling(root, target)\u003c/code\u003e, where \u003ccode\u003eroot\u003c/code\u003e is the parent node and \u003ccode\u003etarget\u003c/code\u003e is one of the children, the function efficiently identifies and returns the target\u0026#8217;s next right sibling.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch3\u003eBenefits of the Approach\u003c/h3\u003e\n\u003cp\u003eThis method provides a streamlined, non-recursive solution to sibling element traversal in the DOM, facilitating various DOM manipulation and traversal tasks common in dynamic web application development.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "DOM API"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/46KnJk8eZDQ",
+    "company": [
+        "Microsoft"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "22. Next Right Sibling - Frontend Interview Qustion - FrontendLead",
+        "pageDescription": "Master DOM manipulation in JavaScript by learning how to efficiently find the next right sibling of any element in a DOM tree. Explore our in-depth guide for a step-by-step solution using the Breadth-First Search algorithm.",
+        "pageURL": "next-right-sibling",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Next Right Sibling  Frontend Interview Qustion  FrontendLead in Javascript?",
+            "text": "\u003carticle\u003e\n\u003cimg loading=\"lazy\" decoding=\"async\" class=\"alignnone size-medium wp-image-195\" src=\"https://api.frontendlead.com/wp-content/uploads/2024/03/I8ncH1ncdGaBXV3nwPH061w1MmdqNR9p_1169x546_1597852",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003ch2\u003eFinding the Next Right Sibling in a DOM Tree\u003c/h2\u003e\n\u003cp\u003eIn web development, navigating the Document Object Model (DOM) efficiently is crucial. This article explores a JavaScript function de",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+ for large arrays.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003eIn conclusion, the choice between recursive and iterative approaches to array flattening depends on the specific requirements and constraints of your project, including the expected input array size and depth. While the recursive method is concise and elegant, the iterative method provides a robust alternative for handling large and deeply nested arrays without the risk of stack overflow.\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Array"
+    ],
+    "likes": 10,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/embed/UV9Lp-3uwwg?si=sIkEur5qGudwyPgh",
+    "company": [
+        "Facebook",
+        "Amazon",
+        "Google",
+        "Robinhood",
+        "Zillow",
+        "Airbnb",
+        "OpenAI",
+        "Microsoft",
+        "Netflix"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "Flatten Array Frontend Interview: Recursive and Iterative Solutions - FrontendLead",
+        "pageDescription": "Learn how to flatten multi-dimensional arrays in JavaScript for frontend interviews. Recursive and iterative solutions covered.",
+        "pageURL": "flatten-arrays-recursively-and-iteratively",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

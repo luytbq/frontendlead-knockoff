@@ -1,0 +1,130 @@
+{
+    "type": "coding",
+    "id": "parser-for-rich-text-editor",
+    "title": "24. Parser for Rich Text Editor",
+    "difficulty": [
+        "Hard"
+    ],
+    "link": "parser-for-rich-text-editor",
+    "problemStatement": "\u003cp\u003eGiven a string and an array representing styles, the task is to render HTML similar to the output of a rich text editor.\u003c/p\u003e\n\u003cp\u003eThe input consists of a string and a style array. Each element in the style array is another array that contains three items: the start index, the end index, and the HTML tag to be applied. The goal is to apply these styles to the specified ranges within the string and generate the corresponding HTML output.\u003c/p\u003e\n\u003cp\u003e\u003cstrong\u003eExample:\u003c/strong\u003e\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003eInput: 'Hello, world', [[0, 2, 'i'], [4, 9, 'b'], [7, 10, 'u']]\r\n\r\nOutput: '\u0026lt;i\u0026gt;Hel\u0026lt;/i\u0026gt;l\u0026lt;b\u0026gt;o, w\u0026lt;u\u0026gt;orl\u0026lt;/u\u0026gt;\u0026lt;/b\u0026gt;\u0026lt;u\u0026gt;d\u0026lt;/u\u0026gt;'\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis example demonstrates overlapping style ranges where the \u003ccode\u003e\u0026lt;u\u0026gt;\u003c/code\u003e tag is applied both within and outside the \u003ccode\u003e\u0026lt;b\u0026gt;\u003c/code\u003e tag\u0026#8217;s range, showing the complexity of nesting and ordering HTML tags based on the input style ranges.\u003c/p\u003e\n\u003cp\u003eThe challenge lies in correctly applying the styles, especially when the style ranges overlap, ensuring that the HTML tags are nested and ordered properly according to their positions in the input string.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should correctly render HTML with non-overlapping styles",
+            "test": "it('should correctly render HTML with non-overlapping styles', (done) =\u003e {\r\n    const input = \"Hello, world\";\r\n    const styles = [\r\n      [0, 2, \"i\"],\r\n      [4, 9, \"b\"],\r\n      [7, 10, \"u\"]\r\n    ];\r\n    const result = prettyHTML(input, styles);\r\n    const expected = \"\u003ci\u003eHel\u003c/i\u003el\u003cb\u003eo, w\u003cu\u003eorl\u003c/u\u003e\u003c/b\u003e\u003cu\u003ed\u003c/u\u003e\";\r\n    expect(result).to.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should handle overlapping style ranges correctly",
+            "test": "it('should handle overlapping style ranges correctly', (done) =\u003e {\r\n    const input = \"Overlap test\";\r\n    const styles = [\r\n      [0, 6, \"b\"],  // Bold \"Overlap\"\r\n      [3, 9, \"u\"]   // Underline \"lap tes\"\r\n    ];\r\n    const result = prettyHTML(input, styles);\r\n    const expected = \"\u003cb\u003eOve\u003cu\u003erlap\u003c/u\u003e\u003c/b\u003e\u003cu\u003e tes\u003c/u\u003et\";\r\n    expect(result).to.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should return the original string when no styles are provided",
+            "test": "it('should return the original string when no styles are provided', (done) =\u003e {\r\n    const input = \"No styles\";\r\n    const styles = [];\r\n    const result = prettyHTML(input, styles);\r\n    const expected = \"No styles\";\r\n    expect(result).to.equal(expected);\r\n    done();\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "Input string length: 0 to 10,000 characters."
+        },
+        {
+            "constraint": "Up to 1,000 style ranges in the style array."
+        },
+        {
+            "constraint": "Style tags include: 'b', 'i', 'u'."
+        },
+        {
+            "constraint": "Style ranges can overlap; proper nesting required."
+        },
+        {
+            "constraint": "Preserve whitespace in the output HTML."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function prettyHTML(string, styles) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default prettyHTML;",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function prettyHTML(string, markup) {\r\n  const map = {};\r\n  \r\n  // Apply the styles to the map object\r\n  for (let i = 0; i \u003c markup.length; i++) {\r\n    const [start, end, tag] = markup[i];\r\n    \r\n    // Add opening tag to the start index\r\n    if (!map[start]) map[start] = [];\r\n    map[start].push(`\u003c${tag}\u003e`);\r\n    \r\n    // Add opening and closing tags to the overlapping indices\r\n    for (const index in map) {\r\n      if (index \u003e start \u0026\u0026 index \u003c= end) {\r\n        map[index].push(`\u003c${tag}\u003e`);\r\n        map[index].unshift(`\u003c/${tag}\u003e`);\r\n      }\r\n    }\r\n    \r\n    // Add closing tag to the end index\r\n    if (!map[end + 1]) map[end + 1] = [];\r\n    map[end + 1].push(`\u003c/${tag}\u003e`);\r\n  }\r\n  \r\n  // Split the string into individual characters [“h”, “e”, “l”, “l”, “o”, “ w”,...]\r\n  const stringCharsList = [];\r\n  for (let i = 0; i \u003c string.length; i++) {\r\n    if (string[i].trim().length) {\r\n      stringCharsList.push(string[i]);\r\n    } else { // handles spaces between strings\r\n      stringCharsList.push(' ' + string[i + 1]);\r\n      i += 1;\r\n    }\r\n  }\r\n  \r\n  let html = '';\r\n  // Generate the final HTML by combining the characters with their corresponding tags\r\n  for (let i = 0; i \u003c stringCharsList.length; i++) {\r\n    if(map[i]) {\r\n    \thtml += map[i].join('') + stringCharsList[i];\r\n    } else {\r\n    \thtml += stringCharsList[i];\r\n    }\r\n  }\r\n  \r\n  if(map[stringCharsList.length]) {\r\n    html += map[stringCharsList.length].join('');\r\n  }\r\n  \r\n  return html;\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003eRendering HTML from a string with inline styles, akin to what a rich text editor does, involves interpreting a set of instructions to apply styles at specific intervals in the string. This task is complex due to potential overlaps and nesting of styles. In this explanation, we\u0026#8217;ll dissect the provided JavaScript function `prettyHTML`, which accomplishes this task, and understand its workings step by step.\u003c/section\u003e\n\u003csection\u003e\n\u003ch1\u003eUnderstanding the Solution\u003c/h1\u003e\n\u003cp\u003eThe function `prettyHTML` takes two arguments: a string and a markup array that contains style instructions. Each instruction in the markup array specifies the start and end indices for the style application and the HTML tag to use.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eCreating a Map for Style Instructions\u003c/h2\u003e\n\u003cp\u003eThe first step is to create a map object that will hold the start and end points of each style tag. This map is essential for knowing where to insert the opening and closing tags as we iterate through the string.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003econst map = {};\r\nfor (let i = 0; i \u0026lt; markup.length; i++) {\r\n  const [start, end, tag] = markup[i];\r\n  if (!map[start]) map[start] = [];\r\n  map[start].push(\\`\u0026lt;${tag}\u0026gt;\\`);\r\n\r\n  for (const index in map) {\r\n    if (index \u0026gt; start \u0026amp;\u0026amp; index \u0026lt;= end) {\r\n      map[index].push(\\`\u0026lt;${tag}\u0026gt;\\`);\r\n      map[index].unshift(\\`\u0026lt;/${tag}\u0026gt;\\`);\r\n    }\r\n  }\r\n\r\n  if (!map[end + 1]) map[end + 1] = [];\r\n  map[end + 1].push(\\`\u0026lt;/${tag}\u0026gt;\\`);\r\n}\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis snippet iterates over the markup array and for each style instruction, adds opening tags at the start index and closing tags at the end index + 1 (to ensure the closing tag is placed after the last styled character). For overlapping styles, it ensures tags are nested correctly by adding the opening tag at the current position and the closing tag at the beginning of the list of tags for that index.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eBuilding the HTML String\u003c/h2\u003e\n\u003cp\u003eWith the map prepared, the function splits the input string into individual characters (accounting for whitespace) and starts building the final HTML string by appending tags and characters according to the map.\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003elet html = '';\r\nfor (let i = 0; i \u0026lt; stringCharsList.length; i++) {\r\n  html += map[i] ? map[i].join('') + stringCharsList[i] : stringCharsList[i];\r\n}\r\nhtml += map[stringCharsList.length].join('');\r\nreturn html;\r\n\u003c/code\u003e\u003c/pre\u003e\n\u003cp\u003eThis part of the function iterates over each character in the input string, adding any tags that are mapped to the current index before the character itself. After all characters have been processed, any remaining closing tags are appended to the HTML string.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eComplexity Analysis\u003c/h2\u003e\n\u003cp\u003eThe time complexity of this solution can be considered O(n*m), where n is the length of the input string and m is the number of style instructions. This is because the function iterates over each character in the string and for each character, it might iterate over the list of style instructions to apply the styles. The space complexity is also O(n*m) due to the additional storage required for the map and the final HTML string.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch2\u003eConclusion\u003c/h2\u003e\n\u003cp\u003eThis solution provides a robust method to render HTML from a string with inline styles, handling complexities such as overlapping and nested styles. While efficient for moderate-sized inputs, it\u0026#8217;s worth noting that performance might degrade for very large inputs or a high number of style instructions due to its computational complexity.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Algorithmic"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "https://www.youtube.com/watch?v=o89VYBvOAmo",
+    "company": [
+        "Google"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "24. Parser for Rich Text Editor - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Master the art of rendering HTML from strings with inline styles. Dive into our comprehensive guide to solve the Rich Text Editor challenge, handling overlaps and nested styles like a pro.",
+        "pageURL": "parser-for-rich-text-editor",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Parser for Rich Text Editor  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eGiven a string and an array representing styles, the task is to render HTML similar to the output of a rich text editor.\u003c/p\u003e\n\u003cp\u003eThe input consists of a string and a style array. Each element in the",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eRendering HTML from a string with inline styles, akin to what a rich text editor does, involves interpreting a set of instructions to apply styles at specific intervals in the strin",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
+x": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement Flatten Array Frontend Interview Recursive and Iterative Solutions  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eWrite a function to flatten a multi-dimensional array into a single-level array. Provide both recursive and iterative solutions.\u003c/p\u003e\n\u003cp\u003eThe problem involves transforming an array that contains nest",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003eUnderstanding different approaches to flatten nested arrays in JavaScript is crucial for developers, especially when dealing with complex data structures. In this article, we explor",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}

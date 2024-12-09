@@ -1,0 +1,158 @@
+{
+    "type": "coding",
+    "id": "debounce-ii",
+    "title": "46. Debounce II",
+    "difficulty": [
+        "Medium"
+    ],
+    "link": "debounce-ii",
+    "problemStatement": "\u003cp\u003eImplement a JavaScript utility called \u003ccode\u003edebounce\u003c/code\u003e that enhances the control over function executions in response to rapid or repeated triggers. This utility should accept two parameters: a target function (\u003ccode\u003efunc\u003c/code\u003e) and a wait time in milliseconds (\u003ccode\u003ewait\u003c/code\u003e). The \u003ccode\u003edebounce\u003c/code\u003e function returns a new, debounced version of the target function that ensures it is only executed after the specified wait time has elapsed since its last invocation.\u003c/p\u003e\n\u003cp\u003eIf the debounced function is called again before the wait time has expired, the countdown is reset, delaying the function\u0026#8217;s execution until the wait time passes without any further invocations. This behavior is crucial in scenarios such as handling rapid user inputs, window resizing, or scroll events, where controlling the rate of function execution can significantly enhance performance and user experience.\u003c/p\u003e\n\u003cp\u003eIn addition to the basic debouncing behavior, the returned function includes two methods for added flexibility:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003ecancel():\u003c/strong\u003e Cancels any scheduled execution of the debounced function, effectively resetting the debounce mechanism.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003eflush():\u003c/strong\u003e Immediately invokes the debounced function if there is a scheduled execution pending, bypassing the wait time.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eThis advanced debouncing mechanism, with its \u003ccode\u003ecancel\u003c/code\u003e and \u003ccode\u003eflush\u003c/code\u003e capabilities, provides a powerful tool for optimizing dynamic function execution in response to user actions or system events.\u003c/p\u003e\n",
+    "premiumQuestion": true,
+    "testCases": [
+        {
+            "id": 0,
+            "description": "should execute the function only after the specified wait time",
+            "test": "it('should execute the function only after the specified wait time', (done) =\u003e {\r\n    let counter = 0;\r\n    const increaseCounter = () =\u003e counter++;\r\n    const debouncedIncreaseCounter = debounce(increaseCounter, 100);\r\n\r\n    debouncedIncreaseCounter();\r\n    setTimeout(() =\u003e {\r\n      expect(counter).to.equal(0); // Function should not have been called yet\r\n    }, 50);\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(counter).to.equal(1); // Function should have been called once\r\n      done();\r\n    }, 150);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 1,
+            "description": "should reset the debounce timer if called again within the wait time",
+            "test": "it('should reset the debounce timer if called again within the wait time', (done) =\u003e {\r\n    let counter = 0;\r\n    const increaseCounter = () =\u003e counter++;\r\n    const debouncedIncreaseCounter = debounce(increaseCounter, 100);\r\n\r\n    debouncedIncreaseCounter();\r\n    setTimeout(debouncedIncreaseCounter, 50); // Reset the debounce timer\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(counter).to.equal(0); // Function should not have been called yet\r\n    }, 120);\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(counter).to.equal(1); // Function should have been called once after the reset timer\r\n      done();\r\n    }, 200);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 2,
+            "description": "should cancel the debounced function when cancel is called",
+            "test": "it('should cancel the debounced function when cancel is called', (done) =\u003e {\r\n    let counter = 0;\r\n    const increaseCounter = () =\u003e counter++;\r\n    const debouncedIncreaseCounter = debounce(increaseCounter, 100);\r\n\r\n    debouncedIncreaseCounter();\r\n    debouncedIncreaseCounter.cancel();\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(counter).to.equal(0); // Function should not have been called due to cancellation\r\n      done();\r\n    }, 150);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 3,
+            "description": "should immediately execute the function when flush is called",
+            "test": "it('should immediately execute the function when flush is called', (done) =\u003e {\r\n    let counter = 0;\r\n    const increaseCounter = () =\u003e counter++;\r\n    const debouncedIncreaseCounter = debounce(increaseCounter, 100);\r\n\r\n    debouncedIncreaseCounter();\r\n    debouncedIncreaseCounter.flush(); // Immediately invoke the function\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(counter).to.equal(1); // Function should have been called once due to flush\r\n      done();\r\n    }, 50);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 4,
+            "description": "should not execute the function if canceled before the wait time expires",
+            "test": "it('should not execute the function if canceled before the wait time expires', (done) =\u003e {\r\n    let counter = 0;\r\n    const increaseCounter = () =\u003e counter++;\r\n    const debouncedIncreaseCounter = debounce(increaseCounter, 100);\r\n\r\n    debouncedIncreaseCounter();\r\n    setTimeout(debouncedIncreaseCounter.cancel, 50); // Cancel before the wait time expires\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(counter).to.equal(0); // Function should not have executed\r\n      done();\r\n    }, 150);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 5,
+            "description": "flush should have no effect if there is no scheduled execution",
+            "test": "it('flush should have no effect if there is no scheduled execution', (done) =\u003e {\r\n    let counter = 0;\r\n    const increaseCounter = () =\u003e counter++;\r\n    const debouncedIncreaseCounter = debounce(increaseCounter, 100);\r\n\r\n    debouncedIncreaseCounter.flush(); // Flush without prior call\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(counter).to.equal(0); // Function should not have executed\r\n      done();\r\n    }, 150);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 6,
+            "description": "multiple sequential calls should result in a single execution",
+            "test": "it('multiple sequential calls should result in a single execution', (done) =\u003e {\r\n    let counter = 0;\r\n    const increaseCounter = () =\u003e counter++;\r\n    const debouncedIncreaseCounter = debounce(increaseCounter, 100);\r\n\r\n    debouncedIncreaseCounter();\r\n    debouncedIncreaseCounter();\r\n    debouncedIncreaseCounter(); // Multiple calls\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(counter).to.equal(1); // Only a single execution should occur\r\n      done();\r\n    }, 200);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 7,
+            "description": "should apply the latest arguments to the debounced function",
+            "test": "it('should apply the latest arguments to the debounced function', (done) =\u003e {\r\n    let result = null;\r\n    const sum = (a, b) =\u003e result = a + b;\r\n    const debouncedSum = debounce(sum, 100);\r\n\r\n    debouncedSum(1, 2);\r\n    debouncedSum(3, 4); // Latest call with new arguments\r\n\r\n    setTimeout(() =\u003e {\r\n      expect(result).to.equal(7); // Function should execute with the latest arguments\r\n      done();\r\n    }, 150);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        },
+        {
+            "id": 8,
+            "description": "should maintain the correct context when called as a method",
+            "test": "it('should maintain the correct context when called as a method', (done) =\u003e {\r\n    const obj = {\r\n      counter: 0,\r\n      increaseCounter: debounce(function() { this.counter++; }, 100)\r\n    };\r\n\r\n    obj.increaseCounter();\r\n    setTimeout(() =\u003e {\r\n      expect(obj.counter).to.equal(1); // Function should execute within the context of `obj`\r\n      done();\r\n    }, 150);\r\n  });\r\n  ",
+            "passed": null,
+            "output": null,
+            "console": null
+        }
+    ],
+    "examples": [],
+    "constraints": [
+        {
+            "constraint": "The debounce function must accept two parameters, func: The function to debounce \u0026 wait: The debounce delay in milliseconds."
+        },
+        {
+            "constraint": "The returned debounced function should delay the execution of func until after wait milliseconds have elapsed since the last time it was invoked."
+        },
+        {
+            "constraint": "If the debounced function is called again before the wait time expires, the timer should reset, postponing the execution of func until the wait time elapses after this most recent call."
+        },
+        {
+            "constraint": "The debounced function should maintain the context (this) and arguments of its calls to apply them when func is eventually executed."
+        },
+        {
+            "constraint": "The cancel method attached to the debounced function should cancel any pending execution of func, effectively resetting the debounce mechanism without executing func."
+        },
+        {
+            "constraint": "The flush method should immediately invoke func with the last provided arguments if there is a scheduled execution pending, bypassing the wait time. After flush is called, no further debounced calls should occur until the debounced function is invoked again."
+        },
+        {
+            "constraint": "The debounce utility should handle edge cases gracefully, such as calling flush or cancel when there is no pending execution."
+        }
+    ],
+    "order": null,
+    "starterJSCode": "function debounce(func, wait) {\r\n    // Write your code here\r\n}\r\n\r\n// Do not edit below this line\r\nexport default debounce",
+    "starterHTMLCode": null,
+    "starterCSSCode": null,
+    "solutionCode": "function debounce(func, wait) {\r\n  // Declare variables for the timer, function arguments, and context.\r\n  let timer;\r\n  let fnArgs;\r\n  let thisContext;\r\n\r\n  // Define a function to invoke the debounced function.\r\n  function invok() {\r\n    // If the timer does not exist, return and do nothing.\r\n    if (!timer) return;\r\n    // Stop the existing timer to prevent the function from being invoked.\r\n    clear();\r\n    // Invoke the function with the specified context and arguments.\r\n    func.call(thisContext, ...fnArgs);\r\n  }\r\n\r\n  // Define a function to clear the timer.\r\n  function clear() {\r\n    clearTimeout(timer);\r\n    timer = null;\r\n  }\r\n\r\n  // Define the debouncer function that will be returned.\r\n  function debouncer(...args) {\r\n    // Save the context and arguments for later use.\r\n    thisContext = this;\r\n    fnArgs = args;\r\n    // Clear any existing timer to reset the debounce timer.\r\n    clear();\r\n    // Set a new timer to invoke the debounced function after the specified wait time.\r\n    timer = setTimeout(() =\u003e {\r\n      invok()\r\n    }, wait);\r\n  }\r\n  \r\n  // Add cancel and flush methods to the debouncer function for convenient use.\r\n  debouncer.cancel = clear;\r\n  debouncer.flush = invok;\r\n\r\n  // Return the debouncer function for use.\r\n  return debouncer;\r\n}",
+    "starterFunctionName": null,
+    "solution": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eDebounce Function Explained\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003edebounce\u003c/code\u003e function is a high-order function that enhances the control over the execution rate of a given function. It\u0026#8217;s particularly useful in scenarios where a function might be triggered excessively, such as during window resizing, scrolling, or user input. The debounced function ensures that the given function is only executed after a specified wait time has elapsed since the last call.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch3\u003eCore Functionality\u003c/h3\u003e\n\u003cp\u003eAt its core, the \u003ccode\u003edebounce\u003c/code\u003e function utilizes a timer to manage the delay. When the debounced function is invoked, any existing timer is cleared, and a new timer is set. If the debounced function is called again before the timer expires, the timer is reset. This process repeats until the function is not called again before the timer expires, at which point the original function is executed.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch3\u003eCancel Method\u003c/h3\u003e\n\u003cp\u003eThe \u003ccode\u003ecancel\u003c/code\u003e method provides a way to cancel a scheduled execution of the debounced function. When called, it clears the timer and ensures that the original function will not be executed, regardless of whether the wait time had elapsed.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch3\u003eFlush Method\u003c/h3\u003e\n\u003cp\u003eThe \u003ccode\u003eflush\u003c/code\u003e method allows for the immediate execution of the debounced function, bypassing the wait time. If there\u0026#8217;s a pending execution (i.e., the timer is active), the \u003ccode\u003eflush\u003c/code\u003e method clears the timer and immediately invokes the original function with the latest arguments provided to the debounced function.\u003c/p\u003e\n\u003c/section\u003e\n\u003csection\u003e\n\u003ch3\u003ePractical Applications\u003c/h3\u003e\n\u003cp\u003eImplementing a \u003ccode\u003edebounce\u003c/code\u003e function with \u003ccode\u003ecancel\u003c/code\u003e and \u003ccode\u003eflush\u003c/code\u003e methods offers significant flexibility and control in function execution. It\u0026#8217;s particularly useful in event handling and UI interactions, where optimizing the execution rate of functions can lead to improved performance and user experience.\u003c/p\u003e\n\u003c/section\u003e\n\u003c/article\u003e\n",
+    "category": [
+        "Javascript"
+    ],
+    "likes": 0,
+    "dislikes": null,
+    "videoLink": "",
+    "company": [
+        "Google"
+    ],
+    "subtitle": null,
+    "comingSoon": null,
+    "seo": {
+        "pageTitle": "46. Debounce II - Frontend Interview Question - FrontendLead",
+        "pageDescription": "Unlock the power of debouncing in JavaScript with our comprehensive guide. Learn how to implement a debounce function with advanced control through cancel and flush methods, optimizing your code for better performance and user experience.",
+        "pageURL": "debounce-ii",
+        "isCodingPage": true,
+        "useGeneralPageSD": false,
+        "index": true,
+        "ogImage": "",
+        "twitterImage": "",
+        "keywords": "",
+        "secondaryStructuredData": {
+            "@context": "http://schema.org",
+            "@type": "Question",
+            "name": "How to implement  Debounce II  Frontend Interview Question  FrontendLead in Javascript?",
+            "text": "\u003cp\u003eImplement a JavaScript utility called \u003ccode\u003edebounce\u003c/code\u003e that enhances the control over function executions in response to rapid or repeated triggers. This utility should accept two parameters: ",
+            "dateCreated": "2024-04-01",
+            "author": {
+                "@type": "Organization",
+                "name": "FrontendLead"
+            },
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "\u003carticle\u003e\n\u003csection\u003e\n\u003ch2\u003eDebounce Function Explained\u003c/h2\u003e\n\u003cp\u003eThe \u003ccode\u003edebounce\u003c/code\u003e function is a high-order function that enhances the control over the execution rate of a given function. It\u0026#8217;",
+                "dateCreated": "2024-04-01",
+                "author": {
+                    "@type": "Organization",
+                    "name": "FrontendLead"
+                }
+            }
+        }
+    }
+}
