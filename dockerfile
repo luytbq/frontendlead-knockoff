@@ -6,9 +6,6 @@ WORKDIR /app
 
 COPY server/ ./
 
-# Download dependencies
-# RUN go mod download # No dependencies needed for this app
-
 # Build the Go application
 RUN go build -o main ./main.go
 
@@ -29,7 +26,7 @@ RUN npm install -g jasmine
 COPY test-engine/ ./
 
 # Stage 3: Create the final runtime image
-FROM golang:1.22.1
+FROM node:18
 
 # Set the working directory for the final image
 WORKDIR /app
