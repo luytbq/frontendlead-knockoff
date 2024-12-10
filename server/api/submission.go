@@ -115,7 +115,7 @@ func writeTestCase(id int, testScript string, submission string) (string, error)
 		log.Printf("Failed to open file: %s", err.Error())
 		return "", err
 	}
-	_, err = file.WriteString(testScript + "\n" + submission)
+	_, err = file.WriteString(appendTestScript(testScript, submission))
 	if err != nil {
 		log.Printf("Failed to write user code: %s", err.Error())
 		return "", err
@@ -129,6 +129,19 @@ func writeTestCase(id int, testScript string, submission string) (string, error)
 func editScriptSyntax(testScript string) string {
 	result := strings.ReplaceAll(testScript, ".to.deep.equal(", ".toEqual(")
 	result = strings.ReplaceAll(result, ".to.be.true", ".toEqual(true)")
+
+	return result
+}
+
+func appendTestScript(testScript, submission string) string {
+	result := ""
+	if strings.Contains(testScript, "fetchMock.") {
+		// by the test case syntax I deduced that the original app uses fetch-mock version 11
+		log.Println("test case using fetchMock detected")
+		result += "import fetchMock from 'fetch-mock';\n"
+	}
+
+	result += testScript + "\n" + submission
 
 	return result
 }
