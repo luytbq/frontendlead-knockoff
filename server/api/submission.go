@@ -128,6 +128,7 @@ func writeTestCase(id int, testScript string, submission string) (string, error)
 // Transform the given testScript to the syntactically correct Jasmine code.
 func editScriptSyntax(testScript string) string {
 	result := strings.ReplaceAll(testScript, ".to.deep.equal(", ".toEqual(")
+	result = strings.ReplaceAll(result, ".to.equal(", ".toEqual(")
 	result = strings.ReplaceAll(result, ".to.be.true", ".toEqual(true)")
 
 	return result
